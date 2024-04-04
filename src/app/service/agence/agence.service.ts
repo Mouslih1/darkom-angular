@@ -13,17 +13,20 @@ export class AgenceService {
 
   constructor(private httpClient: HttpClient) { }
 
-  saveAgence(agence: FormData): Observable<AgenceResponse> {
+  saveAgence(agence: FormData): Observable<AgenceResponse>
+  {
     const headers = new HttpHeaders({
-      'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuaWhhbiIsImFnZW5jZUlkIjoyLCJyb2xlcyI6WyJBR0VOVCJdLCJpc3MiOiJTcHJpbmdCb290QXBwIiwiaWQiOjgsImV4cCI6MTcxMjE5NjI0M30.3qczoqxToacDrEvko5i_bnXlCvam08nm1oz6DLHR6dA'
+      'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuaWhhbiIsImFnZW5jZUlkIjoyLCJyb2xlcyI6WyJBR0VOVCJdLCJpc3MiOiJTcHJpbmdCb290QXBwIiwiaWQiOjgsImV4cCI6MTcxMjI3ODc0NX0.SfxwRRF9l4T9hv8zyp5GSyl9BoKT3rurePHMQGEi1FM'
     });
 
+    console.log("save agence service : ", agence);
     return this.httpClient.post<AgenceResponse>(this.baseURL, agence, { headers: headers });
   }
 
-  all(): Observable<AgenceResponse[]> {
+  all(): Observable<AgenceResponse[]>
+  {
     const headers = new HttpHeaders({
-      'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuaWhhbiIsImFnZW5jZUlkIjoyLCJyb2xlcyI6WyJBR0VOVCJdLCJpc3MiOiJTcHJpbmdCb290QXBwIiwiaWQiOjgsImV4cCI6MTcxMjE5NjI0M30.3qczoqxToacDrEvko5i_bnXlCvam08nm1oz6DLHR6dA'
+      'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuaWhhbiIsImFnZW5jZUlkIjoyLCJyb2xlcyI6WyJBR0VOVCJdLCJpc3MiOiJTcHJpbmdCb290QXBwIiwiaWQiOjgsImV4cCI6MTcxMjI3ODc0NX0.SfxwRRF9l4T9hv8zyp5GSyl9BoKT3rurePHMQGEi1FM'
     });
 
     return this.httpClient.get<AgenceResponse[]>(this.baseURL, { headers: headers });

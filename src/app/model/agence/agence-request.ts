@@ -9,5 +9,5 @@ export interface AgenceRequest {
   agentUpdatedBy: string;
   createdAt: Date;
   updatedAt: Date;
-  multipartFiles: FileList;
+  multipartFiles: FileList[];
 }

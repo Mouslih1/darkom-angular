@@ -12,6 +12,7 @@ import { DashboardComponent } from './components/dashboard/dashboard/dashboard.c
 import { FooterComponent } from './components/layouts/footer/footer.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http'
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { HttpClientModule } from '@angular/common/http'
     BrowserAnimationsModule,
     MatDialogModule,
     ReactiveFormsModule,
+    ToastrModule.forRoot(),
     HttpClientModule
   ],
   providers: [],
