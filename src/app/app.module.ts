@@ -13,6 +13,9 @@ import { FooterComponent } from './components/layouts/footer/footer.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http'
 import { ToastrModule } from 'ngx-toastr';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -21,7 +24,7 @@ import { ToastrModule } from 'ngx-toastr';
     TopbarComponent,
     FooterComponent,
     DashboardComponent,
-    AgenceListComponent
+    AgenceListComponent,
   ],
   imports: [
     BrowserModule,
@@ -30,7 +33,10 @@ import { ToastrModule } from 'ngx-toastr';
     MatDialogModule,
     ReactiveFormsModule,
     ToastrModule.forRoot(),
-    HttpClientModule
+    HttpClientModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFireDatabaseModule,
+
   ],
   providers: [],
   bootstrap: [AppComponent]

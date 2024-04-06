@@ -55,19 +55,16 @@ export class AgenceListComponent implements OnInit {
     {
       const formValue = this.agenceRequest.value;
 
-      // Créez un nouvel objet FormData
       const formData = new FormData();
       formData.append('name', formValue.name);
       formData.append('address', formValue.address);
       formData.append('telephone', formValue.telephone);
       formData.append('email', formValue.email);
 
-      // Ajoutez chaque fichier sélectionné à formData
       for (let i = 0; i < this.agenceImages.length; i++) {
         formData.append('multipartFiles', this.agenceImages[i]);
       }
 
-      // Envoyez formData au serveur via le service AgenceService
       this.agenceService.saveAgence(formData).subscribe(
         (response) => {
           console.log('Agence saved successfully:', response);
