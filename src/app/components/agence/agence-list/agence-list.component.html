@@ -1,10 +1,11 @@
+
 <div class="content-body">
   <!-- row -->
   <div class="container-fluid">
     <div class="d-flex align-items-center mb-4 flex-wrap">
       <h3 class="me-auto">Agence List</h3>
       <div>
-        <a class="btn btn-primary me-3 btn-sm" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#addAgence">
+        <a class="btn btn-primary me-3 btn-sm" href="javascript:void(0);" (click)="initForm()" data-bs-toggle="modal" data-bs-target="#addAgence">
           <i class="fas fa-plus me-2"></i>Add New Agence
         </a>
       </div>
@@ -39,18 +40,21 @@
                 <td>{{ agence.agenceDto.createdAt }}</td>
                 <td>
                   <div class="action-buttons d-flex justify-content-end">
-                    <a href="javascript:void(0);" class="btn btn-success light mr-2">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="svg-main-icon" width="24px" height="24px"
-                        viewBox="0 0 32 32" x="0px" y="0px">
-                        <g data-name="Layer 21">
-                          <path
-                            d="M29,14.47A15,15,0,0,0,3,14.47a3.07,3.07,0,0,0,0,3.06,15,15,0,0,0,26,0A3.07,3.07,0,0,0,29,14.47ZM16,21a5,5,0,1,1,5-5A5,5,0,0,1,16,21Z"
-                            fill="#000000" fill-rule="nonzero"></path>
-                          <circle cx="16" cy="16" r="3" fill="#000000" fill-rule="nonzero"></circle>
-                        </g>
-                      </svg>
+                    <a href="javascript:void(0);" class="btn btn-success  light mr-2" (click)="editAgenceLogo(agence)" data-bs-toggle="modal" data-bs-target="#editAgenceLogo" title="Update logo of agency">
+                      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
+                      height="24px" viewBox="0 0 24 24" version="1.1" class="svg-main-icon">
+                      <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                        <rect x="0" y="0" width="24" height="24"></rect>
+                        <path
+                          d="M8,17.9148182 L8,5.96685884 C8,5.56391781 8.16211443,5.17792052 8.44982609,4.89581508 L10.965708,2.42895648 C11.5426798,1.86322723 12.4640974,1.85620921 13.0496196,2.41308426 L15.5337377,4.77566479 C15.8314604,5.0588212 16,5.45170806 16,5.86258077 L16,17.9148182 C16,18.7432453 15.3284271,19.4148182 14.5,19.4148182 L9.5,19.4148182 C8.67157288,19.4148182 8,18.7432453 8,17.9148182 Z"
+                          fill="#000000" fill-rule="nonzero"
+                          transform="translate(12.000000, 10.707409) rotate(-135.000000) translate(-12.000000, -10.707409) ">
+                        </path>
+                        <rect fill="#000000" opacity="0.3" x="5" y="20" width="15" height="2" rx="1"></rect>
+                      </g>
+                    </svg>
                     </a>
-                    <a href="javascript:void(0);"  data-bs-toggle="modal" data-bs-target="#editAgence" class="btn btn-secondary light mr-2">
+                    <a href="javascript:void(0);"  data-bs-toggle="modal" (click)="editAgence(agence)" data-bs-target="#editAgence" title="Update infomation of agency" class="btn btn-secondary light mr-2">
                       <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
                         height="24px" viewBox="0 0 24 24" version="1.1" class="svg-main-icon">
                         <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -64,7 +68,7 @@
                         </g>
                       </svg>
                     </a>
-                    <a href="javascript:void(0);" class="btn btn-danger light">
+                    <a href="javascript:void(0);" class="btn btn-danger light" (click)="deleteAgence(agence)" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" title="Delete of agency">
                       <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
                         height="24px" viewBox="0 0 24 24" version="1.1" class="svg-main-icon">
                         <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -83,6 +87,10 @@
               </tr>
             </tbody>
           </table>
+          <div class="d-flex justify-content-between">
+            <button class="btn btn-primary" (click)="previousPage()">Previous</button>
+            <button class="btn btn-primary" (click)="nextPage()">Next</button>
+          </div>
         </div>
       </div>
     </div>
@@ -108,9 +116,13 @@
             </div>
           </div> -->
           <div class="mb-3 row">
-            <label for="formFile" class="col-xl-3 col-md-4 col-form-label">Logo</label>
+            <label for="formFile" class="col-xl-3 col-md-4 col-form-label">Logo<span class="text-danger scale5 ms-2">*</span></label>
             <div class="col-xl-9 col-md-8">
-              <input #myInput type="file" formControlName="multipartFiles" (change)="onFileChange($event)" class="form-control" id="formFile">
+              <input #myInput [class.is-invalid]="agenceRequest.get('multipartFiles')?.invalid && agenceRequest.get('multipartFiles')?.touched"
+              type="file" formControlName="multipartFiles" (change)="onFileChange($event)" class="form-control" id="formFile">
+              <div *ngIf="agenceRequest.get('multipartFiles')?.invalid && agenceRequest.get('multipartFiles')?.touched" class="invalid-feedback">
+                Logo is required.
+              </div>
             </div>
           </div>
           <div class="mb-3 row">
@@ -174,17 +186,12 @@
       </div>
       <div class="modal-body">
         <form [formGroup]="agenceRequest">
-          <!-- <div *ngIf="agenceImages.length > 0" class="mb-3 row">
+          <div *ngIf="agenceImages.length > 0" class="mb-3 row">
             <div *ngFor="let imageUrl of agenceImages" class="col-md-3">
-              <img [src]="imageUrl" class="img-fluid" alt="Agence Image">
+              {{ imageUrl }}
+              <img [src]="imageUrl" class="img-fluid" alt="agence logo">
             </div>
-          </div> -->
-          <!-- <div class="mb-3 row">
-            <label for="formFile" class="col-xl-3 col-md-4 col-form-label">Logo</label>
-            <div class="col-xl-9 col-md-8">
-              <input #myInput type="file" formControlName="multipartFiles" (change)="onFileChange($event)" class="form-control" id="formFile">
-            </div>
-          </div> -->
+          </div>
           <div class="mb-3 row">
             <label for="name" class="col-xl-3 col-md-4 col-form-label">
               Name<span class="text-danger scale5 ms-2">*</span></label>
@@ -229,7 +236,66 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" >Save changes</button>
+        <button type="button" class="btn btn-primary" (click)="onUpdate()" >Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Edit new agence logo -->
+<div class="modal fade" id="editAgenceLogo" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Update Agence</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="agenceRequest">
+          <div *ngIf="agenceImages.length > 0" class="mb-3 row">
+            <div *ngFor="let imageUrl of agenceImages" class="col-md-3">
+              {{ imageUrl }}
+              <img [src]="imageUrl" class="img-fluid" alt="agence logo">
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="formFile" class="col-xl-3 col-md-4 col-form-label">Logo<span class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+              <input  #myInput [class.is-invalid]="agenceRequest.get('multipartFiles')?.invalid && agenceRequest.get('multipartFiles')?.touched"
+              type="file" formControlName="multipartFiles" (change)="onFileChange($event)" class="form-control" id="formFile">
+              <div *ngIf="agenceRequest.get('multipartFiles')?.invalid && agenceRequest.get('multipartFiles')?.touched" class="invalid-feedback">
+                Logo is required.
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+        <button type="button" (click)="myInput.value = ''" class="btn btn-primary" (click)="onUpdateLogo()">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Delete model-->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Update Agence</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="agenceRequest">
+          <p class="text-danger">Are you sure , You want to delete this ligne ?</p>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" (click)="onDelete()" data-bs-dismiss="modal">Delete</button>
       </div>
     </div>
   </div>

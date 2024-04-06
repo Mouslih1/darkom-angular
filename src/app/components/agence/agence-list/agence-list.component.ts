@@ -14,7 +14,12 @@ export class AgenceListComponent implements OnInit {
 
   agenceList: AgenceResponse[] = [];
   agenceRequest!: FormGroup;
-  agenceImages: File[] = [];
+
+  agenceImages: any[] = [];
+  pageNo = 0;
+  pageSize = 10;
+  totalPages = 0;
+  isModalVisible: boolean = true;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -31,11 +36,12 @@ export class AgenceListComponent implements OnInit {
   initForm()
   {
     this.agenceRequest = this.formBuilder.group({
+      id: [''],
       name: ['', [Validators.required]],
       address: ['', [Validators.required]],
       telephone: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
-      multipartFiles: this.formBuilder.array([])
+      multipartFiles: this.formBuilder.array([], [Validators.required])
     });
   }
 
@@ -69,6 +75,7 @@ export class AgenceListComponent implements OnInit {
         (response) => {
           console.log('Agence saved successfully:', response);
 
+          this.all();
           this.toastr.success("Agence created successfully.")
           this.agenceRequest.reset();
           this.agenceImages = [];
@@ -82,6 +89,67 @@ export class AgenceListComponent implements OnInit {
     }
   }
 
+  onUpdate()
+  {
+    console.log(this.agenceRequest.value);
+    this.agenceService.updateAgenceInfo(
+      this.agenceRequest.value.id,
+      this.agenceRequest.value
+    ).subscribe((response) => {
+      console.log('Agence updated successfully:', response);
+      this.all();
+      this.toastr.success("Agence info updated successfully.")
+    },
+    (error) => {
+      console.error('Error while updated agence:', error);
+      this.toastr.error("Something went wrong please try again.")
+    });
+  }
+
+  onUpdateLogo()
+  {
+    console.log(this.agenceRequest.value);
+    console.log(this.agenceImages);
+
+    console.log('this.agenceRequest.value.id : ', this.agenceRequest.value.id);
+    const formData = new FormData();
+
+    for (let i = 0; i < this.agenceImages.length; i++) {
+      formData.append('multipartFiles', this.agenceImages[i]);
+    }
+
+    this.agenceService.updateAgenceLogo(
+      this.agenceRequest.value.id,
+      formData
+    ).subscribe((response) => {
+      console.log('Agence logo updated successfully:', response);
+      this.all();
+      this.toastr.success("Agence logo updated successfully.")
+    },
+    (error) => {
+      console.error('Error while updated agence:', error);
+      this.toastr.error("Something went wrong please try again.")
+    });
+  }
+
+  onDelete()
+  {
+    console.log('this.agenceRequest.value : ', this.agenceRequest.value);
+    this.agenceService.deleteAgence(
+      this.agenceRequest.value.id
+    ).subscribe((response) => {
+      console.log('Agence deleted successfully:', response);
+      this.all();
+      this.toastr.success("Agence deleted successfully.");
+      this.isModalVisible = false;
+
+    },
+    (error) => {
+      console.error('Error while delete agence:', error);
+      this.toastr.error("Something went wrong please try again.")
+    });
+  }
+
   markFormGroupTouched(formGroup: FormGroup)
   {
     Object.values(formGroup.controls).forEach(control => {
@@ -93,10 +161,33 @@ export class AgenceListComponent implements OnInit {
     });
   }
 
+  previousPage()
+  {
+    if (this.pageNo > 0)
+    {
+      this.pageNo--;
+      this.all();
+    }
+  }
+
+  nextPage()
+  {
+    console.log(this.totalPages);
+    console.log(this.pageNo);
+
+    if (this.pageNo <= this.totalPages)
+    {
+      this.pageNo++;
+      this.all();
+    }
+  }
+
   all() {
-    this.agenceService.all().subscribe(
+    this.agenceService.all(this.pageNo, this.pageSize).subscribe(
       (res: AgenceResponse[]) => {
         this.agenceList = res;
+        this.totalPages = Math.ceil(res.length / this.pageSize);
+
         console.log('Agences fetched successfully:', res);
       },
       (error: any) => {
@@ -105,14 +196,34 @@ export class AgenceListComponent implements OnInit {
     );
   }
 
-  // editAgence(agence: AgenceResponse) {
-  //   this.agenceRequest.patchValue({
-  //     id: agence.agenceDto.id,
-  //     name: agence.agenceDto.name,
-  //     email: agence.agenceDto.email,
-  //     address: agence.agenceDto.address,
-  //     telephone: agence.agenceDto.telephone,
-  //     multipartFiles: agence.medias.map(media => media.uri)
-  //   });
-  // }
+  editAgence(agence: AgenceResponse)
+  {
+    console.log(agence);
+
+    this.agenceRequest.patchValue({
+      id: agence.agenceDto.id,
+      name: agence.agenceDto.name,
+      email: agence.agenceDto.email,
+      address: agence.agenceDto.address,
+      telephone: agence.agenceDto.telephone,
+    });
+
+    this.agenceImages = agence.medias.map(media => media.uri);
+    console.log("agenceImages après affectation :", this.agenceImages);
+  }
+
+  editAgenceLogo(agence: AgenceResponse)
+  {
+    this.agenceRequest.patchValue({
+      id: agence.agenceDto.id
+    });
+    this.agenceImages = agence.medias.map(media => media.uri);
+  }
+
+  deleteAgence(agence: AgenceResponse)
+  {
+    this.agenceRequest.patchValue({
+      id: agence.agenceDto.id
+    });
+  }
 }
