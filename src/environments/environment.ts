@@ -18,16 +18,6 @@ export const environment = {
   }
 };
 
-export const firebaseConfig = {
-  apiKey: "AIzaSyDU7KNyjgfGLDrhLgQPqBnMZM6rmL3Unj8",
-  authDomain: "darkom-ce2c6.firebaseapp.com",
-  databaseURL: "https://darkom-ce2c6-default-rtdb.firebaseio.com",
-  projectId: "darkom-ce2c6",
-  storageBucket: "darkom-ce2c6.appspot.com",
-  messagingSenderId: "640730872618",
-  appId: "1:640730872618:web:0cc21c09dbd5a9194cfc53",
-  measurementId: "G-T70PMF7N6E"
-};
 /*
  * For easier debugging in development mode, you can import the following file
  * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.

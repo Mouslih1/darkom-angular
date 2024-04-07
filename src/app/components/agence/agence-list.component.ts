@@ -19,7 +19,6 @@ export class AgenceListComponent implements OnInit {
   pageNo = 0;
   pageSize = 10;
   totalPages = 0;
-  isModalVisible: boolean = true;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -91,45 +90,55 @@ export class AgenceListComponent implements OnInit {
 
   onUpdate()
   {
-    console.log(this.agenceRequest.value);
-    this.agenceService.updateAgenceInfo(
-      this.agenceRequest.value.id,
-      this.agenceRequest.value
-    ).subscribe((response) => {
-      console.log('Agence updated successfully:', response);
-      this.all();
-      this.toastr.success("Agence info updated successfully.")
-    },
-    (error) => {
-      console.error('Error while updated agence:', error);
-      this.toastr.error("Something went wrong please try again.")
-    });
+    this.markFormGroupTouched(this.agenceRequest);
+
+    if(this.agenceRequest.valid)
+    {
+      console.log(this.agenceRequest.value);
+      this.agenceService.updateAgenceInfo(
+        this.agenceRequest.value.id,
+        this.agenceRequest.value
+      ).subscribe((response) => {
+        console.log('Agence updated successfully:', response);
+        this.all();
+        this.toastr.success("Agence info updated successfully.")
+      },
+      (error) => {
+        console.error('Error while updated agence:', error);
+        this.toastr.error("Something went wrong please try again.")
+      });
+    }
   }
 
   onUpdateLogo()
   {
-    console.log(this.agenceRequest.value);
-    console.log(this.agenceImages);
+    this.markFormGroupTouched(this.agenceRequest);
 
-    console.log('this.agenceRequest.value.id : ', this.agenceRequest.value.id);
-    const formData = new FormData();
+    if(this.agenceRequest.valid)
+    {
+      console.log(this.agenceRequest.value);
+      console.log(this.agenceImages);
 
-    for (let i = 0; i < this.agenceImages.length; i++) {
-      formData.append('multipartFiles', this.agenceImages[i]);
+      console.log('this.agenceRequest.value.id : ', this.agenceRequest.value.id);
+      const formData = new FormData();
+
+      for (let i = 0; i < this.agenceImages.length; i++) {
+        formData.append('multipartFiles', this.agenceImages[i]);
+      }
+
+      this.agenceService.updateAgenceLogo(
+        this.agenceRequest.value.id,
+        formData
+      ).subscribe((response) => {
+        console.log('Agence logo updated successfully:', response);
+        this.all();
+        this.toastr.success("Agence logo updated successfully.")
+      },
+      (error) => {
+        console.error('Error while updated agence:', error);
+        this.toastr.error("Something went wrong please try again.")
+      });
     }
-
-    this.agenceService.updateAgenceLogo(
-      this.agenceRequest.value.id,
-      formData
-    ).subscribe((response) => {
-      console.log('Agence logo updated successfully:', response);
-      this.all();
-      this.toastr.success("Agence logo updated successfully.")
-    },
-    (error) => {
-      console.error('Error while updated agence:', error);
-      this.toastr.error("Something went wrong please try again.")
-    });
   }
 
   onDelete()
@@ -141,7 +150,6 @@ export class AgenceListComponent implements OnInit {
       console.log('Agence deleted successfully:', response);
       this.all();
       this.toastr.success("Agence deleted successfully.");
-      this.isModalVisible = false;
 
     },
     (error) => {
