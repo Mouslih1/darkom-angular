@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { UserPasswordDto } from 'src/app/model/user/user-password-dto';
+import { UserRequest } from 'src/app/model/user/user-request';
 import { UserResponse } from 'src/app/model/user/user-response';
 
 @Injectable({
@@ -20,5 +22,15 @@ export class UserService {
   updatePhotoProfilLogo(id: number, userPhoto: FormData) :  Observable<Object>
   {
     return this.httpClient.put(this.baseURL + '/photo', userPhoto);
+  }
+
+  updateUserInfo(id: number, user: UserRequest) :  Observable<Object>
+  {
+    return this.httpClient.put(this.baseURL + '/update/logged' , user);
+  }
+
+  updateUserPassword(id: number, user: UserPasswordDto) :  Observable<Object>
+  {
+    return this.httpClient.put(this.baseURL + '/update-password' , user);
   }
 }

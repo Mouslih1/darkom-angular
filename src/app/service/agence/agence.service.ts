@@ -37,7 +37,6 @@ export class AgenceService {
 
   updateAgenceInfo(id: number, agence: AgenceRequest) :  Observable<Object>
   {
-
     return this.httpClient.put(this.baseURL + '/' + id, agence);
   }
 

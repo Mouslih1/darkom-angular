@@ -49,15 +49,19 @@
             <div class="card-body">
               <div class="p-5">
                 <div class="author-profile">
-                  <form class="profile-form">
+                  <form [formGroup]="userDataPhoto" class="profile-form">
                     <div class="author-media mt-4">
                       <div *ngFor="let file of selectedImage">
                         <img [src]="getImageSrc(file)" alt="Selected Image">
                       </div>
                       <div class="upload-link" title="" data-bs-toggle="tooltip" data-placement="right"
                         data-original-title="update">
-                        <input type="file" class="update-flie" (change)="onFileChange($event)">
+                        <input [class.is-invalid]="userDataPhoto.get('multipartFiles')?.invalid && userDataPhoto.get('multipartFiles')?.touched"
+                         type="file" formControlName="multipartFiles" class="update-flie" (change)="onFileChange($event)">
                         <i class="fa fa-camera"></i>
+                        <div *ngIf="userDataPhoto.get('multipartFiles')?.invalid && userDataPhoto.get('multipartFiles')?.touched" class="text-danger">
+                          Photo profile is required.
+                        </div>
                       </div>
                     </div>
                     <div class="mx-4">
@@ -88,26 +92,67 @@
                             <div class="pt-3">
                               <div class="settings-form">
                                 <h4 class="text-primary">Account information</h4>
-                                <form>
+                                <form [formGroup]="userData">
                                   <div class="row">
                                     <div class="mb-3 col-md-6">
-                                      <label class="form-label">Email</label>
-                                      <input type="email" placeholder="Email" class="form-control" disabled>
+                                      <label class="form-label">Firstname</label>
+                                      <input [class.is-invalid]="userData.get('firstname')?.invalid && userData.get('firstname')?.touched"
+                                      type="text" formControlName="firstname" placeholder="Firstname" class="form-control">
+                                      <div *ngIf="userData.get('firstname')?.invalid && userData.get('firstname')?.touched" class="text-danger">
+                                        Firstname is required.
+                                      </div>
                                     </div>
                                     <div class="mb-3 col-md-6">
-                                      <label class="form-label">Address</label>
-                                      <input type="text" placeholder="1234 Main St" class="form-control">
+                                      <label class="form-label">Lastname</label>
+                                      <input [class.is-invalid]="userData.get('lastname')?.invalid && userData.get('lastname')?.touched"
+                                      type="text" formControlName="lastname" placeholder="Lastname" class="form-control">
+                                      <div *ngIf="userData.get('lastname')?.invalid && userData.get('lastname')?.touched" class="text-danger">
+                                        Lastname is required.
+                                      </div>
                                     </div>
                                     <div class="mb-3 col-md-6">
-                                      <label class="form-label">Address 2</label>
-                                      <input type="text" placeholder="Apartment, studio, or floor" class="form-control">
+                                      <label class="form-label">Username</label>
+                                      <input [class.is-invalid]="userData.get('username')?.invalid && userData.get('username')?.touched"
+                                       type="text" formControlName="username" placeholder="John" class="form-control">
+                                      <div *ngIf="userData.get('username')?.invalid && userData.get('username')?.touched" class="text-danger">
+                                        Username is required.
+                                      </div>
                                     </div>
-                                    <div class="mb-3 col-md-6">
-                                      <label class="form-label">City</label>
-                                      <input type="text" class="form-control">
+                                    <div class="col-md-6">
+                                      <label class="form-label">Birth</label>
+                                      <input [class.is-invalid]="userData.get('dateNaissance')?.invalid && userData.get('dateNaissance')?.touched"
+                                      class="form-control" type="date" formControlName="dateNaissance" placeholder="YYYY-MM-DD">
+                                      <div *ngIf="userData.get('dateNaissance')?.invalid && userData.get('dateNaissance')?.touched" class="text-danger">
+                                        Birth is required.
+                                      </div>
                                     </div>
                                   </div>
-                                  <button class="btn btn-primary" type="submit">Save changes</button>
+                                  <div class="row">
+                                    <div class="col-md-6">
+                                      <div class="mb-3">
+                                        <label class="form-label">Phone</label>
+                                        <input [class.is-invalid]="userData.get('telephone')?.invalid && userData.get('telephone')?.touched"
+                                         type="text" formControlName="telephone" placeholder="+123 456 456" class="form-control">
+                                        <div *ngIf="userData.get('telephone')?.invalid && userData.get('telephone')?.touched" class="text-danger">
+                                          Phone is required.
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                      <div class="mb-3">
+                                        <label class="form-label">Email address</label>
+                                        <input [class.is-invalid]="userData.get('email')?.invalid && userData.get('email')?.touched"
+                                         type="email" formControlName="email" placeholder="exemple@gmail.com" class="form-control">
+                                        <div *ngIf="userData.get('email')?.errors?.['required'] && userData.get('email')?.touched" class="text-danger">
+                                          Email is required.
+                                        </div>
+                                        <div *ngIf="userData.get('email')?.errors?.['email'] && userData.get('email')?.touched" class="text-danger">
+                                          Please enter a valid email address.
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <button type="submit" class="btn btn-primary">Save changes</button>
                                 </form>
                               </div>
                             </div>
@@ -118,23 +163,41 @@
                         <div class="pt-3">
                           <div class="settings-form">
                             <h4 class="text-primary">Change your password</h4>
-                            <form>
+                            <form [formGroup]="userPassword">
                               <div class="row">
                                 <div class="mb-3 col-md-6">
                                   <label class="form-label">Current Password</label>
-                                  <input type="password" placeholder="Current Password" class="form-control">
-                                </div>
-                              </div>
-                              <div class="row">
-                                <div class="mb-3 col-md-6">
-                                  <label class="form-label">Confirm New Password</label>
-                                  <input type="password" placeholder="Confirm New Password" class="form-control">
+                                  <input [class.is-invalid]="userPassword.get('currentPassword')?.invalid && userPassword.get('currentPassword')?.touched"
+                                   type="password" formControlName="currentPassword" placeholder="Current Password" class="form-control">
+                                   <div *ngIf="userPassword.get('currentPassword')?.invalid && userPassword.get('currentPassword')?.touched" class="text-danger">
+                                    Current password is required.
+                                  </div>
                                 </div>
                               </div>
                               <div class="row">
                                 <div class="mb-3 col-md-6">
                                   <label class="form-label">New Password</label>
-                                  <input type="password" placeholder="New Password" class="form-control">
+                                  <input [class.is-invalid]="userPassword.get('newPassword')?.invalid && userPassword.get('newPassword')?.touched"
+                                   type="password" placeholder="New Password" formControlName="newPassword" class="form-control">
+                                   <div *ngIf="userPassword.get('newPassword')?.errors?.['required'] && userPassword.get('newPassword')?.touched" class="text-danger">
+                                    New Password is required.
+                                  </div>
+                                  <div *ngIf="userPassword.get('newPassword')?.errors?.['minlength'] && userPassword.get('newPassword')?.touched" class="text-danger">
+                                    Password must be at least 6 characters long.
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="mb-3 col-md-6">
+                                  <label class="form-label">Confirm New Password</label>
+                                  <input [class.is-invalid]="userPassword.get('confirmPassword')?.invalid && userPassword.get('confirmPassword')?.touched"
+                                   type="password" placeholder="Confirm New Password" formControlName="confirmPassword" class="form-control">
+                                   <div *ngIf="userPassword.get('confirmPassword')?.errors?.['required'] && userPassword.get('confirmPassword')?.touched" class="text-danger">
+                                    Confirm New Password is required.
+                                  </div>
+                                  <div *ngIf="userPassword.get('confirmPassword')?.errors?.['mismatch'] && userPassword.get('confirmPassword')?.touched" class="text-danger">
+                                    Passwords do not match.
+                                  </div>
                                 </div>
                               </div>
                               <button class="btn btn-primary" type="submit">Save changes</button>
