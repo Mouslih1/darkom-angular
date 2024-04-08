@@ -1,0 +1,7 @@
+export enum Role
+{
+  SYNDEC = 'SYNDEC',
+  PROPRIETAIRE = 'PROPRIETAIRE',
+  AGENT = 'AGENT',
+  ADMIN = 'ADMIN'
+}

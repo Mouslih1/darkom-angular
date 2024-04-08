@@ -40,7 +40,7 @@ export class AgenceListComponent implements OnInit {
       address: ['', [Validators.required]],
       telephone: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
-      multipartFiles: this.formBuilder.array([], [Validators.required])
+      multipartFiles: [[], [Validators.required]]
     });
   }
 

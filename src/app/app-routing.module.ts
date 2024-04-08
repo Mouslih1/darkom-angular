@@ -4,21 +4,25 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AgenceListComponent } from './components/agence/agence-list.component';
 import { AuthentificationComponent } from './components/authentification/authentification.component';
 import { AppLayoutComponent } from './components/app-layout/app-layout.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
+import { ProfilComponent } from './components/profil/profil.component';
 
 const routes: Routes = [
-  {path: 'login', component: AuthentificationComponent},
+  { path: 'login', component: AuthentificationComponent},
+  { path: 'not-found', component: NotFoundComponent},
   { path: '', redirectTo: 'login', pathMatch: 'full'},
 
   {
     path: '',
     component: AppLayoutComponent,
     children: [
-      {path: 'dashboard', component: DashboardComponent},
-      {path: 'agence', component: AgenceListComponent},
+      { path: 'dashboard', component: DashboardComponent},
+      { path: 'agence', component: AgenceListComponent},
+      { path: 'profile', component: ProfilComponent}
     ]
   },
 
-  { path: '**', redirectTo: 'login', pathMatch: 'full'},
+  { path: '**', redirectTo: 'not-found', pathMatch: 'full'},
 ];
 
 @NgModule({

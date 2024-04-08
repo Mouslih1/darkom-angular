@@ -8,7 +8,7 @@ import { MatDialogModule } from "@angular/material/dialog";
 import { AgenceListComponent } from './components/agence/agence-list.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http'
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http'
 import { ToastrModule } from 'ngx-toastr';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
@@ -18,6 +18,9 @@ import { AppLayoutComponent } from './components/app-layout/app-layout.component
 import { FooterComponent } from './components/layouts/footer/footer.component';
 import { SidebarComponent } from './components/layouts/sidebar/sidebar.component';
 import { TopbarComponent } from './components/layouts/topbar/topbar.component';
+import { AuthentificationInterceptorService } from './service/authentification/authentification.interceptor.service';
+import { NotFoundComponent } from './components/not-found/not-found.component';
+import { ProfilComponent } from './components/profil/profil.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +32,8 @@ import { TopbarComponent } from './components/layouts/topbar/topbar.component';
     AgenceListComponent,
     AuthentificationComponent,
     AppLayoutComponent,
+    NotFoundComponent,
+    ProfilComponent,
   ],
   imports: [
     BrowserModule,
@@ -42,7 +47,11 @@ import { TopbarComponent } from './components/layouts/topbar/topbar.component';
     AngularFireDatabaseModule,
 
   ],
-  providers: [],
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthentificationInterceptorService,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

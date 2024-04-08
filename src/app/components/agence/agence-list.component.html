@@ -118,7 +118,7 @@
           <div class="mb-3 row">
             <label for="formFile" class="col-xl-3 col-md-4 col-form-label">Logo<span class="text-danger scale5 ms-2">*</span></label>
             <div class="col-xl-9 col-md-8">
-              <input #myInput [class.is-invalid]="agenceRequest.get('multipartFiles')?.invalid && agenceRequest.get('multipartFiles')?.touched"
+              <input [class.is-invalid]="agenceRequest.get('multipartFiles')?.invalid && agenceRequest.get('multipartFiles')?.touched"
               type="file" formControlName="multipartFiles" (change)="onFileChange($event)" class="form-control" id="formFile">
               <div *ngIf="agenceRequest.get('multipartFiles')?.invalid && agenceRequest.get('multipartFiles')?.touched" class="invalid-feedback">
                 Logo is required.
@@ -169,7 +169,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-        <button type="button" (click)="myInput.value = ''" class="btn btn-primary" (click)="onSave()">Save changes</button>
+        <button type="button" class="btn btn-primary" (click)="onSave()">Save changes</button>
       </div>
     </div>
   </div>
@@ -285,7 +285,7 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Update Agence</h5>
+        <h5 class="modal-title">Delete Agence</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">

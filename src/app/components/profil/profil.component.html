@@ -1,0 +1,157 @@
+<div class="content-body">
+  <div class="container-fluid">
+
+    <!-- Breadcrumb -->
+    <div class="row page-titles">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item active"><a href="javascript:void(0)">App</a></li>
+        <li class="breadcrumb-item"><a href="javascript:void(0)">Profile</a></li>
+      </ol>
+    </div>
+
+    <!-- Profile Header -->
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="profile card card-body px-3 pt-3 pb-0">
+          <div class="profile-head">
+            <div class="photo-content">
+              <div class="cover-photo rounded"></div>
+            </div>
+            <div class="profile-info">
+              <div class="profile-photo">
+                <img [src]="loggedInfo.medias[0].uri" class="img-fluid rounded-circle" alt="">
+              </div>
+              <div class="profile-details">
+                <div class="profile-name px-3 pt-2">
+                  <h4 class="text-primary mb-0">{{ loggedInfo.userDto.firstname + " " + loggedInfo.userDto.lastname }}
+                  </h4>
+                  <p>{{ loggedInfo.userDto.dateNaissance }}</p>
+                </div>
+                <div class="profile-email px-2 pt-2">
+                  <h4 class="text-muted mb-0">{{ loggedInfo.userDto.email }}</h4>
+                  <p>Email</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Profile and Information Section -->
+    <div class="row">
+      <div class="col-xl-3 col-lg-4">
+        <div class="clearfix">
+          <div class="card card-bx author-profile m-b30">
+            <div class="card-header">
+              <h6 class="title">Change your photo profil</h6>
+            </div>
+            <div class="card-body">
+              <div class="p-5">
+                <div class="author-profile">
+                  <form class="profile-form">
+                    <div class="author-media mt-4">
+                      <div *ngFor="let file of selectedImage">
+                        <img [src]="getImageSrc(file)" alt="Selected Image">
+                      </div>
+                      <div class="upload-link" title="" data-bs-toggle="tooltip" data-placement="right"
+                        data-original-title="update">
+                        <input type="file" class="update-flie" (change)="onFileChange($event)">
+                        <i class="fa fa-camera"></i>
+                      </div>
+                    </div>
+                    <div class="mx-4">
+                      <button class="btn btn-primary btn-block">Save changes</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-8">
+        <div class="row">
+          <div class="col-xl-12">
+            <div class="card">
+              <div class="card-body">
+                <div class="profile-tab">
+                  <div class="custom-tab-1">
+                    <ul class="nav nav-tabs">
+                      <li class="nav-item"><a href="#my-accouts" data-bs-toggle="tab" class="nav-link active">My Account</a></li>
+                      <li class="nav-item"><a href="#change-password" data-bs-toggle="tab" class="nav-link">Change password</a></li>
+                    </ul>
+                    <div class="tab-content">
+                      <div id="my-accouts" class="tab-pane fade active show">
+                        <div class="my-post-content pt-3">
+                          <div class="post-input">
+                            <div class="pt-3">
+                              <div class="settings-form">
+                                <h4 class="text-primary">Account information</h4>
+                                <form>
+                                  <div class="row">
+                                    <div class="mb-3 col-md-6">
+                                      <label class="form-label">Email</label>
+                                      <input type="email" placeholder="Email" class="form-control" disabled>
+                                    </div>
+                                    <div class="mb-3 col-md-6">
+                                      <label class="form-label">Address</label>
+                                      <input type="text" placeholder="1234 Main St" class="form-control">
+                                    </div>
+                                    <div class="mb-3 col-md-6">
+                                      <label class="form-label">Address 2</label>
+                                      <input type="text" placeholder="Apartment, studio, or floor" class="form-control">
+                                    </div>
+                                    <div class="mb-3 col-md-6">
+                                      <label class="form-label">City</label>
+                                      <input type="text" class="form-control">
+                                    </div>
+                                  </div>
+                                  <button class="btn btn-primary" type="submit">Save changes</button>
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div id="change-password" class="tab-pane fade">
+                        <div class="pt-3">
+                          <div class="settings-form">
+                            <h4 class="text-primary">Change your password</h4>
+                            <form>
+                              <div class="row">
+                                <div class="mb-3 col-md-6">
+                                  <label class="form-label">Current Password</label>
+                                  <input type="password" placeholder="Current Password" class="form-control">
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="mb-3 col-md-6">
+                                  <label class="form-label">Confirm New Password</label>
+                                  <input type="password" placeholder="Confirm New Password" class="form-control">
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="mb-3 col-md-6">
+                                  <label class="form-label">New Password</label>
+                                  <input type="password" placeholder="New Password" class="form-control">
+                                </div>
+                              </div>
+                              <button class="btn btn-primary" type="submit">Save changes</button>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</div>

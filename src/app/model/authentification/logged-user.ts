@@ -1,6 +1,7 @@
 export class LoggerUser
 {
-  constructor(public username: string,
+  constructor(public id: number,
+    public username: string,
     public roles: string[],
     private _token: string,
     public _expiration: Date)
