@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthentificationService } from 'src/app/service/authentification/authentification.service';
 import { Subscription } from 'rxjs';
 import { LoggerUser } from 'src/app/model/authentification/logged-user';
@@ -10,7 +10,7 @@ import { UserResponse } from 'src/app/model/user/user-response';
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css']
 })
-export class SidebarComponent implements OnInit {
+export class SidebarComponent implements OnInit, OnDestroy {
 
   userSub!:  Subscription;
   isAuthentication = false;
@@ -20,6 +20,7 @@ export class SidebarComponent implements OnInit {
   isSyndec = false;
   roles!: string[];
   loggedInfo!: UserResponse;
+  dataSubscription!: Subscription;
 
   constructor(
     private authService: AuthentificationService,
@@ -28,9 +29,15 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit(): void
   {
+    this.triggerGetNewPhotoProfil();
+    this.userPermision();
+    this.loggedUser();
+  }
+
+  userPermision()
+  {
     this.userSub = this.authService.user.subscribe(loggerUser => {
       this.isAuthentication = !!loggerUser;
-
       if(!this.isAuthentication)
       {
         this.initializeState();
@@ -42,8 +49,14 @@ export class SidebarComponent implements OnInit {
         }
       }
     });
+  }
 
-    this.loggedUser();
+  triggerGetNewPhotoProfil()
+  {
+    this.dataSubscription = this.userService.loggedUserInfo$.subscribe((data) => {
+      console.log('loggedUser info : ', data);
+      this.loggedInfo = data;
+    });
   }
 
   setRole(loggedUser:LoggerUser | null)
@@ -80,5 +93,12 @@ export class SidebarComponent implements OnInit {
   onLogout()
   {
     this.authService.logout();
+  }
+
+
+  ngOnDestroy(): void
+  {
+    this.dataSubscription.unsubscribe();
+    this.userSub.unsubscribe();
   }
 }

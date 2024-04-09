@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subject, tap } from 'rxjs';
 import { UserPasswordDto } from 'src/app/model/user/user-password-dto';
 import { UserRequest } from 'src/app/model/user/user-request';
 import { UserResponse } from 'src/app/model/user/user-response';
@@ -10,27 +10,73 @@ import { UserResponse } from 'src/app/model/user/user-response';
 })
 export class UserService {
 
+  private loggedUserInfoSource = new Subject<any>();
+  loggedUserInfo$ = this.loggedUserInfoSource.asObservable();
+
   private baseURL = "http://localhost:8222/api/v1/users";
 
   constructor(private httpClient: HttpClient) { }
 
-  loggedUser(): Observable<UserResponse>
+  loggedUser(): Observable<any>
   {
-    return this.httpClient.get<UserResponse>(this.baseURL + "/logged");
+    return this.httpClient.get<any>(this.baseURL + '/logged').pipe(
+      tap((data) => {
+        this.loggedUserInfoSource.next(data);
+      })
+    );
   }
 
-  updatePhotoProfilLogo(id: number, userPhoto: FormData) :  Observable<Object>
+  updatePhotoProfilLogo(userPhoto: FormData): Observable<Object>
   {
-    return this.httpClient.put(this.baseURL + '/photo', userPhoto);
+    return this.httpClient.put(this.baseURL + '/photo', userPhoto).pipe(
+      tap(() => {
+        this.loggedUser().subscribe();
+      })
+    );
   }
 
-  updateUserInfo(id: number, user: UserRequest) :  Observable<Object>
+  updateUserInfo(user: UserRequest) :  Observable<Object>
   {
-    return this.httpClient.put(this.baseURL + '/update/logged' , user);
+    return this.httpClient.put(this.baseURL + '/update/logged' , user).pipe(
+      tap(() => {
+        this.loggedUser().subscribe();
+      })
+    );
   }
 
-  updateUserPassword(id: number, user: UserPasswordDto) :  Observable<Object>
+  updateUserPassword(user: UserPasswordDto) :  Observable<Object>
   {
     return this.httpClient.put(this.baseURL + '/update-password' , user);
+  }
+
+  getUserbyId(id: number): Observable<UserResponse>
+  {
+    return this.httpClient.get<UserResponse>(this.baseURL + '/' + id);
+  }
+
+  saveUser(user: FormData): Observable<UserResponse>
+  {
+    console.log("save user service : ", user);
+    return this.httpClient.post<UserResponse>(this.baseURL + '/register', user);
+  }
+
+  all(pageNo: number, pageSize: number ): Observable<UserResponse[]>
+  {
+    let params = new HttpParams();
+    params = params.append('pageNo', pageNo.toString());
+    params = params.append('pageSize', pageSize.toString());
+
+
+    return this.httpClient.get<UserResponse[]>(this.baseURL + '/agence', { params: params });
+  }
+
+  updateUserInfoById(id: number, user: UserRequest) :  Observable<Object>
+  {
+    return this.httpClient.put(this.baseURL + '/' + id, user);
+  }
+
+  deleteUser(id: number) : Observable<Object>
+  {
+    return this.httpClient.delete(this.baseURL + '/' + id);
   }
 }

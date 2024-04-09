@@ -65,7 +65,7 @@
                       </div>
                     </div>
                     <div class="mx-4">
-                      <button class="btn btn-primary btn-block">Save changes</button>
+                      <button class="btn btn-primary btn-block" (click)="updateUserPhoto()">Save changes</button>
                     </div>
                   </form>
                 </div>
@@ -95,9 +95,9 @@
                                 <form [formGroup]="userData">
                                   <div class="row">
                                     <div class="mb-3 col-md-6">
-                                      <label class="form-label">Firstname</label>
+                                      <label class="form-label">{{ loggedInfo.userDto.firstname }} Firstname</label>
                                       <input [class.is-invalid]="userData.get('firstname')?.invalid && userData.get('firstname')?.touched"
-                                      type="text" formControlName="firstname" placeholder="Firstname" class="form-control">
+                                      type="text" formControlName="firstname" placeholder="Firstname" class="form-control" value="{{ loggedInfo.userDto.firstname }}">
                                       <div *ngIf="userData.get('firstname')?.invalid && userData.get('firstname')?.touched" class="text-danger">
                                         Firstname is required.
                                       </div>
@@ -121,7 +121,7 @@
                                     <div class="col-md-6">
                                       <label class="form-label">Birth</label>
                                       <input [class.is-invalid]="userData.get('dateNaissance')?.invalid && userData.get('dateNaissance')?.touched"
-                                      class="form-control" type="date" formControlName="dateNaissance" placeholder="YYYY-MM-DD">
+                                      class="form-control" type="date" value="{{ loggedInfo.userDto.dateNaissance }}" formControlName="dateNaissance" placeholder="YYYY-MM-DD">
                                       <div *ngIf="userData.get('dateNaissance')?.invalid && userData.get('dateNaissance')?.touched" class="text-danger">
                                         Birth is required.
                                       </div>
@@ -151,8 +151,18 @@
                                         </div>
                                       </div>
                                     </div>
+                                    <div class="col-md-12">
+                                      <div class="mb-3">
+                                        <label class="form-label">Address</label>
+                                        <input [class.is-invalid]="userData.get('address')?.invalid && userData.get('address')?.touched"
+                                         type="text" formControlName="address"  placeholder="Rue 102, New york" class="form-control">
+                                        <div *ngIf="userData.get('address')?.errors?.['required'] && userData.get('address')?.touched" class="text-danger">
+                                          Address is required.
+                                        </div>
+                                      </div>
+                                    </div>
                                   </div>
-                                  <button type="submit" class="btn btn-primary">Save changes</button>
+                                  <button type="submit" class="btn btn-primary" (click)="updateInfo()">Save changes</button>
                                 </form>
                               </div>
                             </div>
@@ -200,7 +210,7 @@
                                   </div>
                                 </div>
                               </div>
-                              <button class="btn btn-primary" type="submit">Save changes</button>
+                              <button class="btn btn-primary" type="submit" (click)="updatePassword()">Save changes</button>
                             </form>
                           </div>
                         </div>

@@ -21,6 +21,8 @@ import { TopbarComponent } from './components/layouts/topbar/topbar.component';
 import { AuthentificationInterceptorService } from './service/authentification/authentification.interceptor.service';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { ProfilComponent } from './components/profil/profil.component';
+import { UserComponent } from './components/user/user.component';
+import { UserAdminComponent } from './components/user-admin/user-admin.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +36,8 @@ import { ProfilComponent } from './components/profil/profil.component';
     AppLayoutComponent,
     NotFoundComponent,
     ProfilComponent,
+    UserComponent,
+    UserAdminComponent,
   ],
   imports: [
     BrowserModule,

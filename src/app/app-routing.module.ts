@@ -6,6 +6,7 @@ import { AuthentificationComponent } from './components/authentification/authent
 import { AppLayoutComponent } from './components/app-layout/app-layout.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { ProfilComponent } from './components/profil/profil.component';
+import { UserComponent } from './components/user/user.component';
 
 const routes: Routes = [
   { path: 'login', component: AuthentificationComponent},
@@ -17,8 +18,9 @@ const routes: Routes = [
     component: AppLayoutComponent,
     children: [
       { path: 'dashboard', component: DashboardComponent},
-      { path: 'agence', component: AgenceListComponent},
-      { path: 'profile', component: ProfilComponent}
+      { path: 'agences', component: AgenceListComponent},
+      { path: 'profile', component: ProfilComponent},
+      { path: 'users', component: UserComponent}
     ]
   },
 

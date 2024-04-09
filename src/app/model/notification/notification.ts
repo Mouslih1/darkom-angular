@@ -1,11 +1,13 @@
-export interface Notification
+export interface NotificationData
 {
-  key: string,
+  key: string;
   message: string;
   relatedId: number;
   receivedId: number;
   senderUsername: string;
+  userCreateNotification: number;
   agenceId: number;
-  createdAt: Date;
+  createdAt: any;
   seen: boolean;
+  profileImageUrl: any
 }

@@ -9,12 +9,12 @@ export interface UserDto {
   address: string;
   password: string;
   telephone: string;
+  dateNaissance: Date;
   role: Role;
   agentCreatedBy: string;
   agentUpdatedBy: string;
   agenceId: number;
   createdAt: Date;
   updatedAt: Date;
-  dateNaissance: Date;
 }
 
