@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, FormArray, Validators } from '@angular/forms';
+import { DomSanitizer } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
 import { AgenceRequest } from 'src/app/model/agence/agence-request';
 import { AgenceResponse } from 'src/app/model/agence/agence-response';
@@ -14,6 +15,8 @@ export class AgenceListComponent implements OnInit {
 
   agenceList: AgenceResponse[] = [];
   agenceRequest!: FormGroup;
+  agenceRequestUpdate!:FormGroup;
+  agenceRequestLogo !: FormGroup;
 
   agenceImages: any[] = [];
   pageNo = 0;
@@ -23,13 +26,16 @@ export class AgenceListComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private agenceService: AgenceService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private sanitizer: DomSanitizer
   ) { }
 
   ngOnInit(): void
   {
     this.initForm();
     this.all();
+    this.initFormUpdate();
+    this.initFormUpdateLogo();
   }
 
   initForm()
@@ -44,12 +50,36 @@ export class AgenceListComponent implements OnInit {
     });
   }
 
+  initFormUpdate()
+  {
+    this.agenceRequestUpdate = this.formBuilder.group({
+      id: [''],
+      name: ['', [Validators.required]],
+      address: ['', [Validators.required]],
+      telephone: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
+    });
+  }
+
+  initFormUpdateLogo()
+  {
+    this.agenceRequestLogo = this.formBuilder.group({
+      id: [''],
+      multipartFiles: [[], [Validators.required]]
+    });
+  }
   onFileChange(event: Event)
   {
     const target = event.target as HTMLInputElement;
     if (target.files && target.files.length > 0) {
       this.agenceImages = Array.from(target.files);
     }
+  }
+
+  getImageSrc(file: File): any
+  {
+    const url = URL.createObjectURL(file);
+    return this.sanitizer.bypassSecurityTrustUrl(url);
   }
 
   onSave()
@@ -82,7 +112,6 @@ export class AgenceListComponent implements OnInit {
         (error) => {
           console.error('Error while saving agence:', error);
           this.toastr.error("Something went wrong please try again.")
-
         }
       );
     }
@@ -90,14 +119,15 @@ export class AgenceListComponent implements OnInit {
 
   onUpdate()
   {
-    this.markFormGroupTouched(this.agenceRequest);
-
-    if(this.agenceRequest.valid)
+    this.markFormGroupTouched(this.agenceRequestUpdate);
+    console.log('hahahahahahahahahahhahhhhahaha ::::::');
+    console.log('valid valid valid no valid ::',this.agenceRequestUpdate.valid);
+    if(this.agenceRequestUpdate.valid)
     {
-      console.log(this.agenceRequest.value);
+      console.log('this.agenceRequestUpdate.value :::',this.agenceRequest.value);
       this.agenceService.updateAgenceInfo(
-        this.agenceRequest.value.id,
-        this.agenceRequest.value
+        this.agenceRequestUpdate.value.id,
+        this.agenceRequestUpdate.value
       ).subscribe((response) => {
         console.log('Agence updated successfully:', response);
         this.all();
@@ -112,14 +142,14 @@ export class AgenceListComponent implements OnInit {
 
   onUpdateLogo()
   {
-    this.markFormGroupTouched(this.agenceRequest);
+    this.markFormGroupTouched(this.agenceRequestLogo);
 
-    if(this.agenceRequest.valid)
+    if(this.agenceRequestLogo.valid)
     {
-      console.log(this.agenceRequest.value);
+      console.log(this.agenceRequestLogo.value);
       console.log(this.agenceImages);
 
-      console.log('this.agenceRequest.value.id : ', this.agenceRequest.value.id);
+      console.log('this.agenceRequestLogo.value.id : ', this.agenceRequestLogo.value.id);
       const formData = new FormData();
 
       for (let i = 0; i < this.agenceImages.length; i++) {
@@ -127,7 +157,7 @@ export class AgenceListComponent implements OnInit {
       }
 
       this.agenceService.updateAgenceLogo(
-        this.agenceRequest.value.id,
+        this.agenceRequestLogo.value.id,
         formData
       ).subscribe((response) => {
         console.log('Agence logo updated successfully:', response);
@@ -208,7 +238,7 @@ export class AgenceListComponent implements OnInit {
   {
     console.log(agence);
 
-    this.agenceRequest.patchValue({
+    this.agenceRequestUpdate.patchValue({
       id: agence.agenceDto.id,
       name: agence.agenceDto.name,
       email: agence.agenceDto.email,
@@ -222,10 +252,11 @@ export class AgenceListComponent implements OnInit {
 
   editAgenceLogo(agence: AgenceResponse)
   {
-    this.agenceRequest.patchValue({
+    this.agenceRequestLogo.patchValue({
       id: agence.agenceDto.id
     });
-    this.agenceImages = agence.medias.map(media => media.uri);
+
+    this.agenceImages = [];
   }
 
   deleteAgence(agence: AgenceResponse)

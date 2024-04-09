@@ -23,6 +23,7 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { ProfilComponent } from './components/profil/profil.component';
 import { UserComponent } from './components/user/user.component';
 import { UserAdminComponent } from './components/user-admin/user-admin.component';
+import { ImmeubleComponent } from './components/immeuble/immeuble.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { UserAdminComponent } from './components/user-admin/user-admin.component
     ProfilComponent,
     UserComponent,
     UserAdminComponent,
+    ImmeubleComponent,
   ],
   imports: [
     BrowserModule,

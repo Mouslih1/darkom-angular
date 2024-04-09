@@ -47,8 +47,8 @@
 
                 <td>
                   <div class="action-buttons d-flex justify-content-end">
-                    <a href="javascript:void(0);" class="btn btn-success  light mr-2" data-bs-toggle="modal"
-                      data-bs-target="#editAgenceLogo" title="Update photo profil of user">
+                    <a href="javascript:void(0);" class="btn btn-success  light mr-2" (click)="editPhotoProfil(user)" data-bs-toggle="modal"
+                      data-bs-target="#editUserPhoto" title="Update photo profil of user">
                       <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
                         height="24px" viewBox="0 0 24 24" version="1.1" class="svg-main-icon">
                         <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -110,6 +110,148 @@
 
 
 
+
+
+<!-- Edit new user -->
+<div class="modal fade" id="editUser" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Update User</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="userRequestUpdate">
+          <div class="mb-3 row">
+            <div class="col-md-3">
+              <img [src]="userPhoto" width="100" class="rounded-circle img-thumbnail" alt="photo profil">
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="name" class="col-xl-3 col-md-4 col-form-label">
+              Username<span class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+              <input
+                [class.is-invalid]="userRequestUpdate.get('username')?.invalid && userRequestUpdate.get('username')?.touched"
+                formControlName="username" type="text" class="form-control" placeholder="Name"
+                aria-label="name" />
+              <div *ngIf="userRequestUpdate.get('username')?.invalid && userRequestUpdate.get('username')?.touched"
+                class="invalid-feedback">
+                Username is required.
+              </div>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="address" class="col-xl-3 col-md-4 col-form-label">Firstname<span
+                class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+              <input
+                [class.is-invalid]="userRequestUpdate.get('firstname')?.invalid && userRequestUpdate.get('firstname')?.touched"
+                formControlName="firstname" type="text" class="form-control"  placeholder="fistname"
+                aria-label="address" />
+              <div *ngIf="userRequestUpdate.get('firstname')?.invalid && userRequestUpdate.get('firstname')?.touched"
+                class="invalid-feedback">
+                Firstname is required.
+              </div>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="address" class="col-xl-3 col-md-4 col-form-label">Lastname<span
+                class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+              <input
+                [class.is-invalid]="userRequestUpdate.get('lastname')?.invalid && userRequestUpdate.get('lastname')?.touched"
+                formControlName="lastname" type="text" class="form-control" placeholder="Address"
+                aria-label="address" />
+              <div *ngIf="userRequestUpdate.get('lastname')?.invalid && userRequestUpdate.get('lastname')?.touched"
+                class="invalid-feedback">
+                Address is required.
+              </div>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="email" class="col-xl-3 col-md-4 col-form-label">Email Address<span
+                class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+              <input
+                [class.is-invalid]="userRequestUpdate.get('email')?.invalid && userRequestUpdate.get('email')?.touched"
+                formControlName="email" type="email" class="form-control" aria-label="email"
+                placeholder="Email address">
+              <div *ngIf="userRequestUpdate.get('email')?.invalid && userRequestUpdate.get('email')?.touched"
+                class="invalid-feedback">
+                <div *ngIf="userRequestUpdate.get('email')?.errors?.['required']">Email is required.</div>
+                <div *ngIf="userRequestUpdate.get('email')?.errors?.['email']">Please enter a valid email address.</div>
+              </div>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="role" class="col-xl-3 col-md-4 col-form-label">Role<span
+                class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+              <select [class.is-invalid]="userRequestUpdate.get('role')?.invalid && userRequestUpdate.get('role')?.touched"
+                formControlName="role" class="default-select form-control wide">
+                <option value="AGENT">Agent</option>
+                <option value="PROPREITAIRE">Propriétaire</option>
+                <option value="SYNDEC">Syndic</option>
+              </select>
+              <div *ngIf="userRequestUpdate.get('role')?.invalid && userRequestUpdate.get('role')?.touched"
+              class="invalid-feedback">
+              Role is required.
+            </div>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="phone" class="col-xl-3 col-md-4 col-form-label">Phone number<span
+                class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+              <input
+                [class.is-invalid]="userRequestUpdate.get('telephone')?.invalid && userRequestUpdate.get('telephone')?.touched"
+                formControlName="telephone" type="tel" class="form-control" aria-label="phone"
+                placeholder="Phone number">
+              <div *ngIf="userRequestUpdate.get('telephone')?.invalid && userRequestUpdate.get('telephone')?.touched"
+                class="invalid-feedback">
+                Phone is required.
+              </div>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="phone" class="col-xl-3 col-md-4 col-form-label">Address<span
+                class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+              <input
+                [class.is-invalid]="userRequestUpdate.get('address')?.invalid && userRequestUpdate.get('address')?.touched"
+                formControlName="address" type="tel" class="form-control" aria-label="phone"
+                placeholder="address">
+              <div *ngIf="userRequestUpdate.get('address')?.invalid && userRequestUpdate.get('address')?.touched"
+                class="invalid-feedback">
+                Address is required.
+              </div>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="phone" class="col-xl-3 col-md-4 col-form-label">Birth<span
+                class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+              <input
+                [class.is-invalid]="userRequestUpdate.get('dateNaissance')?.invalid && userRequestUpdate.get('dateNaissance')?.touched"
+                class="form-control" type="date" formControlName="dateNaissance" placeholder="YYYY-MM-DD">
+              <div
+                *ngIf="userRequestUpdate.get('dateNaissance')?.invalid && userRequestUpdate.get('dateNaissance')?.touched"
+                class="text-danger">
+                Birth is required.
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="onUpdateUser()">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Add new user -->
 <div class="modal fade" id="addUser" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-lg">
@@ -131,8 +273,7 @@
             <div class="col-xl-9 col-md-8">
               <input
                 [class.is-invalid]="userRequest.get('multipartFiles')?.invalid && userRequest.get('multipartFiles')?.touched"
-                type="file" formControlName="multipartFiles" (change)="onFileChange($event)" class="form-control"
-                id="formFile">
+                type="file" formControlName="multipartFiles" (change)="onFileChange($event)" class="form-control">
               <div *ngIf="userRequest.get('multipartFiles')?.invalid && userRequest.get('multipartFiles')?.touched"
                 class="invalid-feedback">
                 Photo profil is required.
@@ -144,7 +285,7 @@
               Username<span class="text-danger scale5 ms-2">*</span></label>
             <div class="col-xl-9 col-md-8">
               <input [class.is-invalid]="userRequest.get('username')?.invalid && userRequest.get('username')?.touched"
-                formControlName="username" type="text" class="form-control" id="name" placeholder="Name"
+                formControlName="username" type="text" class="form-control" placeholder="Name"
                 aria-label="name" />
               <div *ngIf="userRequest.get('username')?.invalid && userRequest.get('username')?.touched"
                 class="invalid-feedback">
@@ -157,7 +298,7 @@
                 class="text-danger scale5 ms-2">*</span></label>
             <div class="col-xl-9 col-md-8">
               <input [class.is-invalid]="userRequest.get('firstname')?.invalid && userRequest.get('firstname')?.touched"
-                formControlName="firstname" type="text" class="form-control" id="address" placeholder="firstname"
+                formControlName="firstname" type="text" class="form-control" placeholder="firstname"
                 aria-label="address" />
               <div *ngIf="userRequest.get('firstname')?.invalid && userRequest.get('firstname')?.touched"
                 class="invalid-feedback">
@@ -170,7 +311,7 @@
                 class="text-danger scale5 ms-2">*</span></label>
             <div class="col-xl-9 col-md-8">
               <input [class.is-invalid]="userRequest.get('lastname')?.invalid && userRequest.get('lastname')?.touched"
-                formControlName="lastname" type="text" class="form-control" id="address" placeholder="lastname"
+                formControlName="lastname" type="text" class="form-control" placeholder="lastname"
                 aria-label="address" />
               <div *ngIf="userRequest.get('lastname')?.invalid && userRequest.get('lastname')?.touched"
                 class="invalid-feedback">
@@ -183,7 +324,7 @@
                 class="text-danger scale5 ms-2">*</span></label>
             <div class="col-xl-9 col-md-8">
               <select [class.is-invalid]="userRequest.get('role')?.invalid && userRequest.get('role')?.touched"
-                formControlName="role" class="default-select form-control wide" id="role">
+                formControlName="role" class="default-select form-control wide">
                 <option value="AGENT">Agent</option>
                 <option value="PROPRIETAIRE">Propriétaire</option>
                 <option value="SYNDEC">Syndic</option>
@@ -199,7 +340,7 @@
                 class="text-danger scale5 ms-2">*</span></label>
             <div class="col-xl-9 col-md-8">
               <input [class.is-invalid]="userRequest.get('email')?.invalid && userRequest.get('email')?.touched"
-                formControlName="email" type="email" class="form-control" id="email" aria-label="email"
+                formControlName="email" type="email" class="form-control" aria-label="email"
                 placeholder="Email">
               <div *ngIf="userRequest.get('email')?.invalid && userRequest.get('email')?.touched"
                 class="invalid-feedback">
@@ -213,7 +354,7 @@
                 class="text-danger scale5 ms-2">*</span></label>
             <div class="col-xl-9 col-md-8">
               <input [class.is-invalid]="userRequest.get('telephone')?.invalid && userRequest.get('telephone')?.touched"
-                formControlName="telephone" type="tel" class="form-control" id="phone" aria-label="phone"
+                formControlName="telephone" type="tel" class="form-control" aria-label="phone"
                 placeholder="Phone number">
               <div *ngIf="userRequest.get('telephone')?.invalid && userRequest.get('telephone')?.touched"
                 class="invalid-feedback">
@@ -226,7 +367,7 @@
                 class="text-danger scale5 ms-2">*</span></label>
             <div class="col-xl-9 col-md-8">
               <input [class.is-invalid]="userRequest.get('address')?.invalid && userRequest.get('address')?.touched"
-                formControlName="address" type="tel" class="form-control" id="phone" aria-label="phone"
+                formControlName="address" type="tel" class="form-control" aria-label="phone"
                 placeholder="Rue 123, New york">
               <div *ngIf="userRequest.get('address')?.invalid && userRequest.get('address')?.touched"
                 class="invalid-feedback">
@@ -294,188 +435,51 @@
 </div>
 
 
-<!-- Edit new user -->
-<div class="modal fade" id="editUser" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="modal fade" id="editUserPhoto" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Update User</h5>
+        <h5 class="modal-title">Update User photo profil</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
-        <form [formGroup]="userRequestUpdate">
-          <div class="mb-3 row">
+        <form [formGroup]="userRequestPhoto">
+          <!-- <div class="mb-3 row">
             <div class="col-md-3">
-              <img [src]="userPhoto" width="100" class="rounded-circle img-thumbnail" alt="photo profil">
+              <img [src]="userPhoto" class="img-fluid" alt="photo profil">
             </div>
-          </div>
-          <div class="mb-3 row">
-            <label for="name" class="col-xl-3 col-md-4 col-form-label">
-              Username<span class="text-danger scale5 ms-2">*</span></label>
-            <div class="col-xl-9 col-md-8">
-              <input
-                [class.is-invalid]="userRequestUpdate.get('username')?.invalid && userRequestUpdate.get('username')?.touched"
-                formControlName="username" type="text" class="form-control" id="name" placeholder="Name"
-                aria-label="name" />
-              <div *ngIf="userRequestUpdate.get('username')?.invalid && userRequestUpdate.get('username')?.touched"
-                class="invalid-feedback">
-                Username is required.
-              </div>
-            </div>
-          </div>
-          <div class="mb-3 row">
-            <label for="address" class="col-xl-3 col-md-4 col-form-label">Firstname<span
-                class="text-danger scale5 ms-2">*</span></label>
-            <div class="col-xl-9 col-md-8">
-              <input
-                [class.is-invalid]="userRequestUpdate.get('firstname')?.invalid && userRequestUpdate.get('firstname')?.touched"
-                formControlName="firstname" type="text" class="form-control" id="address" placeholder="fistname"
-                aria-label="address" />
-              <div *ngIf="userRequestUpdate.get('firstname')?.invalid && userRequestUpdate.get('firstname')?.touched"
-                class="invalid-feedback">
-                Firstname is required.
-              </div>
-            </div>
-          </div>
-          <div class="mb-3 row">
-            <label for="address" class="col-xl-3 col-md-4 col-form-label">Lastname<span
-                class="text-danger scale5 ms-2">*</span></label>
-            <div class="col-xl-9 col-md-8">
-              <input
-                [class.is-invalid]="userRequestUpdate.get('lastname')?.invalid && userRequestUpdate.get('lastname')?.touched"
-                formControlName="lastname" type="text" class="form-control" id="address" placeholder="Address"
-                aria-label="address" />
-              <div *ngIf="userRequestUpdate.get('lastname')?.invalid && userRequestUpdate.get('lastname')?.touched"
-                class="invalid-feedback">
-                Address is required.
-              </div>
-            </div>
-          </div>
-          <div class="mb-3 row">
-            <label for="email" class="col-xl-3 col-md-4 col-form-label">Email Address<span
-                class="text-danger scale5 ms-2">*</span></label>
-            <div class="col-xl-9 col-md-8">
-              <input
-                [class.is-invalid]="userRequestUpdate.get('email')?.invalid && userRequestUpdate.get('email')?.touched"
-                formControlName="email" type="email" class="form-control" id="email" aria-label="email"
-                placeholder="Email address">
-              <div *ngIf="userRequestUpdate.get('email')?.invalid && userRequestUpdate.get('email')?.touched"
-                class="invalid-feedback">
-                <div *ngIf="userRequestUpdate.get('email')?.errors?.['required']">Email is required.</div>
-                <div *ngIf="userRequestUpdate.get('email')?.errors?.['email']">Please enter a valid email address.</div>
-              </div>
-            </div>
-          </div>
-          <div class="mb-3 row">
-            <label for="role" class="col-xl-3 col-md-4 col-form-label">Role<span
-                class="text-danger scale5 ms-2">*</span></label>
-            <div class="col-xl-9 col-md-8">
-              <select [class.is-invalid]="userRequestUpdate.get('role')?.invalid && userRequestUpdate.get('role')?.touched"
-                formControlName="role" class="default-select form-control wide" id="role">
-                <option value="AGENT">Agent</option>
-                <option value="PROPREITAIRE">Propriétaire</option>
-                <option value="SYNDEC">Syndic</option>
-              </select>
-              <div *ngIf="userRequestUpdate.get('role')?.invalid && userRequestUpdate.get('role')?.touched"
-              class="invalid-feedback">
-              Role is required.
-            </div>
-            </div>
-          </div>
-          <div class="mb-3 row">
-            <label for="phone" class="col-xl-3 col-md-4 col-form-label">Phone number<span
-                class="text-danger scale5 ms-2">*</span></label>
-            <div class="col-xl-9 col-md-8">
-              <input
-                [class.is-invalid]="userRequestUpdate.get('telephone')?.invalid && userRequestUpdate.get('telephone')?.touched"
-                formControlName="telephone" type="tel" class="form-control" id="phone" aria-label="phone"
-                placeholder="Phone number">
-              <div *ngIf="userRequestUpdate.get('telephone')?.invalid && userRequestUpdate.get('telephone')?.touched"
-                class="invalid-feedback">
-                Phone is required.
-              </div>
-            </div>
-          </div>
-          <div class="mb-3 row">
-            <label for="phone" class="col-xl-3 col-md-4 col-form-label">Address<span
-                class="text-danger scale5 ms-2">*</span></label>
-            <div class="col-xl-9 col-md-8">
-              <input
-                [class.is-invalid]="userRequestUpdate.get('address')?.invalid && userRequestUpdate.get('address')?.touched"
-                formControlName="address" type="tel" class="form-control" id="phone" aria-label="phone"
-                placeholder="address">
-              <div *ngIf="userRequestUpdate.get('address')?.invalid && userRequestUpdate.get('address')?.touched"
-                class="invalid-feedback">
-                Address is required.
-              </div>
-            </div>
-          </div>
-          <div class="mb-3 row">
-            <label for="phone" class="col-xl-3 col-md-4 col-form-label">Birth<span
-                class="text-danger scale5 ms-2">*</span></label>
-            <div class="col-xl-9 col-md-8">
-              <input
-                [class.is-invalid]="userRequestUpdate.get('dateNaissance')?.invalid && userRequestUpdate.get('dateNaissance')?.touched"
-                class="form-control" type="date" formControlName="dateNaissance" placeholder="YYYY-MM-DD">
-              <div
-                *ngIf="userRequestUpdate.get('dateNaissance')?.invalid && userRequestUpdate.get('dateNaissance')?.touched"
-                class="text-danger">
-                Birth is required.
-              </div>
-            </div>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" (click)="onUpdateUser()" data-bs-dismiss="modal">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
+          </div> -->
 
-
-
-<!-- Edit new agence logo -->
-<!-- <div class="modal fade" id="editAgenceLogo" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Update Agence</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body">
-        <form [formGroup]="agenceRequest">
-          <div *ngIf="agenceImages.length > 0" class="mb-3 row">
-            <div *ngFor="let imageUrl of agenceImages" class="col-md-3">
-              {{ imageUrl }}
-              <img [src]="imageUrl" class="img-fluid" alt="agence logo">
+          <div class="mb-3 row">
+            <div *ngFor="let file of userPhoto">
+              <img width="100" class="rounded-circle img-thumbnail" [src]="getImageSrc(file)" alt="Selected Image">
             </div>
           </div>
           <div class="mb-3 row">
-            <label for="formFile" class="col-xl-3 col-md-4 col-form-label">Logo<span
+            <label for="formFile" class="col-xl-3 col-md-4 col-form-label">Photo profil<span
                 class="text-danger scale5 ms-2">*</span></label>
             <div class="col-xl-9 col-md-8">
               <input #myInput
-                [class.is-invalid]="agenceRequest.get('multipartFiles')?.invalid && agenceRequest.get('multipartFiles')?.touched"
+                [class.is-invalid]="userRequestPhoto.get('multipartFiles')?.invalid && userRequestPhoto.get('multipartFiles')?.touched"
                 type="file" formControlName="multipartFiles" (change)="onFileChange($event)" class="form-control"
                 id="formFile">
-              <div *ngIf="agenceRequest.get('multipartFiles')?.invalid && agenceRequest.get('multipartFiles')?.touched"
+              <div *ngIf="userRequestPhoto.get('multipartFiles')?.invalid && userRequestPhoto.get('multipartFiles')?.touched"
                 class="invalid-feedback">
-                Logo is required.
+                Photo profile is required.
               </div>
             </div>
           </div>
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-        <button type="button" (click)="myInput.value = ''" class="btn btn-primary" (click)="onUpdateLogo()">Save
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="myInput.value = ''">Close</button>
+        <button type="button" (click)="myInput.value = ''" (click)="updatePhotoProfilById()" class="btn btn-primary" >Save
           changes</button>
       </div>
     </div>
   </div>
-</div> -->
+</div>
 
 <!--Delete model-->
 <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-hidden="true">

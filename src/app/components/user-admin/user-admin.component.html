@@ -1,1 +1,535 @@
-<p>user-admin works!</p>
+<div class="content-body">
+  <!-- row -->
+  <div class="container-fluid">
+    <div class="d-flex align-items-center mb-4 flex-wrap">
+      <h3 class="me-auto">User List</h3>
+      <div>
+        <a class="btn btn-primary me-3 btn-sm" href="javascript:void(0);" (click)="initForm()" data-bs-toggle="modal"
+          data-bs-target="#addUserAdmin">
+          <i class="fas fa-plus me-2"></i>Add New User
+        </a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="table-responsive">
+          <table class="table display mb-4 dataTablesCard job-table table-responsive-xl card-table" id="example5">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Photo profil</th>
+                <th>Username</th>
+                <th>Firstname</th>
+                <th>Lastname</th>
+                <th>Email</th>
+                <th>Agence</th>
+                <th>Phone</th>
+                <th>Address</th>
+                <th>Birth</th>
+                <th>Created At</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let user of userList">
+                <td>{{ user.userDto.id }}</td>
+                <td>
+                  <img *ngIf="user.medias.length > 0" [src]="user.medias[0].uri" alt="Media" style="max-width: 100px;">
+                  <span class="text-danger" *ngIf="user.medias.length === 0">Aucun photo profil</span>
+                </td>
+                <td class="wspace-no">{{ user.userDto.username }}</td>
+                <td>{{ user.userDto.firstname }}</td>
+                <td>{{ user.userDto.lastname }}</td>
+                <td>{{ user.userDto.email }}</td>
+                <td>{{ user.agence.agenceDto.name }}</td>
+                <td>{{ user.userDto.telephone }}</td>
+                <td>{{ user.userDto.address }}</td>
+                <td>{{ user.userDto.dateNaissance }}</td>
+                <td>{{ user.userDto.createdAt }}</td>
+
+                <td>
+                  <div class="action-buttons d-flex justify-content-end">
+                    <a href="javascript:void(0);" class="btn btn-success  light mr-2" (click)="editPhotoProfilAdmin(user)" data-bs-toggle="modal"
+                      data-bs-target="#editUserPhotoAdmin" title="Update photo profil of user">
+                      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
+                        height="24px" viewBox="0 0 24 24" version="1.1" class="svg-main-icon">
+                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                          <rect x="0" y="0" width="24" height="24"></rect>
+                          <path
+                            d="M8,17.9148182 L8,5.96685884 C8,5.56391781 8.16211443,5.17792052 8.44982609,4.89581508 L10.965708,2.42895648 C11.5426798,1.86322723 12.4640974,1.85620921 13.0496196,2.41308426 L15.5337377,4.77566479 C15.8314604,5.0588212 16,5.45170806 16,5.86258077 L16,17.9148182 C16,18.7432453 15.3284271,19.4148182 14.5,19.4148182 L9.5,19.4148182 C8.67157288,19.4148182 8,18.7432453 8,17.9148182 Z"
+                            fill="#000000" fill-rule="nonzero"
+                            transform="translate(12.000000, 10.707409) rotate(-135.000000) translate(-12.000000, -10.707409) ">
+                          </path>
+                          <rect fill="#000000" opacity="0.3" x="5" y="20" width="15" height="2" rx="1"></rect>
+                        </g>
+                      </svg>
+                    </a>
+                    <a href="javascript:void(0);" data-bs-toggle="modal" (click)="editUserAdmin(user)"
+                      data-bs-target="#editUserAdmin" title="Update infomation of user" class="btn btn-secondary light mr-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
+                        height="24px" viewBox="0 0 24 24" version="1.1" class="svg-main-icon">
+                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                          <rect x="0" y="0" width="24" height="24"></rect>
+                          <path
+                            d="M8,17.9148182 L8,5.96685884 C8,5.56391781 8.16211443,5.17792052 8.44982609,4.89581508 L10.965708,2.42895648 C11.5426798,1.86322723 12.4640974,1.85620921 13.0496196,2.41308426 L15.5337377,4.77566479 C15.8314604,5.0588212 16,5.45170806 16,5.86258077 L16,17.9148182 C16,18.7432453 15.3284271,19.4148182 14.5,19.4148182 L9.5,19.4148182 C8.67157288,19.4148182 8,18.7432453 8,17.9148182 Z"
+                            fill="#000000" fill-rule="nonzero"
+                            transform="translate(12.000000, 10.707409) rotate(-135.000000) translate(-12.000000, -10.707409) ">
+                          </path>
+                          <rect fill="#000000" opacity="0.3" x="5" y="20" width="15" height="2" rx="1"></rect>
+                        </g>
+                      </svg>
+                    </a>
+                    <a href="javascript:void(0);" class="btn btn-danger light" (click)="deleteUserAdmin(user)"
+                      data-bs-toggle="modal" data-bs-target="#confirmDeleteModalAdmin" title="Delete for user">
+                      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
+                        height="24px" viewBox="0 0 24 24" version="1.1" class="svg-main-icon">
+                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                          <rect x="0" y="0" width="24" height="24"></rect>
+                          <path
+                            d="M6,8 L6,20.5 C6,21.3284271 6.67157288,22 7.5,22 L16.5,22 C17.3284271,22 18,21.3284271 18,20.5 L18,8 L6,8 Z"
+                            fill="#000000" fill-rule="nonzero"></path>
+                          <path
+                            d="M14,4.5 L14,4 C14,3.44771525 13.5522847,3 13,3 L11,3 C10.4477153,3 10,3.44771525 10,4 L10,4.5 L5.5,4.5 C5.22385763,4.5 5,4.72385763 5,5 L5,5.5 C5,5.77614237 5.22385763,6 5.5,6 L18.5,6 C18.7761424,6 19,5.77614237 19,5.5 L19,5 C19,4.72385763 18.7761424,4.5 18.5,4.5 L14,4.5 Z"
+                            fill="#000000" opacity="0.3"></path>
+                        </g>
+                      </svg>
+                    </a>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="d-flex justify-content-between">
+            <button class="btn btn-primary" (click)="previousPage()">Previous</button>
+            <button class="btn btn-primary" (click)="nextPage()">Next</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+<!-- Edit new user -->
+<div class="modal fade" id="editUserAdmin" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Update User</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="userRequestUpdateAdmin">
+          <div class="mb-3 row">
+            <div class="col-md-3">
+              <img [src]="userPhotoAdmin" width="100" class="rounded-circle img-thumbnail" alt="photo profil">
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="name" class="col-xl-3 col-md-4 col-form-label">
+              Username<span class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+              <input
+                [class.is-invalid]="userRequestUpdateAdmin.get('username')?.invalid && userRequestUpdateAdmin.get('username')?.touched"
+                formControlName="username" type="text" class="form-control" placeholder="Name"
+                aria-label="name" />
+              <div *ngIf="userRequestUpdateAdmin.get('username')?.invalid && userRequestUpdateAdmin.get('username')?.touched"
+                class="invalid-feedback">
+                Username is required.
+              </div>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="address" class="col-xl-3 col-md-4 col-form-label">Firstname<span
+                class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+              <input
+                [class.is-invalid]="userRequestUpdateAdmin.get('firstname')?.invalid && userRequestUpdateAdmin.get('firstname')?.touched"
+                formControlName="firstname" type="text" class="form-control"  placeholder="fistname"
+                aria-label="address" />
+              <div *ngIf="userRequestUpdateAdmin.get('firstname')?.invalid && userRequestUpdateAdmin.get('firstname')?.touched"
+                class="invalid-feedback">
+                Firstname is required.
+              </div>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="address" class="col-xl-3 col-md-4 col-form-label">Lastname<span
+                class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+              <input
+                [class.is-invalid]="userRequestUpdateAdmin.get('lastname')?.invalid && userRequestUpdateAdmin.get('lastname')?.touched"
+                formControlName="lastname" type="text" class="form-control" placeholder="Address"
+                aria-label="address" />
+              <div *ngIf="userRequestUpdateAdmin.get('lastname')?.invalid && userRequestUpdateAdmin.get('lastname')?.touched"
+                class="invalid-feedback">
+                Address is required.
+              </div>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="email" class="col-xl-3 col-md-4 col-form-label">Email Address<span
+                class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+              <input
+                [class.is-invalid]="userRequestUpdateAdmin.get('email')?.invalid && userRequestUpdateAdmin.get('email')?.touched"
+                formControlName="email" type="email" class="form-control" aria-label="email"
+                placeholder="Email address">
+              <div *ngIf="userRequestUpdateAdmin.get('email')?.invalid && userRequestUpdateAdmin.get('email')?.touched"
+                class="invalid-feedback">
+                <div *ngIf="userRequestUpdateAdmin.get('email')?.errors?.['required']">Email is required.</div>
+                <div *ngIf="userRequestUpdateAdmin.get('email')?.errors?.['email']">Please enter a valid email address.</div>
+              </div>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="role" class="col-xl-3 col-md-4 col-form-label">Role<span
+                class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+              <select [class.is-invalid]="userRequestUpdateAdmin.get('role')?.invalid && userRequestUpdateAdmin.get('role')?.touched"
+                formControlName="role" class="default-select form-control wide">
+                <option value="AGENT">Agent</option>
+                <option value="PROPREITAIRE">Propriétaire</option>
+                <option value="SYNDEC">Syndic</option>
+              </select>
+              <div *ngIf="userRequestUpdateAdmin.get('role')?.invalid && userRequestUpdateAdmin.get('role')?.touched"
+              class="invalid-feedback">
+              Role is required.
+            </div>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="role" class="col-xl-3 col-md-4 col-form-label">Agence<span
+                class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+              <select [class.is-invalid]="userRequestUpdateAdmin.get('agenceId')?.invalid && userRequestUpdateAdmin.get('agenceId')?.touched"
+                formControlName="agenceId" class="default-select form-control wide">
+                <option *ngFor="let agency of agences" [value]="agency.agenceDto.id">{{ agency.agenceDto.name }}</option>
+              </select>
+              <div *ngIf="userRequestUpdateAdmin.get('agenceId')?.invalid && userRequestUpdateAdmin.get('agenceId')?.touched"
+              class="invalid-feedback">
+              Agence is required.
+            </div>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="phone" class="col-xl-3 col-md-4 col-form-label">Phone number<span
+                class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+              <input
+                [class.is-invalid]="userRequestUpdateAdmin.get('telephone')?.invalid && userRequestUpdateAdmin.get('telephone')?.touched"
+                formControlName="telephone" type="tel" class="form-control" aria-label="phone"
+                placeholder="Phone number">
+              <div *ngIf="userRequestUpdateAdmin.get('telephone')?.invalid && userRequestUpdateAdmin.get('telephone')?.touched"
+                class="invalid-feedback">
+                Phone is required.
+              </div>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="phone" class="col-xl-3 col-md-4 col-form-label">Address<span
+                class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+              <input
+                [class.is-invalid]="userRequestUpdateAdmin.get('address')?.invalid && userRequestUpdateAdmin.get('address')?.touched"
+                formControlName="address" type="tel" class="form-control" aria-label="phone"
+                placeholder="address">
+              <div *ngIf="userRequestUpdateAdmin.get('address')?.invalid && userRequestUpdateAdmin.get('address')?.touched"
+                class="invalid-feedback">
+                Address is required.
+              </div>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="phone" class="col-xl-3 col-md-4 col-form-label">Birth<span
+                class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+              <input
+                [class.is-invalid]="userRequestUpdateAdmin.get('dateNaissance')?.invalid && userRequestUpdateAdmin.get('dateNaissance')?.touched"
+                class="form-control" type="date" formControlName="dateNaissance" placeholder="YYYY-MM-DD">
+              <div
+                *ngIf="userRequestUpdateAdmin.get('dateNaissance')?.invalid && userRequestUpdateAdmin.get('dateNaissance')?.touched"
+                class="text-danger">
+                Birth is required.
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="onUpdateUserAdmin()">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add new user -->
+<div class="modal fade" id="addUserAdmin" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">New User</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="userRequestAdmin">
+          <div *ngIf="userPhotoAdmin.length > 0" class="mb-3 row">
+            <div *ngFor="let file of userPhotoAdmin">
+              <img class="rounded-circle img-thumbnail" width="100" [src]="getImageSrc(file)" alt="Selected Image">
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="formFile" class="col-xl-3 col-md-4 col-form-label">Logo<span
+                class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+              <input
+                [class.is-invalid]="userRequestAdmin.get('multipartFiles')?.invalid && userRequestAdmin.get('multipartFiles')?.touched"
+                type="file" formControlName="multipartFiles" (change)="onFileChange($event)" class="form-control">
+              <div *ngIf="userRequestAdmin.get('multipartFiles')?.invalid && userRequestAdmin.get('multipartFiles')?.touched"
+                class="invalid-feedback">
+                Photo profil is required.
+              </div>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="name" class="col-xl-3 col-md-4 col-form-label">
+              Username<span class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+              <input [class.is-invalid]="userRequestAdmin.get('username')?.invalid && userRequestAdmin.get('username')?.touched"
+                formControlName="username" type="text" class="form-control" placeholder="Name"
+                aria-label="name" />
+              <div *ngIf="userRequestAdmin.get('username')?.invalid && userRequestAdmin.get('username')?.touched"
+                class="invalid-feedback">
+                Username is required.
+              </div>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="address" class="col-xl-3 col-md-4 col-form-label">Firstname<span
+                class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+              <input [class.is-invalid]="userRequestAdmin.get('firstname')?.invalid && userRequestAdmin.get('firstname')?.touched"
+                formControlName="firstname" type="text" class="form-control" placeholder="firstname"
+                aria-label="address" />
+              <div *ngIf="userRequestAdmin.get('firstname')?.invalid && userRequestAdmin.get('firstname')?.touched"
+                class="invalid-feedback">
+                Firstname is required.
+              </div>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="address" class="col-xl-3 col-md-4 col-form-label">Lastname<span
+                class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+              <input [class.is-invalid]="userRequestAdmin.get('lastname')?.invalid && userRequestAdmin.get('lastname')?.touched"
+                formControlName="lastname" type="text" class="form-control" placeholder="lastname"
+                aria-label="address" />
+              <div *ngIf="userRequestAdmin.get('lastname')?.invalid && userRequestAdmin.get('lastname')?.touched"
+                class="invalid-feedback">
+                Lastname is required.
+              </div>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="role" class="col-xl-3 col-md-4 col-form-label">Role<span
+                class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+              <select [class.is-invalid]="userRequestAdmin.get('role')?.invalid && userRequestAdmin.get('role')?.touched"
+                formControlName="role" class="default-select form-control wide">
+                <option value="ADMIN">Admin</option>
+                <option value="AGENT">Agent</option>
+                <option value="PROPRIETAIRE">Propriétaire</option>
+                <option value="SYNDEC">Syndic</option>
+              </select>
+              <div *ngIf="userRequestAdmin.get('role')?.invalid && userRequestAdmin.get('role')?.touched"
+              class="invalid-feedback">
+              Role is required.
+            </div>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="email" class="col-xl-3 col-md-4 col-form-label">Email<span
+                class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+              <input [class.is-invalid]="userRequestAdmin.get('email')?.invalid && userRequestAdmin.get('email')?.touched"
+                formControlName="email" type="email" class="form-control" aria-label="email"
+                placeholder="Email">
+              <div *ngIf="userRequestAdmin.get('email')?.invalid && userRequestAdmin.get('email')?.touched"
+                class="invalid-feedback">
+                <div *ngIf="userRequestAdmin.get('email')?.errors?.['required']">Email is required.</div>
+                <div *ngIf="userRequestAdmin.get('email')?.errors?.['email']">Please enter a valid email address.</div>
+              </div>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="role" class="col-xl-3 col-md-4 col-form-label">Agence<span
+                class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+              <select [class.is-invalid]="userRequestAdmin.get('agenceId')?.invalid && userRequestAdmin.get('agenceId')?.touched"
+                formControlName="agenceId" class="default-select form-control wide">
+                {{ agences }}
+                <option *ngFor="let agency of agences" [value]="agency.agenceDto.id">{{ agency.agenceDto.name }}</option>
+              </select>
+              <div *ngIf="userRequestAdmin.get('agenceId')?.invalid && userRequestAdmin.get('agenceId')?.touched"
+              class="invalid-feedback">
+              Agence is required.
+            </div>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="phone" class="col-xl-3 col-md-4 col-form-label">Phone number<span
+                class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+              <input [class.is-invalid]="userRequestAdmin.get('telephone')?.invalid && userRequestAdmin.get('telephone')?.touched"
+                formControlName="telephone" type="tel" class="form-control" aria-label="phone"
+                placeholder="Phone number">
+              <div *ngIf="userRequestAdmin.get('telephone')?.invalid && userRequestAdmin.get('telephone')?.touched"
+                class="invalid-feedback">
+                Phone is required.
+              </div>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="phone" class="col-xl-3 col-md-4 col-form-label">Address<span
+                class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+              <input [class.is-invalid]="userRequestAdmin.get('address')?.invalid && userRequestAdmin.get('address')?.touched"
+                formControlName="address" type="tel" class="form-control" aria-label="phone"
+                placeholder="Rue 123, New york">
+              <div *ngIf="userRequestAdmin.get('address')?.invalid && userRequestAdmin.get('address')?.touched"
+                class="invalid-feedback">
+                Address is required.
+              </div>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="phone" class="col-xl-3 col-md-4 col-form-label">Birth<span
+                class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+              <input
+                [class.is-invalid]="userRequestAdmin.get('dateNaissance')?.invalid && userRequestAdmin.get('dateNaissance')?.touched"
+                class="form-control" type="date" formControlName="dateNaissance" placeholder="YYYY-MM-DD">
+              <div *ngIf="userRequestAdmin.get('dateNaissance')?.invalid && userRequestAdmin.get('dateNaissance')?.touched"
+                class="text-danger">
+                Birth is required.
+              </div>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="phone" class="col-xl-3 col-md-4 col-form-label">Password<span
+                class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+              <input [class.is-invalid]="userRequestAdmin.get('password')?.invalid && userRequestAdmin.get('password')?.touched"
+                type="password" placeholder="Password" formControlName="password" class="form-control">
+              <div *ngIf="userRequestAdmin.get('password')?.errors?.['required'] && userRequestAdmin.get('password')?.touched"
+                class="text-danger">
+                New Password is required.
+              </div>
+              <div *ngIf="userRequestAdmin.get('password')?.errors?.['minlength'] && userRequestAdmin.get('password')?.touched"
+                class="text-danger">
+                Password must be at least 6 characters long.
+              </div>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="phone" class="col-xl-3 col-md-4 col-form-label">Confirm Password<span
+                class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+              <input
+                [class.is-invalid]="userRequestAdmin.get('confirmPassword')?.invalid && userRequestAdmin.get('confirmPassword')?.touched"
+                type="password" placeholder="Confirm New Password" formControlName="confirmPassword"
+                class="form-control">
+              <div
+                *ngIf="userRequestAdmin.get('confirmPassword')?.errors?.['required'] && userRequestAdmin.get('confirmPassword')?.touched"
+                class="text-danger">
+                Confirm New Password is required.
+              </div>
+              <div
+                *ngIf="userRequestAdmin.get('confirmPassword')?.errors?.['mismatch'] && userRequestAdmin.get('confirmPassword')?.touched"
+                class="text-danger">
+                Passwords do not match.
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="onSaveUserAdmin()">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade" id="editUserPhotoAdmin" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Update User photo profil</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="userRequestPhotoAdmin">
+          <!-- <div class="mb-3 row">
+            <div class="col-md-3">
+              <img [src]="userPhoto" class="img-fluid" alt="photo profil">
+            </div>
+          </div> -->
+
+          <div class="mb-3 row">
+            <div *ngFor="let file of userPhotoAdmin">
+              <img width="100" class="rounded-circle img-thumbnail" [src]="getImageSrc(file)" alt="Selected Image">
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="formFile" class="col-xl-3 col-md-4 col-form-label">Photo profil<span
+                class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+              <input #myInput
+                [class.is-invalid]="userRequestPhotoAdmin.get('multipartFiles')?.invalid && userRequestPhotoAdmin.get('multipartFiles')?.touched"
+                type="file" formControlName="multipartFiles" (change)="onFileChange($event)" class="form-control"
+                id="formFile">
+              <div *ngIf="userRequestPhotoAdmin.get('multipartFiles')?.invalid && userRequestPhotoAdmin.get('multipartFiles')?.touched"
+                class="invalid-feedback">
+                Photo profile is required.
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="myInput.value = ''">Close</button>
+        <button type="button" (click)="myInput.value = ''" (click)="updatePhotoProfilByIdAdmin()" class="btn btn-primary" >Save
+          changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Delete model-->
+<div class="modal fade" id="confirmDeleteModalAdmin" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Delete Agence</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="userRequestAdmin">
+          <p class="text-danger">Are you sure , You want to delete this ligne ?</p>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" (click)="onDeleteUserAdmin()" data-bs-dismiss="modal">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>

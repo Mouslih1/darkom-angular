@@ -26,7 +26,7 @@ export class UserService {
     );
   }
 
-  updatePhotoProfilLogo(userPhoto: FormData): Observable<Object>
+  updatePhotoProfil(userPhoto: FormData): Observable<Object>
   {
     return this.httpClient.put(this.baseURL + '/photo', userPhoto).pipe(
       tap(() => {
@@ -60,7 +60,13 @@ export class UserService {
     return this.httpClient.post<UserResponse>(this.baseURL + '/register', user);
   }
 
-  all(pageNo: number, pageSize: number ): Observable<UserResponse[]>
+  saveUserAdmin(user: FormData): Observable<UserResponse>
+  {
+    console.log("save user service : ", user);
+    return this.httpClient.post<UserResponse>(this.baseURL + '/register/admin', user);
+  }
+
+  allByAgence(pageNo: number, pageSize: number ): Observable<UserResponse[]>
   {
     let params = new HttpParams();
     params = params.append('pageNo', pageNo.toString());
@@ -70,13 +76,33 @@ export class UserService {
     return this.httpClient.get<UserResponse[]>(this.baseURL + '/agence', { params: params });
   }
 
+  all(pageNo: number, pageSize: number ): Observable<UserResponse[]>
+  {
+    let params = new HttpParams();
+    params = params.append('pageNo', pageNo.toString());
+    params = params.append('pageSize', pageSize.toString());
+
+
+    return this.httpClient.get<UserResponse[]>(this.baseURL, { params: params });
+  }
+
   updateUserInfoById(id: number, user: UserRequest) :  Observable<Object>
   {
     return this.httpClient.put(this.baseURL + '/' + id, user);
   }
 
+  updateUserInfoByIdByAdmin(id: number, user: UserRequest) :  Observable<Object>
+  {
+    return this.httpClient.put(this.baseURL + '/' + id + '/admin', user);
+  }
+
   deleteUser(id: number) : Observable<Object>
   {
     return this.httpClient.delete(this.baseURL + '/' + id);
+  }
+
+  updatePhotoProfilById(id: number, userPhoto: FormData) : Observable<Object>
+  {
+    return this.httpClient.put(this.baseURL + '/photo/' + id, userPhoto);
   }
 }

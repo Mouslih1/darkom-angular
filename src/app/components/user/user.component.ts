@@ -15,6 +15,7 @@ export class UserComponent implements OnInit {
   userList: UserResponse[] = [];
   userRequest!: FormGroup;
   userRequestUpdate!:FormGroup;
+  userRequestPhoto!:FormGroup;
 
   userPhoto: any[] = [];
   pageNo = 0;
@@ -33,6 +34,7 @@ export class UserComponent implements OnInit {
     this.initForm();
     this.all();
     this.initFormUpdate();
+    this.initFormPhotoProfil();
   }
 
   initForm()
@@ -71,6 +73,14 @@ export class UserComponent implements OnInit {
     });
   }
 
+  initFormPhotoProfil()
+  {
+    this.userRequestPhoto = this.formBuilder.group({
+      id: [''],
+      multipartFiles: [[], [Validators.required]]
+    });
+  }
+
   onFileChange(event: Event)
   {
     const target = event.target as HTMLInputElement;
@@ -101,9 +111,6 @@ export class UserComponent implements OnInit {
   onSaveUser()
   {
     this.markFormGroupTouched(this.userRequest);
-
-    console.log('user info ::: ', this.userRequest.value);
-
 
     if(this.userRequest.valid)
     {
@@ -145,9 +152,10 @@ export class UserComponent implements OnInit {
   onUpdateUser()
   {
     this.markFormGroupTouched(this.userRequestUpdate);
-    console.log('+aa+a+aa++a+a+aa',this.userRequestUpdate);
 
-    console.log('+++++++++++++', this.userRequestUpdate.value);
+    console.log('valid update user : ',this.userRequestUpdate);
+
+    this.toastr.success("vavavavava");
 
     if(this.userRequestUpdate.valid)
     {
@@ -215,7 +223,7 @@ export class UserComponent implements OnInit {
   }
 
   all() {
-    this.userService.all(this.pageNo, this.pageSize).subscribe(
+    this.userService.allByAgence(this.pageNo, this.pageSize).subscribe(
       (res: UserResponse[]) => {
         this.userList = res;
         this.totalPages = Math.ceil(res.length / this.pageSize);
@@ -244,19 +252,42 @@ export class UserComponent implements OnInit {
       dateNaissance: user.userDto.dateNaissance
     });
 
-    console.log("jejejejejeje", this.userRequestUpdate.value.role);
-
     this.userPhoto = user.medias.map(media => media.uri);
     console.log("agenceImages après affectation :", this.userPhoto);
   }
 
-  // editAgenceLogo(agence: AgenceResponse)
-  // {
-  //   this.agenceRequest.patchValue({
-  //     id: agence.agenceDto.id
-  //   });
-  //   this.agenceImages = agence.medias.map(media => media.uri);
-  // }
+  updatePhotoProfilById()
+  {
+    this.markFormGroupTouched(this.userRequestPhoto);
+
+    const formData = new FormData();
+
+    for (let i = 0; i < this.userPhoto.length; i++) {
+      formData.append('multipartFiles', this.userPhoto[i]);
+    }
+
+    console.log('formdata :',formData);
+    if(this.userRequestPhoto.valid)
+    {
+      this.userService.updatePhotoProfilById(this.userRequestPhoto.value.id, formData).subscribe((response)=>{
+        console.log('update photo profil successfully', response);
+        this.all();
+        this.toastr.success("User photo profil updated successfully.");
+      },(error) =>{
+        console.log('error ', error);
+        this.toastr.error("Something went wrong please try again.");
+      });
+    }
+  }
+
+  editPhotoProfil(user: UserResponse)
+  {
+    this.userRequestPhoto.patchValue({
+      id: user.userDto.id
+    });
+
+    this.userPhoto = [];
+  }
 
   deleteUser(user: UserResponse)
   {

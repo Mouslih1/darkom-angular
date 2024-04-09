@@ -44,4 +44,9 @@ export class AgenceService {
   {
     return this.httpClient.delete(this.baseURL + '/' + id);
   }
+
+  getById(id: number) : Observable<AgenceResponse>
+  {
+    return this.httpClient.get<AgenceResponse>(this.baseURL + '/' + id);
+  }
 }

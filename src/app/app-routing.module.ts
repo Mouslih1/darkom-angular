@@ -7,6 +7,8 @@ import { AppLayoutComponent } from './components/app-layout/app-layout.component
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { ProfilComponent } from './components/profil/profil.component';
 import { UserComponent } from './components/user/user.component';
+import { UserAdminComponent } from './components/user-admin/user-admin.component';
+import { ImmeubleComponent } from './components/immeuble/immeuble.component';
 
 const routes: Routes = [
   { path: 'login', component: AuthentificationComponent},
@@ -19,8 +21,10 @@ const routes: Routes = [
     children: [
       { path: 'dashboard', component: DashboardComponent},
       { path: 'agences', component: AgenceListComponent},
-      { path: 'profile', component: ProfilComponent},
-      { path: 'users', component: UserComponent}
+      { path: 'users', component: UserComponent},
+      { path: 'users-admin', component: UserAdminComponent},
+      { path: 'immeubles', component: ImmeubleComponent},
+      { path: 'profile', component: ProfilComponent}
     ]
   },
 

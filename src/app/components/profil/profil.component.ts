@@ -122,7 +122,7 @@ export class ProfilComponent implements OnInit, OnDestroy{
 
     if(this.userDataPhoto.valid)
     {
-      this.userService.updatePhotoProfilLogo(formData).subscribe(
+      this.userService.updatePhotoProfil(formData).subscribe(
         (response) => {
           console.log('User photo profil updated successfully:', response);
           this.toastr.success("User photo profil updated successfully.")
