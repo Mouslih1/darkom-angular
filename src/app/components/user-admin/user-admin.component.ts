@@ -162,8 +162,15 @@ export class UserAdminComponent implements OnInit {
           this.userPhotoAdmin = [];
         },
         (error) => {
-          console.error('Error while saving user:', error);
-          this.toastr.error("Something went wrong please try again.")
+          if (error && error.error && error.error.includes("Violation de contrainte unique : cette username existe déjà.")) {
+            this.toastr.error('This username already exists.');
+          }else if(error && error.error && error.error.includes("Violation de contrainte unique : cette adresse e-mail est déjà utilisée."))
+          {
+            this.toastr.error('This email already exists.');
+          }
+          else {
+            this.toastr.error('Something went wrong, please try again.');
+          }
         }
       );
     }
@@ -186,8 +193,15 @@ export class UserAdminComponent implements OnInit {
         this.toastr.success("User info updated successfully.");
       },
       (error) => {
-        console.error('Error while updated user:', error);
-        this.toastr.error("Something went wrong please try again.")
+        if (error && error.error && error.error.includes("Violation de contrainte unique : cette username existe déjà.")) {
+          this.toastr.error('This username already exists.');
+        }else if(error && error.error && error.error.includes("Violation de contrainte unique : cette adresse e-mail est déjà utilisée."))
+        {
+          this.toastr.error('This email already exists.');
+        }
+        else {
+          this.toastr.error('Something went wrong, please try again.');
+        }
       });
     }
   }

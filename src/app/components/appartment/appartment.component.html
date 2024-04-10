@@ -3,7 +3,7 @@
     <div class="d-flex align-items-center mb-4 flex-wrap">
       <h3 class="me-auto">Immeubles</h3>
       <div>
-        <a class="btn btn-primary me-3 btn-sm" (click)="initForm()" data-bs-toggle="modal" data-bs-target="#addImmeuble"><i
+        <a class="btn btn-primary me-3 btn-sm" (click)="initForm()" data-bs-toggle="modal" data-bs-target="#addAppartement"><i
             class="fas fa-plus me-2"></i>Add New Immeuble</a>
       </div>
     </div>
@@ -14,36 +14,45 @@
             <thead>
               <tr>
                 <th>No</th>
-                <th>Reference immeuble</th>
-                <th>Address</th>
-                <th>Number etage</th>
-                <th>Number appartement</th>
-                <th>Annee contruction</th>
-                <th>Status immeuble</th>
+                <th>Reference appartement</th>
+                <th>Number chambre</th>
+                <th>Surface</th>
+                <th>Prix location</th>
+                <th>Immeuble</th>
+                <th>Prix vente</th>
+                <th>Status appartement</th>
+                <th>Etat appartement</th>
                 <th class="text-center">Actions</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let immeuble of immeubleList">
-                <td>{{ immeuble.id }}</td>
-                <td class="wspace-no">{{ immeuble.referenceImmeuble }}</td>
-                <td>{{ immeuble.address }}</td>
-                <td>{{ immeuble.numberEtage }}</td>
-                <td>{{ immeuble.numberApparetement }}</td>
-                <td>{{ immeuble.anneeConstruction | date: 'dd/MM/yyyy' }}</td>
+              <tr *ngFor="let appartement of appartmentList">
+                <td>{{ appartement.id }}</td>
+                <td class="wspace-no">{{ appartement.referenceAppartement }}</td>
+                <td>{{ appartement.numberChambre }}</td>
+                <td>{{ appartement.surface }} m²</td>
+                <td>{{ appartement.prixLocation }}</td>
+                <td>{{ appartement.immeuble.referenceImmeuble }}</td>
+                <td>{{ appartement.prixVente }}</td>
                 <td>
                   <span class="btn btn-sm btn-rounded"
-                    [ngClass]="{'btn-warning': immeuble.statusImmeuble === 'OCCUPER', 'btn-success': immeuble.statusImmeuble === 'NON_OCCUPER'}">
-                    {{ immeuble.statusImmeuble }}
+                    [ngClass]="{'btn-info': appartement.statusAppartement === 'LOUER', 'btn-success': appartement.statusAppartement === 'VENTE'}">
+                    {{ appartement.statusAppartement }}
+                  </span>
+                </td>
+                <td>
+                  <span class="btn btn-sm btn-rounded"
+                    [ngClass]="{'btn-warning': appartement.etatAppartement === 'OCCUPER', 'btn-success': appartement.etatAppartement === 'LIBRE'}">
+                    {{ appartement.etatAppartement }}
                   </span>
                 </td>
                 <td class="action-btn wspace-no">
                   <span>
-                    <a href="javascript:void(0);" (click)="editImmeuble(immeuble)" data-bs-toggle="modal"
+                    <a href="javascript:void(0);" (click)="editAppartment(appartement)" data-bs-toggle="modal"
                       data-bs-target="#editImmeuble"><i class="fas fa-edit text-warning"></i></a>
                   </span>
                   <span>
-                    <a href="javascript:void(0);" (click)="deleteImmeuble(immeuble)" data-bs-toggle="modal"
+                    <a href="javascript:void(0);" (click)="deleteAppartement(appartement)" data-bs-toggle="modal"
                       data-bs-target="#deleteImmeuble"><i class="far fa-trash-alt text-danger"></i></a>
                   </span>
                 </td>
@@ -53,7 +62,7 @@
 
           <div class="d-flex justify-content-between">
             <button class="btn btn-primary" (click)="previousPage()">Previous</button>
-            <button class="btn btn-primary" (click)="nextPage">Next</button>
+            <button class="btn btn-primary" (click)="nextPage()">Next</button>
           </div>
         </div>
       </div>
@@ -62,7 +71,7 @@
 </div>
 
 
-<!--Immeuble save-->
+<!-- Immeuble save
 <div class="modal fade" id="addImmeuble" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -157,7 +166,6 @@
 </div>
 
 
-<!--edit immeuble-->
 <div class="modal fade" id="editImmeuble" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -249,7 +257,6 @@
 </div>
 
 
-<!--delete immeuble-->
 
 <div class="modal fade" id="deleteImmeuble" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-lg">
@@ -269,4 +276,4 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->

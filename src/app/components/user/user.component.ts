@@ -14,8 +14,8 @@ export class UserComponent implements OnInit {
 
   userList: UserResponse[] = [];
   userRequest!: FormGroup;
-  userRequestUpdate!:FormGroup;
-  userRequestPhoto!:FormGroup;
+  userRequestUpdate!: FormGroup;
+  userRequestPhoto!: FormGroup;
 
   userPhoto: any[] = [];
   pageNo = 0;
@@ -29,42 +29,39 @@ export class UserComponent implements OnInit {
     private sanitizer: DomSanitizer,
   ) { }
 
-  ngOnInit(): void
-  {
+  ngOnInit(): void {
     this.initForm();
     this.all();
     this.initFormUpdate();
     this.initFormPhotoProfil();
   }
 
-  initForm()
-  {
+  initForm() {
     this.userRequest = this.formBuilder.group({
       id: [''],
-      username: ['',[Validators.required]],
+      username: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
-      firstname: ['',[Validators.required]],
+      firstname: ['', [Validators.required]],
       lastname: ['', [Validators.required]],
       address: ['', [Validators.required]],
       telephone: ['', [Validators.required]],
       role: ['', [Validators.required]],
       dateNaissance: ['', [Validators.required]],
-      password: ['',  [Validators.required, Validators.minLength(6)]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', Validators.required],
       multipartFiles: [[], [Validators.required]],
-    },{
+    }, {
       validator: this.passwordMatchValidator
     });
     this.userPhoto = [];
   }
 
-  initFormUpdate()
-  {
+  initFormUpdate() {
     this.userRequestUpdate = this.formBuilder.group({
       id: [''],
-      username: ['',[Validators.required]],
+      username: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
-      firstname: ['',[Validators.required]],
+      firstname: ['', [Validators.required]],
       lastname: ['', [Validators.required]],
       role: ['', [Validators.required]],
       address: ['', [Validators.required]],
@@ -73,47 +70,40 @@ export class UserComponent implements OnInit {
     });
   }
 
-  initFormPhotoProfil()
-  {
+  initFormPhotoProfil() {
     this.userRequestPhoto = this.formBuilder.group({
       id: [''],
       multipartFiles: [[], [Validators.required]]
     });
   }
 
-  onFileChange(event: Event)
-  {
+  onFileChange(event: Event) {
     const target = event.target as HTMLInputElement;
     if (target.files && target.files.length > 0) {
       this.userPhoto = Array.from(target.files);
     }
   }
 
-  getImageSrc(file: File): any
-  {
+  getImageSrc(file: File): any {
     const url = URL.createObjectURL(file);
     return this.sanitizer.bypassSecurityTrustUrl(url);
   }
 
-  passwordMatchValidator(formGroup: FormGroup)
-  {
+  passwordMatchValidator(formGroup: FormGroup) {
     const password = formGroup.get('password')!.value;
     const confirmPassword = formGroup.get('confirmPassword')!.value;
 
-    if (password !== confirmPassword)
-    {
+    if (password !== confirmPassword) {
       formGroup.get('confirmPassword')!.setErrors({ mismatch: true });
     } else {
       formGroup.get('confirmPassword')!.setErrors(null);
     }
   }
 
-  onSaveUser()
-  {
+  onSaveUser() {
     this.markFormGroupTouched(this.userRequest);
 
-    if(this.userRequest.valid)
-    {
+    if (this.userRequest.valid) {
       const formValue = this.userRequest.value;
 
       const formData = new FormData();
@@ -142,23 +132,30 @@ export class UserComponent implements OnInit {
           this.userPhoto = [];
         },
         (error) => {
-          console.error('Error while saving user:', error);
-          this.toastr.error("Something went wrong please try again.")
+          console.log('errerrer',error.error);
+
+          if (error && error.error && error.error.includes("Violation de contrainte unique : cette username existe déjà.")) {
+            this.toastr.error('This username already exists.');
+          }else if(error && error.error && error.error.includes("Violation de contrainte unique : cette adresse e-mail est déjà utilisée."))
+          {
+            this.toastr.error('This email already exists.');
+          }
+          else {
+            this.toastr.error('Something went wrong, please try again.');
+          }
         }
       );
     }
   }
 
-  onUpdateUser()
-  {
+  onUpdateUser() {
     this.markFormGroupTouched(this.userRequestUpdate);
 
-    console.log('valid update user : ',this.userRequestUpdate);
+    console.log('valid update user : ', this.userRequestUpdate);
 
     this.toastr.success("vavavavava");
 
-    if(this.userRequestUpdate.valid)
-    {
+    if (this.userRequestUpdate.valid) {
       this.userService.updateUserInfoById(
         this.userRequestUpdate.value.id,
         this.userRequestUpdate.value
@@ -167,15 +164,21 @@ export class UserComponent implements OnInit {
         console.log('User updated successfully:', response);
         this.toastr.success("User info updated successfully.");
       },
-      (error) => {
-        console.error('Error while updated user:', error);
-        this.toastr.error("Something went wrong please try again.")
-      });
+        (error) => {
+          if (error && error.error && error.error.includes("Violation de contrainte unique : cette username existe déjà.")) {
+            this.toastr.error('This username already exists.');
+          }else if(error && error.error && error.error.includes("Violation de contrainte unique : cette adresse e-mail est déjà utilisée."))
+          {
+            this.toastr.error('This email already exists.');
+          }
+          else {
+            this.toastr.error('Something went wrong, please try again.');
+          }
+        });
     }
   }
 
-  onDeleteUser()
-  {
+  onDeleteUser() {
     console.log('this.agenceRequest.value : ', this.userRequest.value);
     this.userService.deleteUser(
       this.userRequest.value.id
@@ -184,14 +187,13 @@ export class UserComponent implements OnInit {
       this.all();
       this.toastr.success("User deleted successfully.");
     },
-    (error) => {
-      console.error('Error while delete agence:', error);
-      this.toastr.error("Something went wrong please try again.")
-    });
+      (error) => {
+        console.error('Error while delete agence:', error);
+        this.toastr.error("Something went wrong please try again.")
+      });
   }
 
-  markFormGroupTouched(formGroup: FormGroup)
-  {
+  markFormGroupTouched(formGroup: FormGroup) {
     Object.values(formGroup.controls).forEach(control => {
       control.markAsTouched();
 
@@ -201,22 +203,18 @@ export class UserComponent implements OnInit {
     });
   }
 
-  previousPage()
-  {
-    if (this.pageNo > 0)
-    {
+  previousPage() {
+    if (this.pageNo > 0) {
       this.pageNo--;
       this.all();
     }
   }
 
-  nextPage()
-  {
+  nextPage() {
     console.log(this.totalPages);
     console.log(this.pageNo);
 
-    if (this.pageNo <= this.totalPages)
-    {
+    if (this.pageNo <= this.totalPages) {
       this.pageNo++;
       this.all();
     }
@@ -236,8 +234,7 @@ export class UserComponent implements OnInit {
     );
   }
 
-  editUser(user: UserResponse)
-  {
+  editUser(user: UserResponse) {
     console.log(user);
 
     this.userRequestUpdate.patchValue({
@@ -252,12 +249,13 @@ export class UserComponent implements OnInit {
       dateNaissance: user.userDto.dateNaissance
     });
 
+    console.log('this userrequestupdate : ', this.userRequestUpdate);
+
     this.userPhoto = user.medias.map(media => media.uri);
     console.log("agenceImages après affectation :", this.userPhoto);
   }
 
-  updatePhotoProfilById()
-  {
+  updatePhotoProfilById() {
     this.markFormGroupTouched(this.userRequestPhoto);
 
     const formData = new FormData();
@@ -266,22 +264,23 @@ export class UserComponent implements OnInit {
       formData.append('multipartFiles', this.userPhoto[i]);
     }
 
-    console.log('formdata :',formData);
-    if(this.userRequestPhoto.valid)
-    {
-      this.userService.updatePhotoProfilById(this.userRequestPhoto.value.id, formData).subscribe((response)=>{
+    console.log('formdata :', formData);
+    if (this.userRequestPhoto.valid) {
+      this.userService.updatePhotoProfilById(this.userRequestPhoto.value.id, formData).subscribe((response) => {
         console.log('update photo profil successfully', response);
         this.all();
         this.toastr.success("User photo profil updated successfully.");
-      },(error) =>{
-        console.log('error ', error);
-        this.toastr.error("Something went wrong please try again.");
+      }, (error) => {
+        if (error && error.error && error.error.includes("Violation de contrainte unique : cette username existe déjà.")) {
+          this.toastr.error('This username already exists.');
+        } else {
+          this.toastr.error('Something went wrong, please try again.');
+        }
       });
     }
   }
 
-  editPhotoProfil(user: UserResponse)
-  {
+  editPhotoProfil(user: UserResponse) {
     this.userRequestPhoto.patchValue({
       id: user.userDto.id
     });
@@ -289,8 +288,7 @@ export class UserComponent implements OnInit {
     this.userPhoto = [];
   }
 
-  deleteUser(user: UserResponse)
-  {
+  deleteUser(user: UserResponse) {
     this.userRequest.patchValue({
       id: user.userDto.id
     });

@@ -110,8 +110,16 @@ export class AgenceListComponent implements OnInit {
           this.agenceImages = [];
         },
         (error) => {
-          console.error('Error while saving agence:', error);
-          this.toastr.error("Something went wrong please try again.")
+          console.log(error.error);
+
+            if (error && error.error && error.error.includes("Violation de contrainte unique : cette name existe déjà.")) {
+              this.toastr.error('This name already exists.');
+            } else if (error && error.error && error.error.includes("Violation de contrainte unique : cette email agence existe déjà")) {
+              this.toastr.error('This email already exists.');
+            }
+            else {
+              this.toastr.error('Something went wrong, please try again.');
+            }
         }
       );
     }
@@ -134,8 +142,14 @@ export class AgenceListComponent implements OnInit {
         this.toastr.success("Agence info updated successfully.")
       },
       (error) => {
-        console.error('Error while updated agence:', error);
-        this.toastr.error("Something went wrong please try again.")
+        if (error && error.error && error.error.includes("Violation de contrainte unique : cette name existe déjà.")) {
+          this.toastr.error('This name already exists.');
+        } else if (error && error.error && error.error.includes("Violation de contrainte unique : cette email agence existe déjà")) {
+          this.toastr.error('This email already exists.');
+        }
+        else {
+          this.toastr.error('Something went wrong, please try again.');
+        }
       });
     }
   }

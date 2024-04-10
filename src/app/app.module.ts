@@ -24,6 +24,7 @@ import { ProfilComponent } from './components/profil/profil.component';
 import { UserComponent } from './components/user/user.component';
 import { UserAdminComponent } from './components/user-admin/user-admin.component';
 import { ImmeubleComponent } from './components/immeuble/immeuble.component';
+import { AppartmentComponent } from './components/appartment/appartment.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { ImmeubleComponent } from './components/immeuble/immeuble.component';
     UserComponent,
     UserAdminComponent,
     ImmeubleComponent,
+    AppartmentComponent,
   ],
   imports: [
     BrowserModule,
