@@ -138,7 +138,7 @@
                 formControlName="username" type="text" class="form-control" placeholder="Name"
                 aria-label="name" />
               <div *ngIf="userRequestUpdateAdmin.get('username')?.invalid && userRequestUpdateAdmin.get('username')?.touched"
-                class="invalid-feedback">
+                class="text-danger">
                 Username is required.
               </div>
             </div>
@@ -152,7 +152,7 @@
                 formControlName="firstname" type="text" class="form-control"  placeholder="fistname"
                 aria-label="address" />
               <div *ngIf="userRequestUpdateAdmin.get('firstname')?.invalid && userRequestUpdateAdmin.get('firstname')?.touched"
-                class="invalid-feedback">
+                class="text-danger">
                 Firstname is required.
               </div>
             </div>
@@ -166,7 +166,7 @@
                 formControlName="lastname" type="text" class="form-control" placeholder="Address"
                 aria-label="address" />
               <div *ngIf="userRequestUpdateAdmin.get('lastname')?.invalid && userRequestUpdateAdmin.get('lastname')?.touched"
-                class="invalid-feedback">
+                class="text-danger">
                 Address is required.
               </div>
             </div>
@@ -180,7 +180,7 @@
                 formControlName="email" type="email" class="form-control" aria-label="email"
                 placeholder="Email address">
               <div *ngIf="userRequestUpdateAdmin.get('email')?.invalid && userRequestUpdateAdmin.get('email')?.touched"
-                class="invalid-feedback">
+                class="text-danger">
                 <div *ngIf="userRequestUpdateAdmin.get('email')?.errors?.['required']">Email is required.</div>
                 <div *ngIf="userRequestUpdateAdmin.get('email')?.errors?.['email']">Please enter a valid email address.</div>
               </div>
@@ -191,13 +191,14 @@
                 class="text-danger scale5 ms-2">*</span></label>
             <div class="col-xl-9 col-md-8">
               <select [class.is-invalid]="userRequestUpdateAdmin.get('role')?.invalid && userRequestUpdateAdmin.get('role')?.touched"
-                formControlName="role" class="default-select form-control wide">
-                <option value="AGENT">Agent</option>
-                <option value="PROPREITAIRE">Propriétaire</option>
-                <option value="SYNDEC">Syndic</option>
+                formControlName="role" class="form-control wide">
+                <option value="ADMIN" [selected]="'ADMIN' === userRequestUpdateAdmin.value.role">Admin</option>
+                <option value="AGENT" [selected]="'AGENT' === userRequestUpdateAdmin.value.role">Agent</option>
+                <option value="PROPREITAIRE" [selected]="'PROPREITAIRE' === userRequestUpdateAdmin.value.role">Propriétaire</option>
+                <option value="SYNDEC" [selected]="'SYNDEC' === userRequestUpdateAdmin.value.role">Syndic</option>
               </select>
               <div *ngIf="userRequestUpdateAdmin.get('role')?.invalid && userRequestUpdateAdmin.get('role')?.touched"
-              class="invalid-feedback">
+              class="text-danger">
               Role is required.
             </div>
             </div>
@@ -207,11 +208,11 @@
                 class="text-danger scale5 ms-2">*</span></label>
             <div class="col-xl-9 col-md-8">
               <select [class.is-invalid]="userRequestUpdateAdmin.get('agenceId')?.invalid && userRequestUpdateAdmin.get('agenceId')?.touched"
-                formControlName="agenceId" class="default-select form-control wide">
-                <option *ngFor="let agency of agences" [value]="agency.agenceDto.id">{{ agency.agenceDto.name }}</option>
+                formControlName="agenceId" class="form-control wide">
+                <option *ngFor="let agency of agences" [value]="agency.agenceDto.id"  [selected]="agency.agenceDto.id === userRequestUpdateAdmin.value.agenceId">{{ agency.agenceDto.name }}</option>
               </select>
               <div *ngIf="userRequestUpdateAdmin.get('agenceId')?.invalid && userRequestUpdateAdmin.get('agenceId')?.touched"
-              class="invalid-feedback">
+              class="text-danger">
               Agence is required.
             </div>
             </div>
@@ -225,7 +226,7 @@
                 formControlName="telephone" type="tel" class="form-control" aria-label="phone"
                 placeholder="Phone number">
               <div *ngIf="userRequestUpdateAdmin.get('telephone')?.invalid && userRequestUpdateAdmin.get('telephone')?.touched"
-                class="invalid-feedback">
+                class="text-danger">
                 Phone is required.
               </div>
             </div>
@@ -239,7 +240,7 @@
                 formControlName="address" type="tel" class="form-control" aria-label="phone"
                 placeholder="address">
               <div *ngIf="userRequestUpdateAdmin.get('address')?.invalid && userRequestUpdateAdmin.get('address')?.touched"
-                class="invalid-feedback">
+                class="text-danger">
                 Address is required.
               </div>
             </div>
@@ -291,7 +292,7 @@
                 [class.is-invalid]="userRequestAdmin.get('multipartFiles')?.invalid && userRequestAdmin.get('multipartFiles')?.touched"
                 type="file" formControlName="multipartFiles" (change)="onFileChange($event)" class="form-control">
               <div *ngIf="userRequestAdmin.get('multipartFiles')?.invalid && userRequestAdmin.get('multipartFiles')?.touched"
-                class="invalid-feedback">
+                class="text-danger">
                 Photo profil is required.
               </div>
             </div>
@@ -304,7 +305,7 @@
                 formControlName="username" type="text" class="form-control" placeholder="Name"
                 aria-label="name" />
               <div *ngIf="userRequestAdmin.get('username')?.invalid && userRequestAdmin.get('username')?.touched"
-                class="invalid-feedback">
+                class="text-danger">
                 Username is required.
               </div>
             </div>
@@ -317,7 +318,7 @@
                 formControlName="firstname" type="text" class="form-control" placeholder="firstname"
                 aria-label="address" />
               <div *ngIf="userRequestAdmin.get('firstname')?.invalid && userRequestAdmin.get('firstname')?.touched"
-                class="invalid-feedback">
+                class="text-danger">
                 Firstname is required.
               </div>
             </div>
@@ -330,7 +331,7 @@
                 formControlName="lastname" type="text" class="form-control" placeholder="lastname"
                 aria-label="address" />
               <div *ngIf="userRequestAdmin.get('lastname')?.invalid && userRequestAdmin.get('lastname')?.touched"
-                class="invalid-feedback">
+                class="text-danger">
                 Lastname is required.
               </div>
             </div>
@@ -347,7 +348,7 @@
                 <option value="SYNDEC">Syndic</option>
               </select>
               <div *ngIf="userRequestAdmin.get('role')?.invalid && userRequestAdmin.get('role')?.touched"
-              class="invalid-feedback">
+              class="text-danger">
               Role is required.
             </div>
             </div>
@@ -360,7 +361,7 @@
                 formControlName="email" type="email" class="form-control" aria-label="email"
                 placeholder="Email">
               <div *ngIf="userRequestAdmin.get('email')?.invalid && userRequestAdmin.get('email')?.touched"
-                class="invalid-feedback">
+                class="text-danger">
                 <div *ngIf="userRequestAdmin.get('email')?.errors?.['required']">Email is required.</div>
                 <div *ngIf="userRequestAdmin.get('email')?.errors?.['email']">Please enter a valid email address.</div>
               </div>
@@ -376,7 +377,7 @@
                 <option *ngFor="let agency of agences" [value]="agency.agenceDto.id">{{ agency.agenceDto.name }}</option>
               </select>
               <div *ngIf="userRequestAdmin.get('agenceId')?.invalid && userRequestAdmin.get('agenceId')?.touched"
-              class="invalid-feedback">
+              class="text-danger">
               Agence is required.
             </div>
             </div>
@@ -389,7 +390,7 @@
                 formControlName="telephone" type="tel" class="form-control" aria-label="phone"
                 placeholder="Phone number">
               <div *ngIf="userRequestAdmin.get('telephone')?.invalid && userRequestAdmin.get('telephone')?.touched"
-                class="invalid-feedback">
+                class="text-danger">
                 Phone is required.
               </div>
             </div>
@@ -402,7 +403,7 @@
                 formControlName="address" type="tel" class="form-control" aria-label="phone"
                 placeholder="Rue 123, New york">
               <div *ngIf="userRequestAdmin.get('address')?.invalid && userRequestAdmin.get('address')?.touched"
-                class="invalid-feedback">
+                class="text-danger">
                 Address is required.
               </div>
             </div>
@@ -497,7 +498,7 @@
                 type="file" formControlName="multipartFiles" (change)="onFileChange($event)" class="form-control"
                 id="formFile">
               <div *ngIf="userRequestPhotoAdmin.get('multipartFiles')?.invalid && userRequestPhotoAdmin.get('multipartFiles')?.touched"
-                class="invalid-feedback">
+                class="text-danger">
                 Photo profile is required.
               </div>
             </div>

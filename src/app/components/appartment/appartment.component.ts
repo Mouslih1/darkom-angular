@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
+import { forkJoin } from 'rxjs';
 import { Appartment } from 'src/app/model/appartment/appartment';
 import { Immeuble } from 'src/app/model/immeuble/immeuble';
 import { AppartmentService } from 'src/app/service/appartment/appartment.service';
@@ -38,16 +39,16 @@ export class AppartmentComponent implements OnInit {
     this.allImmeubles();
   }
 
-  initForm() {
+  initForm()
+  {
     this.appartmentRequest = this.formBuilder.group({
       id: [''],
       referenceAppartement: ['', [Validators.required]],
       numberChambre: ['', [Validators.required]],
       surface: ['', [Validators.required]],
-      prixLocation: ['', [Validators.required]],
-      prixVente: ['', [Validators.required]],
+      prixLocation: [''],
+      prixVente: [''],
       statusAppartement: ['', [Validators.required]],
-      etatAppartement: ['', [Validators.required]],
       immeubleId: ['', [Validators.required]]
     });
   }
@@ -63,7 +64,7 @@ export class AppartmentComponent implements OnInit {
             appartement.immeuble = response
             console.log("appartment : ", appartement);
             tempList.push(appartement);
-            console.log('non non non :::', tempList);
+            console.log('Temp liste:::', tempList);
           });
         });
 
@@ -87,25 +88,35 @@ export class AppartmentComponent implements OnInit {
     });
   }
 
-  onSaveAppartment() {
+  onSaveAppartment()
+  {
+    console.log('aaaaaaaaaaaaaaaaaa',this.appartmentRequest);
+
     this.markFormGroupTouched(this.appartmentRequest);
 
     if (this.appartmentRequest.valid) {
       this.appartmentService.saveAppartement(this.appartmentRequest.value).subscribe(
         (response) => {
+          console.log('Appartement saved successfully.',response);
+
           this.all();
           this.appartmentRequest.reset();
           this.toastr.success('Appartement saved successfully.');
         },
         (error) => {
           console.log('error ', error);
-          this.toastr.error('Something went wrong, please try again.');
+          if (error && error.error && error.error.message.includes("This immeuble can get juste 3 appartement")) {
+            this.toastr.error('This immeuble can get juste 3 appartement, It is full !');
+          } else {
+            this.toastr.error('Something went wrong, please try again.');
+          }
         }
       );
     }
   }
 
-  onUpdateAppartement() {
+  onUpdateAppartement()
+  {
     this.markFormGroupTouched(this.appartmentRequest);
 
     if (this.appartmentRequest.valid) {
@@ -119,14 +130,18 @@ export class AppartmentComponent implements OnInit {
         },
         (error) => {
           console.log('error ', error);
-
-          this.toastr.error('Something went wrong, please try again.');
+          if (error && error.error && error.error.message.includes("This immeuble can get juste 3 appartement")) {
+            this.toastr.error('This immeuble can get juste 3 appartement, It is full !');
+          } else {
+            this.toastr.error('Something went wrong, please try again.');
+          }
         }
       );
     }
   }
 
-  onDeleteAppartement() {
+  onDeleteAppartement()
+  {
     console.log('this.agenceRequest.value : ', this.appartmentRequest.value);
     this.appartmentService.deleteAppartement(
       this.appartmentRequest.value.id
@@ -142,24 +157,27 @@ export class AppartmentComponent implements OnInit {
       });
   }
 
-  previousPage() {
+  previousPage()
+  {
     if (this.pageNo > 0) {
       this.pageNo--;
       this.all();
     }
   }
 
-  nextPage() {
+  nextPage()
+  {
     console.log(this.totalPages);
     console.log(this.pageNo);
 
-    if (this.pageNo <= this.totalPages) {
+    if (this.pageNo + 1 < this.totalPages) {
       this.pageNo++;
       this.all();
     }
   }
 
-  markFormGroupTouched(formGroup: FormGroup) {
+  markFormGroupTouched(formGroup: FormGroup)
+  {
     Object.values(formGroup.controls).forEach(control => {
       control.markAsTouched();
 
@@ -169,8 +187,13 @@ export class AppartmentComponent implements OnInit {
     });
   }
 
-  editAppartment(appartement: Appartment) {
-    this.appartmentRequest.patchValue({
+  editAppartment(appartement: Appartment)
+  {
+    const immeuble = this.immeubles.find(immeuble => immeuble.id === appartement.immeubleId);
+
+    console.log("immeuble", immeuble);
+
+    this.appartmentRequest.setValue({
       id: appartement.id,
       referenceAppartement: appartement.referenceAppartement,
       numberChambre: appartement.numberChambre,
@@ -178,14 +201,14 @@ export class AppartmentComponent implements OnInit {
       prixLocation: appartement.prixLocation,
       prixVente: appartement.prixVente,
       statusAppartement: appartement.statusAppartement,
-      etatAppartement: appartement.etatAppartement,
-      immeubleId: appartement.etatAppartement
+      immeubleId: immeuble ? immeuble.id : null
     });
 
-    console.log('anne construction : ', this.appartmentRequest.value);
+    console.log('Appartement modifié : ', this.appartmentRequest.value.statusAppartement);
   }
 
-  deleteAppartement(appartement: Appartment) {
+  deleteAppartement(appartement: Appartment)
+  {
     this.appartmentRequest.patchValue({
       id: appartement.id
     });

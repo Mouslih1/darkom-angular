@@ -103,6 +103,8 @@ export class UserComponent implements OnInit {
   onSaveUser() {
     this.markFormGroupTouched(this.userRequest);
 
+    console.log('this.userRequest.value :',this.userRequest.value);
+
     if (this.userRequest.valid) {
       const formValue = this.userRequest.value;
 
@@ -234,7 +236,8 @@ export class UserComponent implements OnInit {
     );
   }
 
-  editUser(user: UserResponse) {
+  editUser(user: UserResponse)
+  {
     console.log(user);
 
     this.userRequestUpdate.patchValue({
@@ -255,7 +258,8 @@ export class UserComponent implements OnInit {
     console.log("agenceImages après affectation :", this.userPhoto);
   }
 
-  updatePhotoProfilById() {
+  updatePhotoProfilById()
+  {
     this.markFormGroupTouched(this.userRequestPhoto);
 
     const formData = new FormData();

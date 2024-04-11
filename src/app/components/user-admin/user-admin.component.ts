@@ -282,6 +282,7 @@ export class UserAdminComponent implements OnInit {
   editUserAdmin(user: UserResponse)
   {
     console.log(user);
+    const agence = this.agences.find(agence => user.userDto.agenceId === agence.id);
 
     this.userRequestUpdateAdmin.patchValue({
       id: user.userDto.id,
@@ -295,6 +296,10 @@ export class UserAdminComponent implements OnInit {
       lastname: user.userDto.lastname,
       dateNaissance: user.userDto.dateNaissance
     });
+
+    console.log('agence ;', agence);
+    console.log('userRequestUpdateAdmin ;', this.userRequestUpdateAdmin.value);
+
 
     this.userPhotoAdmin = user.medias.map(media => media.uri);
     console.log("agenceImages après affectation :", this.userPhotoAdmin);

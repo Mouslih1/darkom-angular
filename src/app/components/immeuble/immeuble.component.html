@@ -53,7 +53,7 @@
 
           <div class="d-flex justify-content-between">
             <button class="btn btn-primary" (click)="previousPage()">Previous</button>
-            <button class="btn btn-primary" (click)="nextPage">Next</button>
+            <button class="btn btn-primary" (click)="nextPage()">Next</button>
           </div>
         </div>
       </div>
@@ -82,7 +82,7 @@
                 aria-label="name" />
               <div
                 *ngIf="immeubleRequest.get('referenceImmeuble')?.invalid && immeubleRequest.get('referenceImmeuble')?.touched"
-                class="invalid-feedback">
+                class="text-danger">
                 Reference immeuble is required.
               </div>
             </div>
@@ -96,7 +96,7 @@
                 formControlName="address" type="text" class="form-control" id="address" placeholder="Address"
                 aria-label="address" />
               <div *ngIf="immeubleRequest.get('address')?.invalid && immeubleRequest.get('address')?.touched"
-                class="invalid-feedback">
+                class="text-danger">
                 Address is required.
               </div>
             </div>
@@ -110,7 +110,7 @@
                 formControlName="numberEtage" type="number" class="form-control" aria-label="numberEtage"
                 placeholder="Number of etage">
               <div *ngIf="immeubleRequest.get('numberEtage')?.invalid && immeubleRequest.get('numberEtage')?.touched"
-                class="invalid-feedback">
+                class="text-danger">
                 Number of etage is required.
               </div>
             </div>
@@ -125,7 +125,7 @@
                 placeholder="Number of appartement">
               <div
                 *ngIf="immeubleRequest.get('numberApparetement')?.invalid && immeubleRequest.get('numberApparetement')?.touched"
-                class="invalid-feedback">
+                class="text-danger">
                 Number of appartement is required.
               </div>
             </div>
@@ -141,7 +141,7 @@
               placeholder="Annee construction">
                 <div
                 *ngIf="immeubleRequest.get('anneeConstruction')?.invalid && immeubleRequest.get('anneeConstruction')?.touched"
-                class="invalid-feedback">
+                class="text-danger">
                 Annee contruction is required.
               </div>
             </div>
@@ -177,7 +177,7 @@
                 aria-label="name" />
               <div
                 *ngIf="immeubleRequest.get('referenceImmeuble')?.invalid && immeubleRequest.get('referenceImmeuble')?.touched"
-                class="invalid-feedback">
+                class="text-danger">
                 Reference immeuble is required.
               </div>
             </div>
@@ -191,7 +191,7 @@
                 formControlName="address" type="text" class="form-control" id="address" placeholder="Address"
                 aria-label="address" />
               <div *ngIf="immeubleRequest.get('address')?.invalid && immeubleRequest.get('address')?.touched"
-                class="invalid-feedback">
+                class="text-danger">
                 Address is required.
               </div>
             </div>
@@ -205,7 +205,7 @@
                 formControlName="numberEtage" type="number" class="form-control" aria-label="numberEtage"
                 placeholder="Number of etage">
               <div *ngIf="immeubleRequest.get('numberEtage')?.invalid && immeubleRequest.get('numberEtage')?.touched"
-                class="invalid-feedback">
+                class="text-danger">
                 Number of etage is required.
               </div>
             </div>
@@ -220,7 +220,7 @@
                 placeholder="Number of apparetement">
               <div
                 *ngIf="immeubleRequest.get('numberApparetement')?.invalid && immeubleRequest.get('numberApparetement')?.touched"
-                class="invalid-feedback">
+                class="text-danger">
                 Number of appartement is required.
               </div>
             </div>

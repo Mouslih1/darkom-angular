@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Appartment } from 'src/app/model/appartment/appartment';
+import { Contrat } from 'src/app/model/contrat/contrat';
 
 @Injectable({
   providedIn: 'root'
@@ -35,5 +36,10 @@ export class AppartmentService {
   deleteAppartement(id: number) : Observable<Object>
   {
     return this.httpClient.delete(this.baseURL + '/' + id);
+  }
+
+  getById(id: number) : Observable<Contrat>
+  {
+    return this.httpClient.get<Contrat>(this.baseURL + '/' + id);
   }
 }

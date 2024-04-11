@@ -1,10 +1,10 @@
 <div class="content-body">
   <div class="container-fluid">
     <div class="d-flex align-items-center mb-4 flex-wrap">
-      <h3 class="me-auto">Appartements</h3>
+      <h3 class="me-auto">Contracts</h3>
       <div>
-        <a class="btn btn-primary me-3 btn-sm" (click)="initForm()" data-bs-toggle="modal" data-bs-target="#addAppartement"><i
-            class="fas fa-plus me-2"></i>Add New Appartement</a>
+        <a class="btn btn-primary me-3 btn-sm" (click)="initForm()" data-bs-toggle="modal" data-bs-target="#addContrat"><i
+            class="fas fa-plus me-2"></i>Add New Contract</a>
       </div>
     </div>
     <div class="row">
@@ -14,45 +14,35 @@
             <thead>
               <tr>
                 <th>No</th>
-                <th>Reference appartement</th>
-                <th>Number chambre</th>
-                <th>Surface</th>
-                <th>Prix location</th>
-                <th>Immeuble</th>
-                <th>Prix vente</th>
-                <th>Status appartement</th>
-                <th>Etat appartement</th>
+                <th>Type contrat</th>
+                <th>Date signature</th>
+                <th>Appartement</th>
+                <th>Propreitaire</th>
+                <th>Montant</th>
                 <th class="text-center">Actions</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let appartement of appartmentList">
-                <td>{{ appartement.id }}</td>
-                <td class="wspace-no">{{ appartement.referenceAppartement }}</td>
-                <td>{{ appartement.numberChambre }}</td>
-                <td>{{ appartement.surface }} m²</td>
-                <td>{{ appartement.prixLocation }}</td>
-                <td>{{ appartement.immeuble.referenceImmeuble }}</td>
-                <td>{{ appartement.prixVente }}</td>
+              <tr *ngFor="let contrat of contratList">
+                <td>{{ contrat.id }}</td>
                 <td>
                   <span class="btn btn-sm btn-rounded"
-                    [ngClass]="{'btn-warning': appartement.statusAppartement === 'LOUER', 'btn-success': appartement.statusAppartement === 'VENTE'}">
-                    {{ appartement.statusAppartement }}
+                    [ngClass]="{'text-warning': contrat.typeContrat === 'CONTRAT_VENTE', 'text-success': contrat.typeContrat === 'CONTRAT_LOUER'}">
+                    {{ contrat.typeContrat }}
                   </span>
                 </td>
-                <td>
-                  <span class="btn btn-sm btn-rounded"
-                    [ngClass]="{'btn-warning': appartement.etatAppartement === 'OCCUPER', 'btn-success': appartement.etatAppartement === 'LIBRE'}">
-                    {{ appartement.etatAppartement }}
-                  </span>
-                </td>
+                <td>{{ contrat.dateSignature }}</td>
+                <td>{{ contrat.appartement.referenceAppartement }}</td>
+                <td>{{ contrat.propreitaire.userDto.lastname + ' , ' + contrat.propreitaire.userDto.lastname }}</td>
+                <td>{{ contrat.montant }}</td>
+
                 <td class="action-btn wspace-no">
                   <span>
-                    <a href="javascript:void(0);" (click)="editAppartment(appartement)" data-bs-toggle="modal"
+                    <a href="javascript:void(0);" (click)="editContrat(contrat)" data-bs-toggle="modal"
                       data-bs-target="#editAppartment"><i class="fas fa-edit text-warning"></i></a>
                   </span>
                   <span>
-                    <a href="javascript:void(0);" (click)="deleteAppartement(appartement)" data-bs-toggle="modal"
+                    <a href="javascript:void(0);" (click)="deleteContrat(contrat)" data-bs-toggle="modal"
                       data-bs-target="#deleteAppartement"><i class="far fa-trash-alt text-danger"></i></a>
                   </span>
                 </td>
@@ -71,8 +61,8 @@
 </div>
 
 
-<!-- Immeuble save -->
-<div class="modal fade" id="addAppartement" tabindex="-1" role="dialog" aria-hidden="true">
+<!-- contrat save -->
+<div class="modal fade" id="addContrat" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
@@ -80,122 +70,64 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
-        <form [formGroup]="appartmentRequest">
+        <form [formGroup]="contratRequest">
           <div class="mb-3 row">
-            <label for="name" class="col-xl-3 col-md-4 col-form-label">
-              Reference appartment<span class="text-danger scale5 ms-2">*</span></label>
+            <label for="email" class="col-xl-3 col-md-4 col-form-label">Date signature<span
+                class="text-danger scale5 ms-2">*</span></label>
             <div class="col-xl-9 col-md-8">
               <input
-                [class.is-invalid]="appartmentRequest.get('referenceAppartement')?.invalid && appartmentRequest.get('referenceAppartement')?.touched"
-                formControlName="referenceAppartement" type="text" class="form-control" placeholder="Reference Appartement"
-                aria-label="name" />
-              <div
-                *ngIf="appartmentRequest.get('referenceAppartement')?.invalid && appartmentRequest.get('referenceAppartement')?.touched"
+                [class.is-invalid]="contratRequest.get('dateSignature')?.invalid && contratRequest.get('dateSignature')?.touched"
+                formControlName="dateSignature" type="date" class="form-control" aria-label="dateSignature"
+                placeholder="Date signature">
+              <div *ngIf="contratRequest.get('dateSignature')?.invalid && contratRequest.get('dateSignature')?.touched"
                 class="text-danger">
-                Reference appartement is required.
+                Date signature is required.
               </div>
             </div>
           </div>
           <div class="mb-3 row">
-            <label for="address" class="col-xl-3 col-md-4 col-form-label">Number of chambre<span
+            <label for="role" class="col-xl-3 col-md-4 col-form-label">Appartement<span
                 class="text-danger scale5 ms-2">*</span></label>
             <div class="col-xl-9 col-md-8">
-              <input
-                [class.is-invalid]="appartmentRequest.get('numberChambre')?.invalid && appartmentRequest.get('numberChambre')?.touched"
-                formControlName="numberChambre" type="number" class="form-control" id="address" placeholder="Numbre of chambre"
-                aria-label="address" />
-              <div *ngIf="appartmentRequest.get('numberChambre')?.invalid && appartmentRequest.get('numberChambre')?.touched"
-                class="text-danger">
-                Number of chambre is required.
-              </div>
-            </div>
-          </div>
-          <div class="mb-3 row">
-            <label for="email" class="col-xl-3 col-md-4 col-form-label">Surface<span
-                class="text-danger scale5 ms-2">*</span></label>
-            <div class="col-xl-9 col-md-8">
-              <input
-                [class.is-invalid]="appartmentRequest.get('surface')?.invalid && appartmentRequest.get('surface')?.touched"
-                formControlName="surface" type="number" class="form-control" aria-label="surface"
-                placeholder="Surface">
-              <div *ngIf="appartmentRequest.get('surface')?.invalid && appartmentRequest.get('surface')?.touched"
-                class="text-danger">
-                Surface is required.
-              </div>
-            </div>
-          </div>
-          <div class="mb-3 row">
-            <label for="phone" class="col-xl-3 col-md-4 col-form-label">Prix location<span
-                class="text-danger scale5 ms-2">*</span></label>
-            <div class="col-xl-9 col-md-8">
-              <input
-                [class.is-invalid]="appartmentRequest.get('prixLocation')?.invalid && appartmentRequest.get('prixLocation')?.touched"
-                formControlName="prixLocation" type="number" class="form-control" aria-label="prixLocation"
-                placeholder="Prix location">
-              <div
-                *ngIf="appartmentRequest.get('prixLocation')?.invalid && appartmentRequest.get('prixLocation')?.touched"
-                class="text-danger">
-                Prix location is required.
-              </div>
-            </div>
-          </div>
-          <div class="mb-3 row">
-            <label for="phone" class="col-xl-3 col-md-4 col-form-label">Prix vente<span
-                class="text-danger scale5 ms-2">*</span></label>
-            <div class="col-xl-9 col-md-8">
-
-              <input
-              [class.is-invalid]="appartmentRequest.get('prixVente')?.invalid && appartmentRequest.get('prixVente')?.touched"
-              formControlName="prixVente" type="number" class="form-control" aria-label="prixVente"
-              placeholder="Prix vente">
-                <div
-                *ngIf="appartmentRequest.get('prixVente')?.invalid && appartmentRequest.get('prixVente')?.touched"
-                class="text-danger">
-                Prix vente is required.
-              </div>
-            </div>
-          </div>
-          <div class="mb-3 row">
-            <label for="role" class="col-xl-3 col-md-4 col-form-label">Immeuble<span
-                class="text-danger scale5 ms-2">*</span></label>
-            <div class="col-xl-9 col-md-8">
-              <select [class.is-invalid]="appartmentRequest.get('immeubleId')?.invalid && appartmentRequest.get('immeubleId')?.touched"
-                formControlName="immeubleId" class="default-select form-control wide">
-                <option *ngFor="let immeuble of immeubles" [value]="immeuble.id">{{ immeuble.referenceImmeuble }}</option>
+              <select [class.is-invalid]="contratRequest.get('appartementId')?.invalid && contratRequest.get('appartementId')?.touched"
+                formControlName="appartementId" class="default-select form-control wide">
+                <option *ngFor="let appartement of appartements" [value]="appartement.id">{{ appartement.referenceAppartement }}</option>
               </select>
               <div>
-                <div *ngIf="appartmentRequest.get('immeubleId')?.invalid && appartmentRequest.get('immeubleId')?.touched"
+                <div *ngIf="contratRequest.get('appartementId')?.invalid && contratRequest.get('appartementId')?.touched"
                 class="text-danger">
-                Immeuble is required.
+                Appartement is required.
               </div>
               </div>
             </div>
           </div>
           <div class="mb-3 row">
-            <label for="role" class="col-xl-3 col-md-4 col-form-label">Status appartement<span
+            <label for="role" class="col-xl-3 col-md-4 col-form-label">Propreitaire<span
                 class="text-danger scale5 ms-2">*</span></label>
             <div class="col-xl-9 col-md-8">
-              <select [class.is-invalid]="appartmentRequest.get('statusAppartement')?.invalid && appartmentRequest.get('statusAppartement')?.touched"
-                formControlName="statusAppartement" class="default-select form-control ">
-                <option value="VENTE">Vente</option>
-                <option value="LOUER">Loyer</option>
+              <select [class.is-invalid]="contratRequest.get('propreitaireId')?.invalid && contratRequest.get('propreitaireId')?.touched"
+                formControlName="propreitaireId" class="default-select form-control wide">
+                <option value="">-----</option>
+                <option *ngFor="let propreitaire of propreitaires" [value]="propreitaire.userDto.id">{{ propreitaire.userDto.firstname + ' , ' + propreitaire.userDto.lastname }}</option>
               </select>
-              <div *ngIf="appartmentRequest.get('statusAppartement')?.invalid && appartmentRequest.get('statusAppartement')?.touched"
-              class="text-danger">
-              Status appartement is required.
-            </div>
+              <div>
+                <div *ngIf="contratRequest.get('propreitaireId')?.invalid && contratRequest.get('propreitaireId')?.touched"
+                class="text-danger">
+                Propreitaire is required.
+              </div>
+              </div>
             </div>
           </div>
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" (click)="onSaveAppartment()">Save changes</button>
+        <button type="button" class="btn btn-primary" (click)="onSaveContrat()">Save changes</button>
       </div>
     </div>
   </div>
 </div>
-
+<!--
 
 <div class="modal fade" id="editAppartment" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-lg">
@@ -338,4 +270,4 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->

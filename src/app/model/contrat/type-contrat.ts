@@ -1,0 +1,5 @@
+export enum TypeContrat {
+
+  CONTRAT_VENTE = 'CONTRAT_VENTE',
+  CONTRAT_LOUER = 'CONTRAT_LOUER'
+}

@@ -1,0 +1,233 @@
+<div class="content-body">
+  <div class="container-fluid">
+    <div class="d-flex align-items-center mb-4 flex-wrap">
+      <h3 class="me-auto">Events</h3>
+      <div>
+        <a class="btn btn-primary me-3 btn-sm" (click)="initForm()" data-bs-toggle="modal" data-bs-target="#addEvent"><i
+            class="fas fa-plus me-2"></i>Add New Event</a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="table-responsive">
+          <table class="table display mb-4 dataTablesCard job-table table-responsive-xl card-table" id="example5">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Sujet</th>
+                <th>Description</th>
+                <th>Date Evenement</th>
+                <th>Appartement</th>
+                <th class="text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let event of eventList">
+                <td>{{ event.id }}</td>
+                <td>{{ event.sujet }}</td>
+                <td>{{ event.description }}</td>
+                <td>{{ event.dateEvenement }}</td>
+                <td>{{ event.appartment.referenceAppartement }}</td>
+
+                <td class="action-btn wspace-no">
+                  <span>
+                    <a href="javascript:void(0);" (click)="editEvent(event)" data-bs-toggle="modal"
+                      data-bs-target="#editEvent"><i class="fas fa-edit text-warning"></i></a>
+                  </span>
+                  <span>
+                    <a href="javascript:void(0);" (click)="deleteEvent(event)" data-bs-toggle="modal"
+                      data-bs-target="#deleteEvent"><i class="far fa-trash-alt text-danger"></i></a>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="d-flex justify-content-between">
+            <button class="btn btn-primary" (click)="previousPage()">Previous</button>
+            <button class="btn btn-primary" (click)="nextPage()">Next</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- event save -->
+<div class="modal fade" id="addEvent" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">New Event</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="eventRequest">
+          <div class="mb-3 row">
+            <label for="email" class="col-xl-3 col-md-4 col-form-label">Sujet<span
+                class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+              <input
+                [class.is-invalid]="eventRequest.get('sujet')?.invalid && eventRequest.get('sujet')?.touched"
+                formControlName="sujet" type="text" class="form-control" aria-label="sujet"
+                placeholder="Sujet event">
+              <div *ngIf="eventRequest.get('sujet')?.invalid && eventRequest.get('sujet')?.touched"
+                class="text-danger">
+                Date event is required.
+              </div>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="email" class="col-xl-3 col-md-4 col-form-label">Description<span class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+                <textarea [class.is-invalid]="eventRequest.get('description')?.invalid && eventRequest.get('description')?.touched"
+                    formControlName="description" class="form-control" aria-label="description"
+                    placeholder="Description event"></textarea>
+                <div *ngIf="eventRequest.get('description')?.invalid && eventRequest.get('description')?.touched"
+                    class="text-danger">
+                    Description is required.
+                </div>
+            </div>
+        </div>
+          <div class="mb-3 row">
+            <label for="email" class="col-xl-3 col-md-4 col-form-label">Date event<span
+                class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+              <input
+                [class.is-invalid]="eventRequest.get('dateEvenement')?.invalid && eventRequest.get('dateEvenement')?.touched"
+                formControlName="dateEvenement" type="date" class="form-control" aria-label="dateEvenement"
+                placeholder="Date evenement">
+              <div *ngIf="eventRequest.get('dateEvenement')?.invalid && eventRequest.get('dateEvenement')?.touched"
+                class="text-danger">
+                Date event is required.
+              </div>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="role" class="col-xl-3 col-md-4 col-form-label">Appartments<span
+                class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+              <select [class.is-invalid]="eventRequest.get('appartementId')?.invalid && eventRequest.get('appartementId')?.touched"
+                formControlName="appartementId" class=" form-control wide">
+                <option value="">-----</option>
+                <option *ngFor="let appartement of appartements" [value]="appartement.id">{{ appartement.referenceAppartement }}</option>
+              </select>
+              <div>
+                <div *ngIf="eventRequest.get('appartementId')?.invalid && eventRequest.get('appartementId')?.touched"
+                class="text-danger">
+                Appartment is required.
+              </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="onSaveEvent()">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="editEvent" abindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Update Event</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="eventRequest">
+          <div class="mb-3 row">
+            <label for="email" class="col-xl-3 col-md-4 col-form-label">Sujet<span
+                class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+              <input
+                [class.is-invalid]="eventRequest.get('sujet')?.invalid && eventRequest.get('sujet')?.touched"
+                formControlName="sujet" type="text" class="form-control" aria-label="sujet"
+                placeholder="Sujet event">
+              <div *ngIf="eventRequest.get('sujet')?.invalid && eventRequest.get('sujet')?.touched"
+                class="text-danger">
+                Date event is required.
+              </div>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="email" class="col-xl-3 col-md-4 col-form-label">Description<span class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+                <textarea [class.is-invalid]="eventRequest.get('description')?.invalid && eventRequest.get('description')?.touched"
+                    formControlName="description" class="form-control" aria-label="description"
+                    placeholder="Description event"></textarea>
+                <div *ngIf="eventRequest.get('description')?.invalid && eventRequest.get('description')?.touched"
+                    class="text-danger">
+                    Description is required.
+                </div>
+            </div>
+        </div>
+          <div class="mb-3 row">
+            <label for="email" class="col-xl-3 col-md-4 col-form-label">Date event<span
+                class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+              <input
+                [class.is-invalid]="eventRequest.get('dateEvenement')?.invalid && eventRequest.get('dateEvenement')?.touched"
+                formControlName="dateEvenement" type="date" class="form-control" aria-label="dateEvenement"
+                placeholder="Date evenement">
+              <div *ngIf="eventRequest.get('dateEvenement')?.invalid && eventRequest.get('dateEvenement')?.touched"
+                class="text-danger">
+                Date event is required.
+              </div>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="role" class="col-xl-3 col-md-4 col-form-label">Appartments<span
+                class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+              {{ eventRequest.value.appartementId }}
+              <select [class.is-invalid]="eventRequest.get('appartementId')?.invalid && eventRequest.get('appartementId')?.touched"
+                formControlName="appartementId" class=" form-control wide">
+                <option value="">-----</option>
+                <option *ngFor="let appartement of appartements"  [value]="appartement.id"
+                [selected]="appartement.id === eventRequest.value.appartementId">
+                  {{ appartement.referenceAppartement }}</option>
+              </select>
+              <div>
+                <div *ngIf="eventRequest.get('appartementId')?.invalid && eventRequest.get('appartementId')?.touched"
+                class="text-danger">
+                Appartment is required.
+              </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="onUpdateEvent()">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="deleteEvent" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Delete appartement</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="eventRequest">
+          <p class="text-danger">Are you sure , You want to delete this ligne ?</p>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" (click)="onDeleteEvent()" data-bs-dismiss="modal">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>

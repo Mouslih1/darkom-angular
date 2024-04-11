@@ -23,7 +23,6 @@ export class ImmeubleComponent implements OnInit {
     private formBuilder: FormBuilder,
     private immeubleService: ImmeubleService,
     private toastr: ToastrService,
-    private sanitizer: DomSanitizer
   ) { }
 
   ngOnInit(): void {
@@ -56,8 +55,10 @@ export class ImmeubleComponent implements OnInit {
     );
   }
 
-  onSaveImmeuble() {
+  onSaveImmeuble()
+  {
     this.markFormGroupTouched(this.immeubleRequest);
+
 
     if (this.immeubleRequest.valid) {
       this.immeubleService.saveImmeuble(this.immeubleRequest.value).subscribe(
@@ -129,7 +130,7 @@ export class ImmeubleComponent implements OnInit {
     console.log(this.totalPages);
     console.log(this.pageNo);
 
-    if (this.pageNo <= this.totalPages) {
+    if (this.pageNo < this.totalPages) {
       this.pageNo++;
       this.all();
     }
