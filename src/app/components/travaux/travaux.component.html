@@ -1,0 +1,309 @@
+<div class="content-body">
+  <div class="container-fluid">
+    <div class="d-flex align-items-center mb-4 flex-wrap">
+      <h3 class="me-auto">Travaux</h3>
+      <div>
+        <a class="btn btn-primary me-3 btn-sm" (click)="initForm()" data-bs-toggle="modal" data-bs-target="#addTravaux"><i
+            class="fas fa-plus me-2"></i>Add New Travaux</a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="table-responsive">
+          <table class="table display mb-4 dataTablesCard job-table table-responsive-xl card-table" id="example5">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Sujet</th>
+                <th>Description</th>
+                <th>Etat</th>
+                <th>Date Start</th>
+                <th>Date End</th>
+                <th>Immeuble</th>
+                <th>Montant</th>
+                <th class="text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let travaux of travauxList">
+                <td>{{ travaux.id }}</td>
+                <td>{{ travaux.sujet }}</td>
+                <td>{{ travaux.description }}</td>
+                <td>
+                  <span class="btn btn-sm btn-rounded"
+                    [ngClass]="{'btn-danger': travaux.etat  === 'URGENT'
+                    , 'btn-success': travaux.etat  === 'NON_URGENT'}">
+                    {{ travaux.etat  }}
+                  </span>
+                </td>
+                <td>{{ travaux.dateDebut }}</td>
+                <td>{{ travaux.dateFin }}</td>
+                <td>{{ travaux.immeuble.referenceImmeuble }}</td>
+                <td>{{ travaux.montant }}</td>
+
+                <td class="action-btn wspace-no">
+                  <span>
+                    <a href="javascript:void(0);" (click)="editTravaux(travaux)" data-bs-toggle="modal"
+                      data-bs-target="#editTravaux"><i class="fas fa-edit text-warning"></i></a>
+                  </span>
+                  <span>
+                    <a href="javascript:void(0);" (click)="deleteTravaux(travaux)" data-bs-toggle="modal"
+                      data-bs-target="#deleteTravaux"><i class="far fa-trash-alt text-danger"></i></a>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="d-flex justify-content-between">
+            <button class="btn btn-primary" (click)="previousPage()">Previous</button>
+            <button class="btn btn-primary" (click)="nextPage()">Next</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Travaux save -->
+<div class="modal fade" id="addTravaux" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">New Travaux</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="travauxRequest">
+          <div class="mb-3 row">
+            <label for="email" class="col-xl-3 col-md-4 col-form-label">Sujet<span
+                class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+              <input
+                [class.is-invalid]="travauxRequest.get('sujet')?.invalid && travauxRequest.get('sujet')?.touched"
+                formControlName="sujet" type="text" class="form-control" aria-label="sujet"
+                placeholder="Sujet Travaux">
+              <div *ngIf="travauxRequest.get('sujet')?.invalid && travauxRequest.get('sujet')?.touched"
+                class="text-danger">
+                Plainte is required.
+              </div>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="email" class="col-xl-3 col-md-4 col-form-label">Description<span class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+                <textarea [class.is-invalid]="travauxRequest.get('description')?.invalid && travauxRequest.get('description')?.touched"
+                    formControlName="description" class="form-control" aria-label="description"
+                    placeholder="Description Travaux"></textarea>
+                <div *ngIf="travauxRequest.get('description')?.invalid && travauxRequest.get('description')?.touched"
+                    class="text-danger">
+                    Description is required.
+                </div>
+            </div>
+        </div>
+        <div class="mb-3 row">
+          <label for="role" class="col-xl-3 col-md-4 col-form-label">Etat Travaux<span
+              class="text-danger scale5 ms-2">*</span></label>
+          <div class="col-xl-9 col-md-8">
+            <select [class.is-invalid]="travauxRequest.get('etat')?.invalid && travauxRequest.get('etat')?.touched"
+              formControlName="etat" class="form-control wide">
+              <option value="">------</option>
+              <option value="URGENT">Urgent</option>
+              <option value="NON_URGENT">No urgent</option>
+            </select>
+            <div *ngIf="travauxRequest.get('etat')?.invalid && travauxRequest.get('etat')?.touched"
+            class="text-danger">
+            Etat travaux is required.
+          </div>
+          </div>
+        </div>
+        <div class="mb-3 row">
+          <label for="phone" class="col-xl-3 col-md-4 col-form-label">Date Start<span
+              class="text-danger scale5 ms-2">*</span></label>
+          <div class="col-xl-9 col-md-8">
+
+            <input
+            [class.is-invalid]="travauxRequest.get('dateDebut')?.invalid && travauxRequest.get('dateDebut')?.touched"
+            formControlName="dateDebut" type="date" class="form-control" aria-label="dateDebut"
+            placeholder="Date Start">
+              <div
+              *ngIf="travauxRequest.get('dateDebut')?.invalid && travauxRequest.get('dateDebut')?.touched"
+              class="text-danger">
+              Date Start is required.
+            </div>
+          </div>
+        </div>
+        <div class="mb-3 row">
+          <label for="phone" class="col-xl-3 col-md-4 col-form-label">Date End<span
+              class="text-danger scale5 ms-2">*</span></label>
+          <div class="col-xl-9 col-md-8">
+
+            <input
+            [class.is-invalid]="travauxRequest.get('dateFin')?.invalid && travauxRequest.get('dateFin')?.touched"
+            formControlName="dateFin" type="date" class="form-control" aria-label="dateFin"
+            placeholder="Date End">
+              <div
+              *ngIf="travauxRequest.get('dateFin')?.invalid && travauxRequest.get('dateFin')?.touched"
+              class="text-danger">
+              Date End is required.
+            </div>
+          </div>
+        </div>
+          <div class="mb-3 row">
+            <label for="role" class="col-xl-3 col-md-4 col-form-label">Immeubles<span
+                class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+              <select [class.is-invalid]="travauxRequest.get('immeubleId')?.invalid && travauxRequest.get('immeubleId')?.touched"
+                formControlName="immeubleId" class=" form-control wide">
+                <option value="">-----</option>
+                <option *ngFor="let immeuble of immeubles" [value]="immeuble.id">{{ immeuble.referenceImmeuble }}</option>
+              </select>
+              <div>
+                <div *ngIf="travauxRequest.get('immeubleId')?.invalid && travauxRequest.get('immeubleId')?.touched"
+                class="text-danger">
+                Immeuble is required.
+              </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="onSaveTravaux()">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Travaux save -->
+<div class="modal fade" id="addTravaux" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">New Travaux</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="travauxRequest">
+          <div class="mb-3 row">
+            <label for="email" class="col-xl-3 col-md-4 col-form-label">Sujet<span
+                class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+              <input
+                [class.is-invalid]="travauxRequest.get('sujet')?.invalid && travauxRequest.get('sujet')?.touched"
+                formControlName="sujet" type="text" class="form-control" aria-label="sujet"
+                placeholder="Sujet Travaux">
+              <div *ngIf="travauxRequest.get('sujet')?.invalid && travauxRequest.get('sujet')?.touched"
+                class="text-danger">
+                Plainte is required.
+              </div>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="email" class="col-xl-3 col-md-4 col-form-label">Description<span class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+                <textarea [class.is-invalid]="travauxRequest.get('description')?.invalid && travauxRequest.get('description')?.touched"
+                    formControlName="description" class="form-control" aria-label="description"
+                    placeholder="Description Travaux"></textarea>
+                <div *ngIf="travauxRequest.get('description')?.invalid && travauxRequest.get('description')?.touched"
+                    class="text-danger">
+                    Description is required.
+                </div>
+            </div>
+        </div>
+        <div class="mb-3 row">
+          <label for="role" class="col-xl-3 col-md-4 col-form-label">Etat Travaux<span
+              class="text-danger scale5 ms-2">*</span></label>
+          <div class="col-xl-9 col-md-8">
+            <select [class.is-invalid]="travauxRequest.get('etat')?.invalid && travauxRequest.get('etat')?.touched"
+              formControlName="etat" class="form-control wide">
+              <option value="">------</option>
+              <option value="URGENT" [selected]="'URGENT' === travauxRequest.value.etat">Urgent</option>
+              <option value="NON_URGENT" [selected]="'NON_URGENT' === travauxRequest.value.etat">No urgent</option>
+            </select>
+            <div *ngIf="travauxRequest.get('etat')?.invalid && travauxRequest.get('etat')?.touched"
+            class="text-danger">
+            Etat travaux is required.
+          </div>
+          </div>
+        </div>
+        <div class="mb-3 row">
+          <label for="phone" class="col-xl-3 col-md-4 col-form-label">Date Start<span
+              class="text-danger scale5 ms-2">*</span></label>
+          <div class="col-xl-9 col-md-8">
+
+            <input
+            [class.is-invalid]="travauxRequest.get('dateDebut')?.invalid && travauxRequest.get('dateDebut')?.touched"
+            formControlName="dateDebut" type="date" class="form-control" aria-label="dateDebut"
+            placeholder="Date Start">
+              <div
+              *ngIf="travauxRequest.get('dateDebut')?.invalid && travauxRequest.get('dateDebut')?.touched"
+              class="text-danger">
+              Date Start is required.
+            </div>
+          </div>
+        </div>
+        <div class="mb-3 row">
+          <label for="phone" class="col-xl-3 col-md-4 col-form-label">Date End<span
+              class="text-danger scale5 ms-2">*</span></label>
+          <div class="col-xl-9 col-md-8">
+
+            <input
+            [class.is-invalid]="travauxRequest.get('dateFin')?.invalid && travauxRequest.get('dateFin')?.touched"
+            formControlName="dateFin" type="date" class="form-control" aria-label="dateFin"
+            placeholder="Date End">
+              <div
+              *ngIf="travauxRequest.get('dateFin')?.invalid && travauxRequest.get('dateFin')?.touched"
+              class="text-danger">
+              Date End is required.
+            </div>
+          </div>
+        </div>
+          <div class="mb-3 row">
+            <label for="role" class="col-xl-3 col-md-4 col-form-label">Immeubles<span
+                class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+              <select [class.is-invalid]="travauxRequest.get('immeubleId')?.invalid && travauxRequest.get('immeubleId')?.touched"
+                formControlName="immeubleId" class=" form-control wide">
+                <option value="">-----</option>
+                <option *ngFor="let immeuble of immeubles" [value]="immeuble.id"
+                [selected]="immeuble.id === travauxRequest.value.immeubleId">{{ immeuble.referenceImmeuble }}</option>
+              </select>
+              <div>
+                <div *ngIf="travauxRequest.get('immeubleId')?.invalid && travauxRequest.get('immeubleId')?.touched"
+                class="text-danger">
+                Immeuble is required.
+              </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="onSaveTravaux()">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="deleteEvent" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Delete appartement</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="travauxRequest">
+          <p class="text-danger">Are you sure , You want to delete this ligne ?</p>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" (click)="onDeleteTravaux()" data-bs-dismiss="modal">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>

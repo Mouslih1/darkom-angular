@@ -1,0 +1,287 @@
+<div class="content-body">
+  <div class="container-fluid">
+    <div class="d-flex align-items-center mb-4 flex-wrap">
+      <h3 class="me-auto">Plaintes</h3>
+      <div>
+        <a class="btn btn-primary me-3 btn-sm" (click)="initForm()" data-bs-toggle="modal" data-bs-target="#addPlainte"><i
+            class="fas fa-plus me-2"></i>Add New Plainte</a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="table-responsive">
+          <table class="table display mb-4 dataTablesCard job-table table-responsive-xl card-table" id="example5">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Sujet</th>
+                <th>Description</th>
+                <th>Status plainte</th>
+                <th>Urgence</th>
+                <th>Immeuble</th>
+                <th class="text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let plainte of plainteList">
+                <td>{{ plainte.id }}</td>
+                <td>{{ plainte.sujet }}</td>
+                <td>{{ plainte.description }}</td>
+                <td>
+                  <span class="btn btn-sm btn-rounded"
+                    [ngClass]="{'btn-success': plainte.statusPlainte  === 'RESOLUE'
+                    , 'btn-warning': plainte.statusPlainte  === 'EN_COURS_TRAITEMENT'
+                    , 'btn-danger': plainte.statusPlainte  === 'NON_RESOLUE'}">
+                    {{ plainte.statusPlainte  }}
+                  </span>
+                </td>
+                <td>
+                  <span class="btn btn-sm btn-rounded"
+                    [ngClass]="{'btn-dark': plainte.urgence  === 'FAIBLE'
+                    , 'btn-warning': plainte.urgence  === 'MOYENE'
+                    , 'btn-danger': plainte.urgence  === 'ELEVE'}">
+                    {{ plainte.urgence  }}
+                  </span>
+                </td>
+                <td>{{ plainte.immeuble.referenceImmeuble }}</td>
+
+                <td class="action-btn wspace-no">
+                  <span>
+                    <a href="javascript:void(0);" (click)="editPlainte(plainte)" data-bs-toggle="modal"
+                      data-bs-target="#editPlainte"><i class="fas fa-edit text-warning"></i></a>
+                  </span>
+                  <span>
+                    <a href="javascript:void(0);" (click)="deletePlainte(plainte)" data-bs-toggle="modal"
+                      data-bs-target="#deletePlainte"><i class="far fa-trash-alt text-danger"></i></a>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="d-flex justify-content-between">
+            <button class="btn btn-primary" (click)="previousPage()">Previous</button>
+            <button class="btn btn-primary" (click)="nextPage()">Next</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- plainte save -->
+<div class="modal fade" id="addEvent" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">New Plainte</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="plainteRequest">
+          <div class="mb-3 row">
+            <label for="email" class="col-xl-3 col-md-4 col-form-label">Sujet<span
+                class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+              <input
+                [class.is-invalid]="plainteRequest.get('sujet')?.invalid && plainteRequest.get('sujet')?.touched"
+                formControlName="sujet" type="text" class="form-control" aria-label="sujet"
+                placeholder="Sujet plainte">
+              <div *ngIf="plainteRequest.get('sujet')?.invalid && plainteRequest.get('sujet')?.touched"
+                class="text-danger">
+                Plainte is required.
+              </div>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="email" class="col-xl-3 col-md-4 col-form-label">Description<span class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+                <textarea [class.is-invalid]="plainteRequest.get('description')?.invalid && plainteRequest.get('description')?.touched"
+                    formControlName="description" class="form-control" aria-label="description"
+                    placeholder="Description plainte"></textarea>
+                <div *ngIf="plainteRequest.get('description')?.invalid && plainteRequest.get('description')?.touched"
+                    class="text-danger">
+                    Description is required.
+                </div>
+            </div>
+        </div>
+        <div class="mb-3 row">
+          <label for="role" class="col-xl-3 col-md-4 col-form-label">Status plainte<span
+              class="text-danger scale5 ms-2">*</span></label>
+          <div class="col-xl-9 col-md-8">
+            <select [class.is-invalid]="plainteRequest.get('statusPlainte')?.invalid && plainteRequest.get('statusPlainte')?.touched"
+              formControlName="statusPlainte" class="form-control wide">
+              <option value="">------</option>
+             <option value="RESOLUE">Done</option>
+              <option value="EN_COURS_TRAITEMENT">In progress</option>
+              <option value="NON_RESOLUE">Non résolue</option>
+            </select>
+            <div *ngIf="plainteRequest.get('statusPlainte')?.invalid && plainteRequest.get('statusPlainte')?.touched"
+            class="text-danger">
+            Status immeuble is required.
+          </div>
+          </div>
+        </div>
+        <div class="mb-3 row">
+          <label for="role" class="col-xl-3 col-md-4 col-form-label">Urgence<span
+              class="text-danger scale5 ms-2">*</span></label>
+          <div class="col-xl-9 col-md-8">
+            <select [class.is-invalid]="plainteRequest.get('urgence')?.invalid && plainteRequest.get('urgence')?.touched"
+              formControlName="statusPlainte" class="form-control wide">
+              <option value="">------</option>
+              <option value="ELEVE">High</option>
+              <option value="FAIBLE">Low</option>
+              <option value="MOYENE">Middle</option>
+            </select>
+            <div *ngIf="plainteRequest.get('urgence')?.invalid && plainteRequest.get('urgence')?.touched"
+            class="text-danger">
+            Urgence is required.
+          </div>
+          </div>
+        </div>
+          <div class="mb-3 row">
+            <label for="role" class="col-xl-3 col-md-4 col-form-label">Immeubles<span
+                class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+              <select [class.is-invalid]="plainteRequest.get('immeubleId')?.invalid && plainteRequest.get('immeubleId')?.touched"
+                formControlName="immeubleId" class=" form-control wide">
+                <option value="">-----</option>
+                <option *ngFor="let immeuble of immeubles" [value]="immeuble.id">{{ immeuble.referenceImmeuble }}</option>
+              </select>
+              <div>
+                <div *ngIf="plainteRequest.get('immeubleId')?.invalid && plainteRequest.get('immeubleId')?.touched"
+                class="text-danger">
+                Immeuble is required.
+              </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="onSavePlainte()">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- plainte edit -->
+<div class="modal fade" id="editEvent" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">New Plainte</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="plainteRequest">
+          <div class="mb-3 row">
+            <label for="email" class="col-xl-3 col-md-4 col-form-label">Sujet<span
+                class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+              <input
+                [class.is-invalid]="plainteRequest.get('sujet')?.invalid && plainteRequest.get('sujet')?.touched"
+                formControlName="sujet" type="text" class="form-control" aria-label="sujet"
+                placeholder="Sujet plainte">
+              <div *ngIf="plainteRequest.get('sujet')?.invalid && plainteRequest.get('sujet')?.touched"
+                class="text-danger">
+                Plainte is required.
+              </div>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="email" class="col-xl-3 col-md-4 col-form-label">Description<span class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+                <textarea [class.is-invalid]="plainteRequest.get('description')?.invalid && plainteRequest.get('description')?.touched"
+                    formControlName="description" class="form-control" aria-label="description"
+                    placeholder="Description plainte"></textarea>
+                <div *ngIf="plainteRequest.get('description')?.invalid && plainteRequest.get('description')?.touched"
+                    class="text-danger">
+                    Description is required.
+                </div>
+            </div>
+        </div>
+        <div class="mb-3 row">
+          <label for="role" class="col-xl-3 col-md-4 col-form-label">Status plainte<span
+              class="text-danger scale5 ms-2">*</span></label>
+          <div class="col-xl-9 col-md-8">
+            <select [class.is-invalid]="plainteRequest.get('statusPlainte')?.invalid && plainteRequest.get('statusPlainte')?.touched"
+              formControlName="statusPlainte" class="form-control wide">
+              <option value="">------</option>
+             <option value="RESOLUE" [selected]="'RESOLUE' === plainteRequest.value.statusPlainte">Done</option>
+              <option value="EN_COURS_TRAITEMENT" [selected]="'EN_COURS_TRAITEMENT' === plainteRequest.value.statusPlainte">In progress</option>
+              <option value="NON_RESOLUE" [selected]="'NON_RESOLUE' === plainteRequest.value.statusPlainte">Non résolue</option>
+            </select>
+            <div *ngIf="plainteRequest.get('statusPlainte')?.invalid && plainteRequest.get('statusPlainte')?.touched"
+            class="text-danger">
+            Status immeuble is required.
+          </div>
+          </div>
+        </div>
+        <div class="mb-3 row">
+          <label for="role" class="col-xl-3 col-md-4 col-form-label">Urgence<span
+              class="text-danger scale5 ms-2">*</span></label>
+          <div class="col-xl-9 col-md-8">
+            <select [class.is-invalid]="plainteRequest.get('urgence')?.invalid && plainteRequest.get('urgence')?.touched"
+              formControlName="statusPlainte" class="form-control wide">
+              <option value="">------</option>
+              <option value="ELEVE" [selected]="'ELEVE' === plainteRequest.value.statusPlainte">High</option>
+              <option value="FAIBLE" [selected]="'FAIBLE' === plainteRequest.value.statusPlainte">Low</option>
+              <option value="MOYENE" [selected]="'MOYENE' === plainteRequest.value.statusPlainte">Middle</option>
+            </select>
+            <div *ngIf="plainteRequest.get('urgence')?.invalid && plainteRequest.get('urgence')?.touched"
+            class="text-danger">
+            Urgence is required.
+          </div>
+          </div>
+        </div>
+          <div class="mb-3 row">
+            <label for="role" class="col-xl-3 col-md-4 col-form-label">Immeubles<span
+                class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+              <select [class.is-invalid]="plainteRequest.get('immeubleId')?.invalid && plainteRequest.get('immeubleId')?.touched"
+                formControlName="immeubleId" class=" form-control wide">
+                <option value="">-----</option>
+                <option *ngFor="let immeuble of immeubles"
+                [value]="immeuble.id" [selected]="immeuble.id === plainteRequest.value.immeubleId">{{ immeuble.referenceImmeuble }}</option>
+              </select>
+              <div>
+                <div *ngIf="plainteRequest.get('immeubleId')?.invalid && plainteRequest.get('immeubleId')?.touched"
+                class="text-danger">
+                Immeuble is required.
+              </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="onUpdatePlainte()">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="deleteEvent" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Delete appartement</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="plainteRequest">
+          <p class="text-danger">Are you sure , You want to delete this ligne ?</p>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" (click)="onDeletePlainte()" data-bs-dismiss="modal">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>

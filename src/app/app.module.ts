@@ -27,6 +27,8 @@ import { ImmeubleComponent } from './components/immeuble/immeuble.component';
 import { AppartmentComponent } from './components/appartment/appartment.component';
 import { ContratComponent } from './components/contrat/contrat.component';
 import { EvenementComponent } from './components/evenement/evenement.component';
+import { PlainteComponent } from './components/plainte/plainte.component';
+import { TravauxComponent } from './components/travaux/travaux.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +48,8 @@ import { EvenementComponent } from './components/evenement/evenement.component';
     AppartmentComponent,
     ContratComponent,
     EvenementComponent,
+    PlainteComponent,
+    TravauxComponent,
   ],
   imports: [
     BrowserModule,

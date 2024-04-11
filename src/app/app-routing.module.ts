@@ -12,6 +12,8 @@ import { ImmeubleComponent } from './components/immeuble/immeuble.component';
 import { AppartmentComponent } from './components/appartment/appartment.component';
 import { ContratComponent } from './components/contrat/contrat.component';
 import { EvenementComponent } from './components/evenement/evenement.component';
+import { PlainteComponent } from './components/plainte/plainte.component';
+import { TravauxComponent } from './components/travaux/travaux.component';
 
 const routes: Routes = [
   { path: 'login', component: AuthentificationComponent},
@@ -30,6 +32,8 @@ const routes: Routes = [
       { path: 'appartements', component: AppartmentComponent},
       { path: 'contracts', component: ContratComponent},
       { path: 'evenements', component: EvenementComponent},
+      { path: 'plaintes', component: PlainteComponent},
+      { path: 'travaux', component: TravauxComponent},
       { path: 'profile', component: ProfilComponent}
     ]
   },
