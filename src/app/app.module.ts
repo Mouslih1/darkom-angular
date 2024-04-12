@@ -29,6 +29,9 @@ import { ContratComponent } from './components/contrat/contrat.component';
 import { EvenementComponent } from './components/evenement/evenement.component';
 import { PlainteComponent } from './components/plainte/plainte.component';
 import { TravauxComponent } from './components/travaux/travaux.component';
+import { PaymentContratLoyerComponent } from './components/payment-contrat-loyer/payment-contrat-loyer.component';
+import { PaymentContratVenteComponent } from './components/payment-contrat-vente/payment-contrat-vente.component';
+import { PaymentSyndecComponent } from './components/payment-syndec/payment-syndec.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +53,9 @@ import { TravauxComponent } from './components/travaux/travaux.component';
     EvenementComponent,
     PlainteComponent,
     TravauxComponent,
+    PaymentContratLoyerComponent,
+    PaymentContratVenteComponent,
+    PaymentSyndecComponent,
   ],
   imports: [
     BrowserModule,

@@ -16,6 +16,7 @@ export class UserComponent implements OnInit {
   userRequest!: FormGroup;
   userRequestUpdate!: FormGroup;
   userRequestPhoto!: FormGroup;
+  proprietaires: any[] = [];
 
   userPhoto: any[] = [];
   pageNo = 0;
@@ -34,6 +35,17 @@ export class UserComponent implements OnInit {
     this.all();
     this.initFormUpdate();
     this.initFormPhotoProfil();
+    this.allPropreitaires();
+  }
+
+  allPropreitaires()
+  {
+    this.userService.all(0, 100000).subscribe((response) => {
+        this.proprietaires = response.filter(user =>
+            user.userDto.role === "PROPRIETAIRE" || user.userDto.role === "SYNDEC"
+        );
+        console.log('Propriétaires :', this.proprietaires);
+    });
   }
 
   initForm() {

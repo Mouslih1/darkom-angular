@@ -4,6 +4,7 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { UserResponse } from 'src/app/model/user/user-response';
+import { AuthentificationService } from 'src/app/service/authentification/authentification.service';
 import { UserService } from 'src/app/service/user/user.service';
 
 @Component({
@@ -24,7 +25,8 @@ export class ProfilComponent implements OnInit, OnDestroy{
     private userService: UserService,
     private sanitizer: DomSanitizer,
     private formBuilder: FormBuilder,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private authService: AuthentificationService
   ) { }
 
   ngOnInit(): void
@@ -59,8 +61,31 @@ export class ProfilComponent implements OnInit, OnDestroy{
       firstname: [,[Validators.required]],
       lastname: [, [Validators.required]],
       address: [, [Validators.required]],
+      role: [, [Validators.required]],
       telephone: [, [Validators.required]],
       dateNaissance: [, [Validators.required]],
+    });
+  }
+
+  loggedUser()
+  {
+    this.userService.loggedUser().subscribe((data) => {
+      console.log('loggedUser marouane ++++ : ',data);
+      this.loggedInfo = data;
+
+      this.userData.patchValue({
+        username: this.loggedInfo.userDto.username,
+        email: this.loggedInfo.userDto.email,
+        firstname: this.loggedInfo.userDto.firstname,
+        lastname: this.loggedInfo.userDto.lastname,
+        address: this.loggedInfo.userDto.address,
+        role: this.loggedInfo.userDto.role,
+        telephone: this.loggedInfo.userDto.telephone,
+        dateNaissance: this.loggedInfo.userDto.dateNaissance
+      });
+
+      console.log('user data patch value : ' + this.userData);
+
     });
   }
 
@@ -86,14 +111,6 @@ export class ProfilComponent implements OnInit, OnDestroy{
     } else {
       formGroup.get('confirmPassword')!.setErrors(null);
     }
-  }
-
-  loggedUser()
-  {
-    this.userService.loggedUser().subscribe((data) => {
-      console.log('loggedUser info : ',data);
-      this.loggedInfo = data;
-    });
   }
 
   onFileChange(event: Event)
@@ -148,8 +165,8 @@ export class ProfilComponent implements OnInit, OnDestroy{
       this.userService.updateUserInfo(this.userData.value).subscribe(
       (response) => {
         console.log('Information of your account updated successfully:', response);
+        this.authService.refreshLocalStorage(response)
         this.toastr.success("Information of your account updated successfully.")
-        this.userData.reset();
       },
       (error) => {
         console.error('Error while saving agence:', error);

@@ -1,0 +1,347 @@
+<div class="content-body">
+  <div class="container-fluid">
+    <div class="d-flex align-items-center mb-4 flex-wrap">
+      <h3 class="me-auto">Payment syndec</h3>
+      <div>
+        <a class="btn btn-primary me-3 btn-sm" (click)="initForm()" data-bs-toggle="modal" data-bs-target="#addPaymentSyndec"><i
+            class="fas fa-plus me-2"></i>Add New Payment syndec</a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="table-responsive">
+          <table class="table display mb-4 dataTablesCard job-table table-responsive-xl card-table" id="example5">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Description</th>
+                <th>Proprietaire</th>
+                <th>Montant Paye</th>
+                <th>Type Payment</th>
+                <th>Methode payment</th>
+                <th>Status payment</th>
+                <th class="text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let paymentSyndec of paymentSyndecList">
+                <td>{{ paymentSyndec.id }}</td>
+                <td>{{ paymentSyndec.description }}</td>
+                <td>{{ paymentSyndec.propreitaire }}</td>
+                <td>{{ paymentSyndec.montantPaye }}</td>
+                <td>
+                  <span class="btn btn-sm btn-rounded"
+                    [ngClass]="{'text-success': paymentSyndec.typePaymentSyndecal  === 'FRAIS_GESTION'
+                    , 'text-danger': paymentSyndec.typePaymentSyndecal  === 'FRAIS_MAINTENANCE',
+                    'text-warning': paymentSyndec.typePaymentSyndecal === 'FRONDS_RESERVE'}">
+                    {{ paymentSyndec.typePaymentSyndecal  }}
+                  </span>
+                </td>
+                <td>
+                  <span class="btn btn-sm btn-rounded"
+                    [ngClass]="{'text-success': paymentSyndec.methodePaymentSyndecal  === 'ESPECES'
+                    , 'text-danger': paymentSyndec.methodePaymentSyndecal  === 'VIREMENT_BANCAIRE',
+                    'text-warning': paymentSyndec.methodePaymentSyndecal === 'CHEQUE'}">
+                    {{ paymentSyndec.methodePaymentSyndecal  }}
+                  </span>
+                </td>
+                <td>
+                  <span class="btn btn-sm btn-rounded"
+                    [ngClass]="{'text-success': paymentSyndec.statusPaymentSyndecal  === 'PAYE'
+                    , 'text-danger': paymentSyndec.statusPaymentSyndecal  === 'PAYE_EN_RETARD',
+                    'text-warning': paymentSyndec.statusPaymentSyndecal === 'NO_PAYE'}">
+                    {{ paymentSyndec.statusPaymentSyndecal  }}
+                  </span>
+                </td>
+                <td class="action-btn wspace-no">
+                  <span>
+                    <a href="javascript:void(0);" (click)="editPaymentSyndec(paymentSyndec)" data-bs-toggle="modal"
+                      data-bs-target="#editPaymentSyndec"><i class="fas fa-edit text-warning"></i></a>
+                  </span>
+                  <span>
+                    <a href="javascript:void(0);" (click)="deletePaymentSyndec(paymentSyndec)" data-bs-toggle="modal"
+                      data-bs-target="#deletePaymentSyndec"><i class="far fa-trash-alt text-danger"></i></a>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="d-flex justify-content-between">
+            <button class="btn btn-primary" (click)="previousPage()">Previous</button>
+            <button class="btn btn-primary" (click)="nextPage()">Next</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- payment vente save -->
+<div class="modal fade" id="addPaymentSyndec" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">New Payment Syndec</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="paymentSyndecRequest">
+
+          <div class="mb-3 row">
+            <label for="email" class="col-xl-3 col-md-4 col-form-label">Description<span
+                class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+              <input
+                [class.is-invalid]="paymentSyndecRequest.get('description')?.invalid && paymentSyndecRequest.get('description')?.touched"
+                formControlName="description" type="text" class="form-control" aria-label="description"
+                placeholder="description">
+              <div *ngIf="paymentSyndecRequest.get('description')?.invalid && paymentSyndecRequest.get('description')?.touched"
+                class="text-danger">
+                Description is required.
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3 row">
+            <label for="role" class="col-xl-3 col-md-4 col-form-label">Propreitaire<span
+                class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+              <select [class.is-invalid]="paymentSyndecRequest.get('payerId')?.invalid && paymentSyndecRequest.get('payerId')?.touched"
+                formControlName="payerId" class=" form-control wide">
+                <option value="">-----</option>
+                <option *ngFor="let proprietaie of proprietaires"
+                [value]="proprietaie.id">
+                {{ proprietaie.userDto.firstname + ' , ' + proprietaie.userDto.lastname  }}</option>
+              </select>
+              <div>
+                <div *ngIf="paymentSyndecRequest.get('payerId')?.invalid && paymentSyndecRequest.get('payerId')?.touched"
+                class="text-danger">
+                Proprietaire is required.
+              </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3 row">
+            <label for="email" class="col-xl-3 col-md-4 col-form-label">Montant Paye<span
+                class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+              <input
+                [class.is-invalid]="paymentSyndecRequest.get('montantPaye')?.invalid && paymentSyndecRequest.get('montantPaye')?.touched"
+                formControlName="montantPaye" type="text" class="form-control" aria-label="sujet"
+                placeholder="montant paye">
+              <div *ngIf="paymentSyndecRequest.get('montantPaye')?.invalid && paymentSyndecRequest.get('montantPaye')?.touched"
+                class="text-danger">
+                Montant paye is required.
+              </div>
+            </div>
+          </div>
+
+        <div class="mb-3 row">
+          <label for="role" class="col-xl-3 col-md-4 col-form-label">Type payment syndec<span
+              class="text-danger scale5 ms-2">*</span></label>
+          <div class="col-xl-9 col-md-8">
+            <select [class.is-invalid]="paymentSyndecRequest.get('typePaymentSyndecal')?.invalid && paymentSyndecRequest.get('typePaymentSyndecal')?.touched"
+              formControlName="typePaymentSyndecal" class="form-control wide">
+              <option value="">------</option>
+              <option value="FRAIS_GESTION">Frais gestion</option>
+              <option value="FRAIS_MAINTENANCE">Frais maintenance</option>
+              <option value="FRONDS_RESERVE">Frais reserve</option>
+            </select>
+            <div *ngIf="paymentSyndecRequest.get('typePaymentSyndecal')?.invalid && paymentSyndecRequest.get('typePaymentSyndecal')?.touched"
+            class="text-danger">
+            Type payment syndec is required.
+          </div>
+          </div>
+        </div>
+
+        <div class="mb-3 row">
+          <label for="role" class="col-xl-3 col-md-4 col-form-label">Methode payment syndec<span
+              class="text-danger scale5 ms-2">*</span></label>
+          <div class="col-xl-9 col-md-8">
+            <select [class.is-invalid]="paymentSyndecRequest.get('methodePaymentSyndecal')?.invalid && paymentSyndecRequest.get('methodePaymentSyndecal')?.touched"
+              formControlName="typePaymentContratLoyer" class="form-control wide">
+              <option value="">------</option>
+              <option value="ESPECES">Espece</option>
+              <option value="VIREMENT_BANCAIRE">Virement bancaire</option>
+              <option value="CHEQUE">Cheque</option>
+            </select>
+            <div *ngIf="paymentSyndecRequest.get('methodePaymentSyndecal')?.invalid && paymentSyndecRequest.get('methodePaymentSyndecal')?.touched"
+            class="text-danger">
+            Methode payment is required.
+          </div>
+          </div>
+        </div>
+
+        <div class="mb-3 row">
+          <label for="role" class="col-xl-3 col-md-4 col-form-label">Status payment syndec<span
+              class="text-danger scale5 ms-2">*</span></label>
+          <div class="col-xl-9 col-md-8">
+            <select [class.is-invalid]="paymentSyndecRequest.get('statusPaymentSyndecal')?.invalid && paymentSyndecRequest.get('statusPaymentSyndecal')?.touched"
+              formControlName="statusPaymentSyndecal" class="form-control wide">
+              <option value="">------</option>
+              <option value="PAYE">Paye</option>
+              <option value="PAYE_EN_RETARD">Paye en retard</option>
+              <option value="NO_PAYE">No paye</option>
+            </select>
+            <div *ngIf="paymentSyndecRequest.get('statusPaymentSyndecal')?.invalid && paymentSyndecRequest.get('statusPaymentSyndecal')?.touched"
+            class="text-danger">
+            Status payment is required.
+          </div>
+          </div>
+        </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="onSavePaymentSyndec()">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="editPaymentSyndec" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Update Payment Syndec</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="paymentSyndecRequest">
+
+          <div class="mb-3 row">
+            <label for="email" class="col-xl-3 col-md-4 col-form-label">Description<span
+                class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+              <input
+                [class.is-invalid]="paymentSyndecRequest.get('description')?.invalid && paymentSyndecRequest.get('description')?.touched"
+                formControlName="description" type="text" class="form-control" aria-label="description"
+                placeholder="description">
+              <div *ngIf="paymentSyndecRequest.get('description')?.invalid && paymentSyndecRequest.get('description')?.touched"
+                class="text-danger">
+                Description is required.
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3 row">
+            <label for="role" class="col-xl-3 col-md-4 col-form-label">Propreitaire<span
+                class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+              <select [class.is-invalid]="paymentSyndecRequest.get('payerId')?.invalid && paymentSyndecRequest.get('payerId')?.touched"
+                formControlName="payerId" class=" form-control wide">
+                <option value="">-----</option>
+                <option *ngFor="let proprietaie of proprietaires"
+                [value]="proprietaie.id" [selected]="proprietaie.id === paymentSyndecRequest.value.propreitaireId">
+                {{ proprietaie.userDto.firstname + ' , ' + proprietaie.userDto.lastname  }}</option>
+              </select>
+              <div>
+                <div *ngIf="paymentSyndecRequest.get('payerId')?.invalid && paymentSyndecRequest.get('payerId')?.touched"
+                class="text-danger">
+                Proprietaire is required.
+              </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3 row">
+            <label for="email" class="col-xl-3 col-md-4 col-form-label">Montant Paye<span
+                class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+              <input
+                [class.is-invalid]="paymentSyndecRequest.get('montantPaye')?.invalid && paymentSyndecRequest.get('montantPaye')?.touched"
+                formControlName="montantPaye" type="text" class="form-control" aria-label="sujet"
+                placeholder="montant paye">
+              <div *ngIf="paymentSyndecRequest.get('montantPaye')?.invalid && paymentSyndecRequest.get('montantPaye')?.touched"
+                class="text-danger">
+                Montant paye is required.
+              </div>
+            </div>
+          </div>
+
+        <div class="mb-3 row">
+          <label for="role" class="col-xl-3 col-md-4 col-form-label">Type payment syndec<span
+              class="text-danger scale5 ms-2">*</span></label>
+          <div class="col-xl-9 col-md-8">
+            <select [class.is-invalid]="paymentSyndecRequest.get('typePaymentSyndecal')?.invalid && paymentSyndecRequest.get('typePaymentSyndecal')?.touched"
+              formControlName="typePaymentSyndecal" class="form-control wide">
+              <option value="">------</option>
+              <option value="FRAIS_GESTION" [selected]="'FRAIS_GESTION' === paymentSyndecRequest.value.typePaymentSyndecal">Frais gestion</option>
+              <option value="FRAIS_MAINTENANCE" [selected]="'FRAIS_MAINTENANCE' === paymentSyndecRequest.value.typePaymentSyndecal">Frais maintenance</option>
+              <option value="FRONDS_RESERVE" [selected]="'FRONDS_RESERVE' === paymentSyndecRequest.value.typePaymentSyndecal">Frais reserve</option>
+            </select>
+            <div *ngIf="paymentSyndecRequest.get('typePaymentSyndecal')?.invalid && paymentSyndecRequest.get('typePaymentSyndecal')?.touched"
+            class="text-danger">
+            Type payment syndec is required.
+          </div>
+          </div>
+        </div>
+
+        <div class="mb-3 row">
+          <label for="role" class="col-xl-3 col-md-4 col-form-label">Methode payment syndec<span
+              class="text-danger scale5 ms-2">*</span></label>
+          <div class="col-xl-9 col-md-8">
+            <select [class.is-invalid]="paymentSyndecRequest.get('methodePaymentSyndecal')?.invalid && paymentSyndecRequest.get('methodePaymentSyndecal')?.touched"
+              formControlName="typePaymentContratLoyer" class="form-control wide">
+              <option value="">------</option>
+              <option value="ESPECES" [selected]="'ESPECES' === paymentSyndecRequest.value.methodePaymentSyndecal">Espece</option>
+              <option value="VIREMENT_BANCAIRE" [selected]="'VIREMENT_BANCAIRE' === paymentSyndecRequest.value.methodePaymentSyndecal">Virement bancaire</option>
+              <option value="CHEQUE" [selected]="'CHEQUE' === paymentSyndecRequest.value.methodePaymentSyndecal">Cheque</option>
+            </select>
+            <div *ngIf="paymentSyndecRequest.get('methodePaymentSyndecal')?.invalid && paymentSyndecRequest.get('methodePaymentSyndecal')?.touched"
+            class="text-danger">
+            Status payment is required.
+          </div>
+          </div>
+        </div>
+
+        <div class="mb-3 row">
+          <label for="role" class="col-xl-3 col-md-4 col-form-label">Status payment syndec<span
+              class="text-danger scale5 ms-2">*</span></label>
+          <div class="col-xl-9 col-md-8">
+            <select [class.is-invalid]="paymentSyndecRequest.get('statusPaymentSyndecal')?.invalid && paymentSyndecRequest.get('statusPaymentSyndecal')?.touched"
+              formControlName="statusPaymentSyndecal" class="form-control wide">
+              <option value="">------</option>
+              <option value="PAYE" [selected]="'PAYE' === paymentSyndecRequest.value.statusPaymentSyndecal">Paye</option>
+              <option value="PAYE_EN_RETARD" [selected]="'PAYE_EN_RETARD' === paymentSyndecRequest.value.statusPaymentSyndecal">Paye en retard</option>
+              <option value="NO_PAYE" [selected]="'NO_PAYE' === paymentSyndecRequest.value.statusPaymentSyndecal">No paye</option>
+            </select>
+            <div *ngIf="paymentSyndecRequest.get('statusPaymentSyndecal')?.invalid && paymentSyndecRequest.get('statusPaymentSyndecal')?.touched"
+            class="text-danger">
+            Status payment is required.
+          </div>
+          </div>
+        </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="onSavePaymentSyndec()">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="deletePaymentLoyer" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Delete appartement</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="paymentSyndecRequest">
+          <p class="text-danger">Are you sure , You want to delete this ligne ?</p>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" (click)="onDeletePaymentSyndec()" data-bs-dismiss="modal">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>

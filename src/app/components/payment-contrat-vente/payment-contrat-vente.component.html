@@ -1,0 +1,315 @@
+<div class="content-body">
+  <div class="container-fluid">
+    <div class="d-flex align-items-center mb-4 flex-wrap">
+      <h3 class="me-auto">Payment contract vente</h3>
+      <div>
+        <a class="btn btn-primary me-3 btn-sm" (click)="initForm()" data-bs-toggle="modal" data-bs-target="#addPaymentVente"><i
+            class="fas fa-plus me-2"></i>Add New Payment contract vente</a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="table-responsive">
+          <table class="table display mb-4 dataTablesCard job-table table-responsive-xl card-table" id="example5">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Status payment</th>
+                <th>Contract</th>
+                <th>Montant Paye</th>
+                <th>Montant Reste</th>
+                <th>Type Payment</th>
+                <th>Methode payment</th>
+                <th class="text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let paymentVente of paymentVenteList">
+                <td>{{ paymentVente.id }}</td>
+                <td>
+                  <span class="btn btn-sm btn-rounded"
+                    [ngClass]="{'text-success': paymentVente.statusPaymentContrat  === 'PAYE'
+                    , 'text-danger': paymentVente.statusPaymentContrat  === 'NO_PAYE',
+                     'text-dark': paymentVente.statusPaymentContrat  === 'AVANCE',
+                    'text-warning': paymentVente.statusPaymentContrat === 'PAYE_EN_RETARD'}">
+                    {{ paymentVente.statusPaymentContrat  }}
+                  </span>
+                </td>
+                <td>{{ paymentVente.contrat.refContrat }}</td>
+                <td>{{ paymentVente.montantPaye }}</td>
+                <td>{{ paymentVente.montantRester }}</td>
+                <td>
+                  <span class="btn btn-sm btn-rounded"
+                    [ngClass]="{'btn-dark': paymentVente.typePaymentContratVente  === 'PAYMENT_VENTE'
+                    , 'btn-warning': paymentVente.typePaymentContratVente  === 'PAYMENT_CHARGE'
+                    , 'btn-danger': paymentVente.typePaymentContratVente  === 'PAYMENT_FRAIS_DOSSIER'}">
+                    {{ paymentVente.typePaymentContratVente  }}
+                  </span>
+                </td>
+
+                <td>
+                  <span class="btn btn-sm btn-rounded"
+                    [ngClass]="{'btn-dark': paymentVente.methodePaymentContratVente  === 'ESPECES'
+                    , 'btn-danger': paymentVente.methodePaymentContratVente === 'CHEQUE'}">
+                    {{ paymentVente.methodePaymentContratVente  }}
+                  </span>
+                </td>
+
+                <td class="action-btn wspace-no">
+                  <span>
+                    <a href="javascript:void(0);" (click)="editPaymentVente(paymentVente)" data-bs-toggle="modal"
+                      data-bs-target="#editPaymentVente"><i class="fas fa-edit text-warning"></i></a>
+                  </span>
+                  <span>
+                    <a href="javascript:void(0);" (click)="deletePaymentVente(paymentVente)" data-bs-toggle="modal"
+                      data-bs-target="#deletePaymentVente"><i class="far fa-trash-alt text-danger"></i></a>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="d-flex justify-content-between">
+            <button class="btn btn-primary" (click)="previousPage()">Previous</button>
+            <button class="btn btn-primary" (click)="nextPage()">Next</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- payment vente save -->
+<div class="modal fade" id="addPaymentVente" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">New Payment Contrat loyer</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="paymentVenteRequest">
+          <div class="mb-3 row">
+            <label for="email" class="col-xl-3 col-md-4 col-form-label">Montant Paye<span
+                class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+              <input
+                [class.is-invalid]="paymentVenteRequest.get('montantPaye')?.invalid && paymentVenteRequest.get('montantPaye')?.touched"
+                formControlName="montantPaye" type="text" class="form-control" aria-label="sujet"
+                placeholder="montant paye">
+              <div *ngIf="paymentVenteRequest.get('montantPaye')?.invalid && paymentVenteRequest.get('montantPaye')?.touched"
+                class="text-danger">
+                Montant paye is required.
+              </div>
+            </div>
+          </div>
+
+        <div class="mb-3 row">
+          <label for="role" class="col-xl-3 col-md-4 col-form-label">Status payment contrat<span
+              class="text-danger scale5 ms-2">*</span></label>
+          <div class="col-xl-9 col-md-8">
+            <select [class.is-invalid]="paymentVenteRequest.get('statusPaymentContrat')?.invalid && paymentVenteRequest.get('statusPaymentContrat')?.touched"
+              formControlName="statusPaymentContrat" class="form-control wide">
+              <option value="">------</option>
+              <option value="PAYE">Paye</option>
+              <option value="PAYE_EN_RETARD">Paye en retard</option>
+              <option value="NO_PAYE">No paye</option>
+              <option value="AVANCE">No paye</option>
+            </select>
+            <div *ngIf="paymentVenteRequest.get('statusPaymentContrat')?.invalid && paymentVenteRequest.get('statusPaymentContrat')?.touched"
+            class="text-danger">
+            Status payment contrat is required.
+          </div>
+          </div>
+        </div>
+
+        <div class="mb-3 row">
+          <label for="role" class="col-xl-3 col-md-4 col-form-label">Type payment contrat<span
+              class="text-danger scale5 ms-2">*</span></label>
+          <div class="col-xl-9 col-md-8">
+            <select [class.is-invalid]="paymentVenteRequest.get('typePaymentContratVente')?.invalid && paymentVenteRequest.get('typePaymentContratVente')?.touched"
+              formControlName="typePaymentContratVente" class="form-control wide">
+              <option value="">------</option>
+              <option value="PAYMENT_VENTE">Payment vente</option>
+              <option value="PAYMENT_CHARGE">Payment charge</option>
+              <option value="PAYMENT_FRAIS_DOSSIER">Payment frais dossier</option>
+            </select>
+            <div *ngIf="paymentVenteRequest.get('typePaymentContratVente')?.invalid && paymentVenteRequest.get('typePaymentContratVente')?.touched"
+            class="text-danger">
+            Type payment contrat is required.
+          </div>
+          </div>
+        </div>
+
+        <div class="mb-3 row">
+          <label for="role" class="col-xl-3 col-md-4 col-form-label">Methode payment contrat<span
+              class="text-danger scale5 ms-2">*</span></label>
+          <div class="col-xl-9 col-md-8">
+            <select [class.is-invalid]="paymentVenteRequest.get('methodePaymentContratVente')?.invalid && paymentVenteRequest.get('methodePaymentContratVente')?.touched"
+              formControlName="methodePaymentContratVente" class="form-control wide">
+              <option value="">------</option>
+              <option value="ESPECES">Espece</option>
+              <option value="CHEQUE">Cheque</option>
+            </select>
+            <div *ngIf="paymentVenteRequest.get('methodePaymentContratVente')?.invalid && paymentVenteRequest.get('methodePaymentContratVente')?.touched"
+            class="text-danger">
+            Methode payment contrat is required.
+          </div>
+          </div>
+        </div>
+
+          <div class="mb-3 row">
+            <label for="role" class="col-xl-3 col-md-4 col-form-label">Contrats<span
+                class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+              <select [class.is-invalid]="paymentVenteRequest.get('contratId')?.invalid && paymentVenteRequest.get('contratId')?.touched"
+                formControlName="contratId" class=" form-control wide">
+                <option value="">-----</option>
+                <option *ngFor="let contrat of contrats" [value]="contrat.id">{{ contrat.refContrat }}</option>
+              </select>
+              <div>
+                <div *ngIf="paymentVenteRequest.get('contratId')?.invalid && paymentVenteRequest.get('contratId')?.touched"
+                class="text-danger">
+                Contrat is required.
+              </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="onSavePaymentVente()">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- payment vente edit -->
+<div class="modal fade" id="editPaymentVente" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Update Payment Contrat loyer</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="paymentVenteRequest">
+          <div class="mb-3 row">
+            <label for="email" class="col-xl-3 col-md-4 col-form-label">Montant Paye<span
+                class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+              <input
+                [class.is-invalid]="paymentVenteRequest.get('montantPaye')?.invalid && paymentVenteRequest.get('montantPaye')?.touched"
+                formControlName="montantPaye" type="text" class="form-control" aria-label="sujet"
+                placeholder="montant paye">
+              <div *ngIf="paymentVenteRequest.get('montantPaye')?.invalid && paymentVenteRequest.get('montantPaye')?.touched"
+                class="text-danger">
+                Montant paye is required.
+              </div>
+            </div>
+          </div>
+
+        <div class="mb-3 row">
+          <label for="role" class="col-xl-3 col-md-4 col-form-label">Status payment contrat<span
+              class="text-danger scale5 ms-2">*</span></label>
+          <div class="col-xl-9 col-md-8">
+            <select [class.is-invalid]="paymentVenteRequest.get('statusPaymentContrat')?.invalid && paymentVenteRequest.get('statusPaymentContrat')?.touched"
+              formControlName="statusPaymentContrat" class="form-control wide">
+              <option value="">------</option>
+              <option value="PAYE" [selected]="'PAYE' === paymentVenteRequest.value.statusPaymentContrat">Paye</option>
+              <option value="PAYE_EN_RETARD" [selected]="'PAYE_EN_RETARD' === paymentVenteRequest.value.statusPaymentContrat">Paye en retard</option>
+              <option value="NO_PAYE" [selected]="'NO_PAYE' === paymentVenteRequest.value.statusPaymentContrat">No paye</option>
+              <option value="AVANCE" [selected]="'AVANCE' === paymentVenteRequest.value.statusPaymentContrat">Avance</option>
+            </select>
+            <div *ngIf="paymentVenteRequest.get('statusPaymentContrat')?.invalid && paymentVenteRequest.get('statusPaymentContrat')?.touched"
+            class="text-danger">
+            Status payment contrat is required.
+          </div>
+          </div>
+        </div>
+
+        <div class="mb-3 row">
+          <label for="role" class="col-xl-3 col-md-4 col-form-label">Type payment contrat<span
+              class="text-danger scale5 ms-2">*</span></label>
+          <div class="col-xl-9 col-md-8">
+            <select [class.is-invalid]="paymentVenteRequest.get('typePaymentContratVente')?.invalid && paymentVenteRequest.get('typePaymentContratVente')?.touched"
+              formControlName="typePaymentContratVente" class="form-control wide">
+              <option value="">------</option>
+              <option value="PAYMENT_VENTE" [selected]="'PAYMENT_VENTE' === paymentVenteRequest.value.typePaymentContratVente">Payment vente</option>
+              <option value="PAYMENT_CHARGE" [selected]="'PAYMENT_CHARGE' === paymentVenteRequest.value.typePaymentContratVente">Payment charge</option>
+              <option value="PAYMENT_FRAIS_DOSSIER" [selected]="'PAYMENT_FRAIS_DOSSIER' === paymentVenteRequest.value.typePaymentContratVente">Payment frais dossier</option>
+            </select>
+            <div *ngIf="paymentVenteRequest.get('typePaymentContratVente')?.invalid && paymentVenteRequest.get('typePaymentContratVente')?.touched"
+            class="text-danger">
+            Type payment contrat is required.
+          </div>
+          </div>
+        </div>
+
+        <div class="mb-3 row">
+          <label for="role" class="col-xl-3 col-md-4 col-form-label">Methode payment contrat<span
+              class="text-danger scale5 ms-2">*</span></label>
+          <div class="col-xl-9 col-md-8">
+            <select [class.is-invalid]="paymentVenteRequest.get('methodePaymentContratVente')?.invalid && paymentVenteRequest.get('methodePaymentContratVente')?.touched"
+              formControlName="methodePaymentContratVente" class="form-control wide">
+              <option value="">------</option>
+              <option value="ESPECES"  [selected]="'ESPECES' === paymentVenteRequest.value.methodePaymentContratVente">Espece</option>
+              <option value="CHEQUE" [selected]="'CHEQUE' === paymentVenteRequest.value.methodePaymentContratVente">Cheque</option>
+            </select>
+            <div *ngIf="paymentVenteRequest.get('methodePaymentContratVente')?.invalid && paymentVenteRequest.get('methodePaymentContratVente')?.touched"
+            class="text-danger">
+            Methode payment contrat is required.
+          </div>
+          </div>
+        </div>
+
+          <div class="mb-3 row">
+            <label for="role" class="col-xl-3 col-md-4 col-form-label">Contrats<span
+                class="text-danger scale5 ms-2">*</span></label>
+            <div class="col-xl-9 col-md-8">
+              <select [class.is-invalid]="paymentVenteRequest.get('contratId')?.invalid && paymentVenteRequest.get('contratId')?.touched"
+                formControlName="contratId" class=" form-control wide">
+                <option value="">-----</option>
+                <option *ngFor="let contrat of contrats" [value]="contrat.id"
+                [selected]="contrat.id === paymentVenteRequest.value.contratId">{{ contrat.refContrat }}</option>
+              </select>
+              <div>
+                <div *ngIf="paymentVenteRequest.get('contratId')?.invalid && paymentVenteRequest.get('contratId')?.touched"
+                class="text-danger">
+                Contrat is required.
+              </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="onSavePaymentVente()">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="deletePaymentLoyer" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Delete appartement</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="paymentVenteRequest">
+          <p class="text-danger">Are you sure , You want to delete this ligne ?</p>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" (click)="onDeletePaymentVente()" data-bs-dismiss="modal">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>

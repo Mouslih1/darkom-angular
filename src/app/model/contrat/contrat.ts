@@ -3,6 +3,7 @@ import { TypeContrat } from "./type-contrat";
 export interface Contrat {
 
   id: number;
+  refContrat: string ;
   typeContrat: TypeContrat;
   dateSignature: Date;
   appartementId: number;

@@ -6,6 +6,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { LoggerUser } from 'src/app/model/authentification/logged-user';
 import { LoginRequest } from 'src/app/model/authentification/login-request';
 import { LoginResponse } from 'src/app/model/authentification/login-response';
+import { UserResponse } from 'src/app/model/user/user-response';
 
 @Injectable({
   providedIn: 'root'
@@ -59,14 +60,14 @@ export class AuthentificationService {
       this.router.navigateByUrl("dashboard").then(() => {
         window.location.reload();
       });
-    } else if(decodedToken.roles.includes("PROPREITAIRE"))
+    } else if(decodedToken.roles.includes("PROPRIETAIRE"))
     {
-      this.router.navigateByUrl("dashboard").then(() => {
+      this.router.navigateByUrl("plaintes").then(() => {
         window.location.reload();
       });
     } else if(decodedToken.roles.includes("SYNDEC"))
     {
-      this.router.navigateByUrl("dashboard").then(() => {
+      this.router.navigateByUrl("travaux").then(() => {
         window.location.reload();
       });
     }
@@ -103,6 +104,28 @@ export class AuthentificationService {
     if(loadedUser.token)
     {
       this.user.next(loadedUser);
+      this.autoLogout(loadedUser._expiration.valueOf() - new Date().valueOf())
+    }
+  }
+
+  refreshLocalStorage(user : UserResponse)
+  {
+    const userData: {
+      id: number,
+      username: string,
+      roles: string[],
+      _token: string,
+      _expiration: Date
+    } = JSON.parse(localStorage.getItem('userData')!);
+
+    if(!userData) return;
+
+    const loadedUser = new LoggerUser(userData.id, user.userDto.username, userData.roles, userData._token, new Date(userData._expiration));
+
+    if(loadedUser.token)
+    {
+      this.user.next(loadedUser);
+      localStorage.setItem('userData', JSON.stringify(loadedUser));
       this.autoLogout(loadedUser._expiration.valueOf() - new Date().valueOf())
     }
   }

@@ -35,9 +35,9 @@ export class UserService {
     );
   }
 
-  updateUserInfo(user: UserRequest) :  Observable<Object>
+  updateUserInfo(user: UserRequest) :  Observable<UserResponse>
   {
-    return this.httpClient.put(this.baseURL + '/update/logged' , user).pipe(
+    return this.httpClient.put<UserResponse>(this.baseURL + '/update/logged' , user).pipe(
       tap(() => {
         this.loggedUser().subscribe();
       })

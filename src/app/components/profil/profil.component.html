@@ -113,15 +113,16 @@
                                     <div class="mb-3 col-md-6">
                                       <label class="form-label">Username</label>
                                       <input [class.is-invalid]="userData.get('username')?.invalid && userData.get('username')?.touched"
-                                       type="text" formControlName="username" placeholder="John" class="form-control">
+                                       type="text"[value]="loggedInfo.userDto.agenceId" formControlName="username" placeholder="John" class="form-control">
                                       <div *ngIf="userData.get('username')?.invalid && userData.get('username')?.touched" class="text-danger">
                                         Username is required.
                                       </div>
                                     </div>
+                                    <input type="hidden" formControlName="role">
                                     <div class="col-md-6">
                                       <label class="form-label">Birth</label>
                                       <input [class.is-invalid]="userData.get('dateNaissance')?.invalid && userData.get('dateNaissance')?.touched"
-                                      class="form-control" type="date" value="{{ loggedInfo.userDto.dateNaissance }}" formControlName="dateNaissance" placeholder="YYYY-MM-DD">
+                                      class="form-control" type="date" formControlName="dateNaissance" placeholder="YYYY-MM-DD">
                                       <div *ngIf="userData.get('dateNaissance')?.invalid && userData.get('dateNaissance')?.touched" class="text-danger">
                                         Birth is required.
                                       </div>

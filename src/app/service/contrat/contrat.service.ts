@@ -36,4 +36,9 @@ export class ContratService {
   {
     return this.httpClient.delete(this.baseURL + '/' + id);
   }
+
+  getById(id: number) : Observable<Contrat>
+  {
+    return this.httpClient.get<Contrat>(this.baseURL + '/' + id);
+  }
 }

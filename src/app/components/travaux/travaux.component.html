@@ -83,7 +83,7 @@
               <input
                 [class.is-invalid]="travauxRequest.get('sujet')?.invalid && travauxRequest.get('sujet')?.touched"
                 formControlName="sujet" type="text" class="form-control" aria-label="sujet"
-                placeholder="Sujet Travaux">
+                placeholder="sujet travaux">
               <div *ngIf="travauxRequest.get('sujet')?.invalid && travauxRequest.get('sujet')?.touched"
                 class="text-danger">
                 Plainte is required.
@@ -95,7 +95,7 @@
             <div class="col-xl-9 col-md-8">
                 <textarea [class.is-invalid]="travauxRequest.get('description')?.invalid && travauxRequest.get('description')?.touched"
                     formControlName="description" class="form-control" aria-label="description"
-                    placeholder="Description Travaux"></textarea>
+                    placeholder="description travaux"></textarea>
                 <div *ngIf="travauxRequest.get('description')?.invalid && travauxRequest.get('description')?.touched"
                     class="text-danger">
                     Description is required.
@@ -126,7 +126,7 @@
             <input
             [class.is-invalid]="travauxRequest.get('dateDebut')?.invalid && travauxRequest.get('dateDebut')?.touched"
             formControlName="dateDebut" type="date" class="form-control" aria-label="dateDebut"
-            placeholder="Date Start">
+            placeholder="date start">
               <div
               *ngIf="travauxRequest.get('dateDebut')?.invalid && travauxRequest.get('dateDebut')?.touched"
               class="text-danger">
@@ -150,12 +150,28 @@
             </div>
           </div>
         </div>
+        <div class="mb-3 row">
+          <label for="phone" class="col-xl-3 col-md-4 col-form-label">Montant<span
+              class="text-danger scale5 ms-2">*</span></label>
+          <div class="col-xl-9 col-md-8">
+
+            <input
+            [class.is-invalid]="travauxRequest.get('montant')?.invalid && travauxRequest.get('montant')?.touched"
+            formControlName="montant" type="number" class="form-control" aria-label="montant"
+            placeholder="montant">
+              <div
+              *ngIf="travauxRequest.get('montant')?.invalid && travauxRequest.get('montant')?.touched"
+              class="text-danger">
+              Montant is required.
+            </div>
+          </div>
+        </div>
           <div class="mb-3 row">
             <label for="role" class="col-xl-3 col-md-4 col-form-label">Immeubles<span
                 class="text-danger scale5 ms-2">*</span></label>
             <div class="col-xl-9 col-md-8">
               <select [class.is-invalid]="travauxRequest.get('immeubleId')?.invalid && travauxRequest.get('immeubleId')?.touched"
-                formControlName="immeubleId" class=" form-control wide">
+                formControlName="immeubleId" placeholder="immeubles" class=" form-control wide">
                 <option value="">-----</option>
                 <option *ngFor="let immeuble of immeubles" [value]="immeuble.id">{{ immeuble.referenceImmeuble }}</option>
               </select>
@@ -176,8 +192,9 @@
     </div>
   </div>
 </div>
-<!-- Travaux save -->
-<div class="modal fade" id="addTravaux" tabindex="-1" role="dialog" aria-hidden="true">
+
+<!-- Travaux edit -->
+<div class="modal fade" id="editTravaux" abindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
@@ -193,7 +210,7 @@
               <input
                 [class.is-invalid]="travauxRequest.get('sujet')?.invalid && travauxRequest.get('sujet')?.touched"
                 formControlName="sujet" type="text" class="form-control" aria-label="sujet"
-                placeholder="Sujet Travaux">
+                placeholder="sujet travaux">
               <div *ngIf="travauxRequest.get('sujet')?.invalid && travauxRequest.get('sujet')?.touched"
                 class="text-danger">
                 Plainte is required.
@@ -205,7 +222,7 @@
             <div class="col-xl-9 col-md-8">
                 <textarea [class.is-invalid]="travauxRequest.get('description')?.invalid && travauxRequest.get('description')?.touched"
                     formControlName="description" class="form-control" aria-label="description"
-                    placeholder="Description Travaux"></textarea>
+                    placeholder="description travaux"></textarea>
                 <div *ngIf="travauxRequest.get('description')?.invalid && travauxRequest.get('description')?.touched"
                     class="text-danger">
                     Description is required.
@@ -236,7 +253,7 @@
             <input
             [class.is-invalid]="travauxRequest.get('dateDebut')?.invalid && travauxRequest.get('dateDebut')?.touched"
             formControlName="dateDebut" type="date" class="form-control" aria-label="dateDebut"
-            placeholder="Date Start">
+            placeholder="date start">
               <div
               *ngIf="travauxRequest.get('dateDebut')?.invalid && travauxRequest.get('dateDebut')?.touched"
               class="text-danger">
@@ -252,11 +269,27 @@
             <input
             [class.is-invalid]="travauxRequest.get('dateFin')?.invalid && travauxRequest.get('dateFin')?.touched"
             formControlName="dateFin" type="date" class="form-control" aria-label="dateFin"
-            placeholder="Date End">
+            placeholder="date end">
               <div
               *ngIf="travauxRequest.get('dateFin')?.invalid && travauxRequest.get('dateFin')?.touched"
               class="text-danger">
               Date End is required.
+            </div>
+          </div>
+        </div>
+        <div class="mb-3 row">
+          <label for="phone" class="col-xl-3 col-md-4 col-form-label">Montant<span
+              class="text-danger scale5 ms-2">*</span></label>
+          <div class="col-xl-9 col-md-8">
+
+            <input
+            [class.is-invalid]="travauxRequest.get('montant')?.invalid && travauxRequest.get('montant')?.touched"
+            formControlName="montant" type="number" class="form-control" aria-label="montant"
+            placeholder="montant">
+              <div
+              *ngIf="travauxRequest.get('montant')?.invalid && travauxRequest.get('montant')?.touched"
+              class="text-danger">
+              Montant is required.
             </div>
           </div>
         </div>
@@ -282,13 +315,13 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" (click)="onSaveTravaux()">Save changes</button>
+        <button type="button" class="btn btn-primary" (click)="onUpdateTravaux()">Save changes</button>
       </div>
     </div>
   </div>
 </div>
 
-<div class="modal fade" id="deleteEvent" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="deleteTravaux" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">

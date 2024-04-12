@@ -14,6 +14,10 @@ import { ContratComponent } from './components/contrat/contrat.component';
 import { EvenementComponent } from './components/evenement/evenement.component';
 import { PlainteComponent } from './components/plainte/plainte.component';
 import { TravauxComponent } from './components/travaux/travaux.component';
+import { PaymentContratLoyerComponent } from './components/payment-contrat-loyer/payment-contrat-loyer.component';
+import { PaymentContratVenteComponent } from './components/payment-contrat-vente/payment-contrat-vente.component';
+import { PaymentSyndecComponent } from './components/payment-syndec/payment-syndec.component';
+import { AuthentificationGuardService } from './service/authentification/authentification.guard.service';
 
 const routes: Routes = [
   { path: 'login', component: AuthentificationComponent},
@@ -24,17 +28,20 @@ const routes: Routes = [
     path: '',
     component: AppLayoutComponent,
     children: [
-      { path: 'dashboard', component: DashboardComponent},
-      { path: 'agences', component: AgenceListComponent},
-      { path: 'users', component: UserComponent},
-      { path: 'users-admin', component: UserAdminComponent},
-      { path: 'immeubles', component: ImmeubleComponent},
-      { path: 'appartements', component: AppartmentComponent},
-      { path: 'contracts', component: ContratComponent},
-      { path: 'evenements', component: EvenementComponent},
-      { path: 'plaintes', component: PlainteComponent},
-      { path: 'travaux', component: TravauxComponent},
-      { path: 'profile', component: ProfilComponent}
+      { path: 'dashboard', component: DashboardComponent, canActivate: [AuthentificationGuardService], data : { role:['ADMIN', 'AGENT']}},
+      { path: 'agences', component: AgenceListComponent, canActivate: [AuthentificationGuardService], data : { role:['ADMIN']}},
+      { path: 'users', component: UserComponent, canActivate: [AuthentificationGuardService], data : { role:['AGENT']}},
+      { path: 'users-admin', component: UserAdminComponent, canActivate: [AuthentificationGuardService], data : { role:['ADMIN']}},
+      { path: 'immeubles', component: ImmeubleComponent, canActivate: [AuthentificationGuardService], data : { role:['AGENT']}},
+      { path: 'appartements', component: AppartmentComponent, canActivate: [AuthentificationGuardService], data : { role:['AGENT']}},
+      { path: 'contracts', component: ContratComponent, canActivate: [AuthentificationGuardService], data : { role:['AGENT']}},
+      { path: 'evenements', component: EvenementComponent,canActivate: [AuthentificationGuardService], data : { role:['PROPRIETAIRE', 'SYNDEC']}},
+      { path: 'plaintes', component: PlainteComponent , canActivate: [AuthentificationGuardService], data : { role:['PROPRIETAIRE', 'SYNDEC']}},
+      { path: 'travaux', component: TravauxComponent, canActivate: [AuthentificationGuardService], data : { role:['SYNDEC']}},
+      { path: 'payment-contracts-loyer', component: PaymentContratLoyerComponent, canActivate: [AuthentificationGuardService], data : { role:['AGENT']}},
+      { path: 'payment-contracts-vente', component: PaymentContratVenteComponent, canActivate: [AuthentificationGuardService], data : { role:['AGENT']}},
+      { path: 'payment-syndec', component: PaymentSyndecComponent, canActivate: [AuthentificationGuardService], data : { role:['PROPRIETAIRE', 'SYNDEC']}},
+      { path: 'profile', component: ProfilComponent, canActivate: [AuthentificationGuardService], data : { role:['PROPRIETAIRE', 'SYNDEC', 'ADMIN', 'AGENT']}}
     ]
   },
 

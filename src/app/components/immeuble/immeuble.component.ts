@@ -79,7 +79,8 @@ export class ImmeubleComponent implements OnInit {
     }
   }
 
-  onUpdateImmeuble() {
+  onUpdateImmeuble()
+  {
     this.markFormGroupTouched(this.immeubleRequest);
 
     if (this.immeubleRequest.valid) {

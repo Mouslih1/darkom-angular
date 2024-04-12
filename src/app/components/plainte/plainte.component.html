@@ -71,7 +71,7 @@
 
 
 <!-- plainte save -->
-<div class="modal fade" id="addEvent" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="addPlainte" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
@@ -90,7 +90,7 @@
                 placeholder="Sujet plainte">
               <div *ngIf="plainteRequest.get('sujet')?.invalid && plainteRequest.get('sujet')?.touched"
                 class="text-danger">
-                Plainte is required.
+                Sujet is required.
               </div>
             </div>
           </div>
@@ -128,7 +128,7 @@
               class="text-danger scale5 ms-2">*</span></label>
           <div class="col-xl-9 col-md-8">
             <select [class.is-invalid]="plainteRequest.get('urgence')?.invalid && plainteRequest.get('urgence')?.touched"
-              formControlName="statusPlainte" class="form-control wide">
+              formControlName="urgence" class="form-control wide">
               <option value="">------</option>
               <option value="ELEVE">High</option>
               <option value="FAIBLE">Low</option>
@@ -168,7 +168,7 @@
 </div>
 
 <!-- plainte edit -->
-<div class="modal fade" id="editEvent" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="editPlainte" abindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
@@ -225,7 +225,7 @@
               class="text-danger scale5 ms-2">*</span></label>
           <div class="col-xl-9 col-md-8">
             <select [class.is-invalid]="plainteRequest.get('urgence')?.invalid && plainteRequest.get('urgence')?.touched"
-              formControlName="statusPlainte" class="form-control wide">
+              formControlName="urgence" class="form-control wide">
               <option value="">------</option>
               <option value="ELEVE" [selected]="'ELEVE' === plainteRequest.value.statusPlainte">High</option>
               <option value="FAIBLE" [selected]="'FAIBLE' === plainteRequest.value.statusPlainte">Low</option>
@@ -266,7 +266,7 @@
 </div>
 
 
-<div class="modal fade" id="deleteEvent" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="deletePlainte" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">

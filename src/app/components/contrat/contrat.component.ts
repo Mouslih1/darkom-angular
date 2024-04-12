@@ -93,10 +93,13 @@ export class ContratComponent implements OnInit {
     });
   }
 
-  allPropreitaires() {
+  allPropreitaires()
+  {
     this.userService.all(0, 100000).subscribe((response) => {
-      this.propreitaires = response.filter(user => user.userDto.role === "PROPRIETAIRE");
-      console.log('Propriétaires :', this.propreitaires);
+        this.propreitaires = response.filter(user =>
+            user.userDto.role.includes("PROPRIETAIRE") && user.userDto.role.includes("SYNDEC")
+        );
+        console.log('Propriétaires avec le rôle PROPREITAIRE et SYNDEC :', this.propreitaires);
     });
   }
 
@@ -123,74 +126,44 @@ export class ContratComponent implements OnInit {
     }
   }
 
-  // onSaveAppartment()
-  // {
-  //   console.log('aaaaaaaaaaaaaaaaaa',this.appartmentRequest);
+  onUpdateContrat()
+  {
+    this.markFormGroupTouched(this.contratRequest);
 
-  //   this.markFormGroupTouched(this.appartmentRequest);
+    if (this.contratRequest.valid)
+    {
+      this.contratService.updateContrat(
+        this.contratRequest.value.id,
+        this.contratRequest.value
+      ).subscribe(
+        (response) => {
+          this.all();
+          this.toastr.success('Contrat updated successfully.');
+        },
+        (error) => {
+          console.log('error ', error);
+          this.toastr.error('Something went wrong, please try again.');
+        }
+      );
+    }
+  }
 
-  //   if (this.appartmentRequest.valid) {
-  //     this.appartmentService.saveAppartement(this.appartmentRequest.value).subscribe(
-  //       (response) => {
-  //         console.log('Appartement saved successfully.',response);
+  onDeleteContrat()
+  {
+    console.log('this.contratRequest.value : ', this.contratRequest.value);
+    this.contratService.deleteContrat(
+      this.contratRequest.value.id
+    ).subscribe((response) => {
+      console.log('Contrat deleted successfully:', response);
+      this.all();
+      this.toastr.success("Contrat deleted successfully.");
 
-  //         this.all();
-  //         this.appartmentRequest.reset();
-  //         this.toastr.success('Appartement saved successfully.');
-  //       },
-  //       (error) => {
-  //         console.log('error ', error);
-  //         if (error && error.error && error.error.message.includes("This immeuble can get juste 3 appartement")) {
-  //           this.toastr.error('This immeuble can get juste 3 appartement, It is full !');
-  //         } else {
-  //           this.toastr.error('Something went wrong, please try again.');
-  //         }
-  //       }
-  //     );
-  //   }
-  // }
-
-  // onUpdateAppartement()
-  // {
-  //   this.markFormGroupTouched(this.appartmentRequest);
-
-  //   if (this.appartmentRequest.valid) {
-  //     this.appartmentService.updateAppartement(
-  //       this.appartmentRequest.value.id,
-  //       this.appartmentRequest.value
-  //     ).subscribe(
-  //       (response) => {
-  //         this.all();
-  //         this.toastr.success('Appartement updated successfully.');
-  //       },
-  //       (error) => {
-  //         console.log('error ', error);
-  //         if (error && error.error && error.error.message.includes("This immeuble can get juste 3 appartement")) {
-  //           this.toastr.error('This immeuble can get juste 3 appartement, It is full !');
-  //         } else {
-  //           this.toastr.error('Something went wrong, please try again.');
-  //         }
-  //       }
-  //     );
-  //   }
-  // }
-
-  // onDeleteAppartement()
-  // {
-  //   console.log('this.agenceRequest.value : ', this.appartmentRequest.value);
-  //   this.appartmentService.deleteAppartement(
-  //     this.appartmentRequest.value.id
-  //   ).subscribe((response) => {
-  //     console.log('Appartement deleted successfully:', response);
-  //     this.all();
-  //     this.toastr.success("Appartement deleted successfully.");
-
-  //   },
-  //     (error) => {
-  //       console.error('Error while delete appartement:', error);
-  //       this.toastr.error("Something went wrong please try again.")
-  //     });
-  // }
+    },
+      (error) => {
+        console.error('Error while delete appartement:', error);
+        this.toastr.error("Something went wrong please try again.")
+      });
+  }
 
   previousPage()
   {
@@ -235,7 +208,7 @@ export class ContratComponent implements OnInit {
       propreitaireId: contrat.propreitaireId
     });
 
-    console.log('Appartement modifié : ', this.contratRequest.value);
+    console.log('Contrat modifié : ', this.contratRequest.value);
   }
 
   deleteContrat(contrat: Contrat)
