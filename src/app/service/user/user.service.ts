@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject, tap } from 'rxjs';
 import { UserPasswordDto } from 'src/app/model/user/user-password-dto';
@@ -104,5 +104,24 @@ export class UserService {
   updatePhotoProfilById(id: number, userPhoto: FormData) : Observable<Object>
   {
     return this.httpClient.put(this.baseURL + '/photo/' + id, userPhoto);
+  }
+
+  forgotPassword(email: string): Observable<any>
+  {
+    let params = new HttpParams().set('email', email);
+    return this.httpClient.put<any>(this.baseURL + '/forgot-password', null, { params: params });
+  }
+
+  setPassword(email: string, newPassword: string): Observable<any>
+  {
+    let params = new HttpParams();
+    params = params.append('email', email.toString());
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'newPassword': newPassword
+    });
+
+    return this.httpClient.put<any>(this.baseURL + '/set-password',{ headers , params: params });
   }
 }

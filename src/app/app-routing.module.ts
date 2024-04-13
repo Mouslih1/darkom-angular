@@ -18,8 +18,10 @@ import { PaymentContratLoyerComponent } from './components/payment-contrat-loyer
 import { PaymentContratVenteComponent } from './components/payment-contrat-vente/payment-contrat-vente.component';
 import { PaymentSyndecComponent } from './components/payment-syndec/payment-syndec.component';
 import { AuthentificationGuardService } from './service/authentification/authentification.guard.service';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 
 const routes: Routes = [
+  { path: 'login/forgot-password', component: ForgotPasswordComponent},
   { path: 'login', component: AuthentificationComponent},
   { path: 'not-found', component: NotFoundComponent},
   { path: '', redirectTo: 'login', pathMatch: 'full'},

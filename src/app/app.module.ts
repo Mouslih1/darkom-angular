@@ -32,6 +32,8 @@ import { TravauxComponent } from './components/travaux/travaux.component';
 import { PaymentContratLoyerComponent } from './components/payment-contrat-loyer/payment-contrat-loyer.component';
 import { PaymentContratVenteComponent } from './components/payment-contrat-vente/payment-contrat-vente.component';
 import { PaymentSyndecComponent } from './components/payment-syndec/payment-syndec.component';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
+import { SetPasswordComponent } from './components/set-password/set-password.component';
 
 @NgModule({
   declarations: [
@@ -56,6 +58,8 @@ import { PaymentSyndecComponent } from './components/payment-syndec/payment-synd
     PaymentContratLoyerComponent,
     PaymentContratVenteComponent,
     PaymentSyndecComponent,
+    ForgotPasswordComponent,
+    SetPasswordComponent,
   ],
   imports: [
     BrowserModule,

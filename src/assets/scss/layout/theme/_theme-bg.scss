@@ -17,7 +17,7 @@
 							fill:$white;
 						}
 						tspan{
-							fill:$white;	
+							fill:$white;
 						}
 					}
 				}
@@ -35,26 +35,26 @@
 					}
 				}
 			}
-			
+
 			//special work for color
 			&[data-nav-headerbg="color_8"]{
 				.nav-header{
 					.brand-logo{
 						.brand-title{
 							path{
-								fill:$black;		
+								fill:$black;
 							}
 							tspan{
-								fill:$black;	
+								fill:$black;
 							}
-						}	
+						}
 					}
 					.hamburger .line{
 						background:$black;
 					}
 				}
 			}
-			
+
 		}
 	}
 }
@@ -64,7 +64,7 @@
     [data-sibebarbg="#{$name}"] {
         @if $name != "color_1"  {
 			--sidebar-bg: #{$color};
-			
+
 			/* .hamburger .line{
 				background:$white;
 			} */
@@ -74,7 +74,7 @@
 			.dlabnav .metismenu ul a:before{
 				background:rgba($white,0.5);
 			}
-			
+
 			&[data-sidebar-style="full"][data-layout="vertical"]{
 				.dlabnav {
 					.metismenu{
@@ -86,8 +86,8 @@
 									}
 								}
 							}
-						}				
-					} 
+						}
+					}
 				}
 			}
 			&[data-sidebar-style="mini"],
@@ -100,7 +100,7 @@
 					.metismenu li ul{
 						background-color: lighten($color: $color, $amount: 10%);
 					}
-				} 
+				}
 				.dlabnav .metismenu > li.mm-active > a,
 				.dlabnav .metismenu > li:hover > a{
 						background:rgba($white,0.15)!important;
@@ -110,7 +110,7 @@
 				.dlabnav .metismenu > li.mm-active > a,
 				.dlabnav .metismenu > li:hover > a{
 						background:transparent;
-				}	
+				}
 			} */
 			&[data-sidebar-style="compact"][data-layout="vertical"]{
 				.dlabnav {
@@ -180,15 +180,15 @@
 					}
 					.has-arrow:after{
 						border-color: rgba($white,0.85) transparent transparent rgba($white,0.85)!important;
-					}					
-				} 
+					}
+				}
 				.header-info2 span{
 					color: $white;
 				}
 				.sidebar-info{
-					color: $white; 
+					color: $white;
 					i{
-						color: $white!important; 		
+						color: $white!important;
 					}
 				}
 			}
@@ -232,14 +232,14 @@
 									&:before{
 										background:rgba($black,0.6)!important;
 									}
-									
-									
-								}	
+
+
+								}
 							}
 						}
 					}
 					.copyright p{
-						color:rgba($black,0.6);							
+						color:rgba($black,0.6);
 					}
 					.book-box{
 						background: rgba($black,0.4);
@@ -248,16 +248,16 @@
 					color: rgba($black,0.6)
 					}
 					.sidebar-info{
-						color: rgba($black,0.6); 
+						color: rgba($black,0.6);
 						i{
-							color: rgba($black,0.6) 		
+							color: rgba($black,0.6)
 						}
 					}
-				} 
-				
+				}
+
 				 .plus-box{
-					background-color:rgba($black,0.4);	
-				} 
+					background-color:rgba($black,0.4);
+				}
 			}
 		}
 	}
@@ -285,12 +285,12 @@
 					}
 				}
 				.dashboard_bar{
-					color:$white;	
+					color:$white;
 				}
 				.plus-icon a{
-					background-color: lighten($color: $color, $amount: 10%);	
+					background-color: lighten($color: $color, $amount: 10%);
 				}
-					
+
 			}
 			.header-right{
 				svg{
@@ -303,14 +303,14 @@
 				}
 			}
 			.header-profile > a.nav-link .header-info small, .header-profile > a.nav-link .header-info span{
-				color:$white;	
+				color:$white;
 			}
 			.hamburger .line{
 				background:$white!important;
 				}
 			//special work for color
 			&[data-headerbg="color_8"]{
-					
+
 				.search-area .input-group-text,
 				.search-area .form-control,.search-area .form-control::placeholder{
 					color:$black;
@@ -324,26 +324,26 @@
 						}
 					}
 					.dashboard_bar{
-						color:$black;	
+						color:$black;
 					}
 					.plus-icon a{
-						background-color:$black;	
+						background-color:$black;
 					}
-					
+
 				}
 				.hamburger .line{
 					background:$black;
 					}
-				
+
 				.header-right{
 				svg{
 					path{
-						fill:rgba($black,0.4);	
+						fill:rgba($black,0.4);
 					}
 				}
 			}
-			}	
-			
+			}
+
 		}
 	}
 }
