@@ -1,4 +1,15 @@
 <div class="content-body">
+  <div class="container-fluid">
+    <div class="d-flex align-items-center flex-wrap search-job bg-white mb-4">
+      <div class="col-xl-8 col-xxl-6 col-lg-6 col-12 d-md-flex job-title-search pe-0">
+        <div class="input-group search-area">
+          <input type="text" name="search" [(ngModel)]='searchText' class="form-control h-auto" placeholder="Search user here...">
+          <span class="input-group-text">
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
   <!-- row -->
   <div class="container-fluid">
     <div class="d-flex align-items-center mb-4 flex-wrap">
@@ -31,7 +42,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let user of userList">
+              <tr *ngFor="let user of userList | filter:searchText">
                 <td>{{ user.userDto.id }}</td>
                 <td>
                   <img *ngIf="user.medias.length > 0" [src]="user.medias[0].uri" alt="Media" style="max-width: 100px;">

@@ -34,7 +34,8 @@ export class TopbarComponent implements OnInit, OnDestroy {
     this.loggedUser();
   }
 
-  getNotificationByloggedUser() {
+  getNotificationByloggedUser()
+  {
     this.userSub = this.authService.user.subscribe(loggerUser => {
       if (loggerUser && loggerUser.id) {
         this.currentUser = loggerUser.id;
@@ -43,7 +44,8 @@ export class TopbarComponent implements OnInit, OnDestroy {
           this.notificationsList = [];
           notif.forEach(item => {
             const notificationKey = item.key;
-            if (notificationKey) {
+            if (notificationKey)
+            {
               const notificationData = item.payload.val() as NotificationData;
               const date = new Date(notificationData.createdAt);
 

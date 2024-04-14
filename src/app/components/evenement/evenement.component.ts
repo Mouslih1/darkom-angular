@@ -20,6 +20,7 @@ export class EvenementComponent implements OnInit {
   pageNo = 0;
   pageSize = 10;
   totalPages = 0;
+  searchText: any;
 
 
   constructor(
@@ -162,7 +163,7 @@ export class EvenementComponent implements OnInit {
     console.log(this.totalPages);
     console.log(this.pageNo);
 
-    if (this.pageNo + 1 < this.totalPages) {
+    if (this.pageNo <= this.totalPages) {
       this.pageNo++;
       this.all();
     }

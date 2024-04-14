@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { Subscription } from 'rxjs';
+import { LoggerUser } from 'src/app/model/authentification/logged-user';
 import { PaymentSyndec } from 'src/app/model/payment/payment-syndec';
+import { AuthentificationService } from 'src/app/service/authentification/authentification.service';
 import { PaymentSyndecService } from 'src/app/service/payment/payment-syndec.service';
 import { UserService } from 'src/app/service/user/user.service';
 
@@ -20,6 +23,11 @@ export class PaymentSyndecComponent implements OnInit {
   pageNo = 0;
   pageSize = 10;
   totalPages = 0;
+  searchText: any;
+
+  userSub!:  Subscription;
+  isAgent = false;
+  roles!: string[];
 
 
   constructor(
@@ -27,6 +35,7 @@ export class PaymentSyndecComponent implements OnInit {
     private userService: UserService,
     private paymentSyndecService: PaymentSyndecService,
     private toastr: ToastrService,
+    private authService: AuthentificationService
   ) { }
 
   ngOnInit(): void
@@ -34,6 +43,7 @@ export class PaymentSyndecComponent implements OnInit {
     this.initForm();
     this.all();
     this.allPropreitaires();
+    this.userPermision();
   }
 
   initForm()
@@ -60,12 +70,9 @@ export class PaymentSyndecComponent implements OnInit {
           this.userService.getUserbyId(paymentSyndec.payerId).subscribe((response) => {
             console.log('user info get By Id : ', response);
 
-            // if(response.userDto.role.includes("PROPRIETAIRE") && response.userDto.role.includes("SYNDEC"))
-            // {
               paymentSyndec.propreitaire = response;
               tempList.push(paymentSyndec);
               console.log("Payment syndec  : ", paymentSyndec);
-            // }
           });
         });
 
@@ -85,7 +92,7 @@ export class PaymentSyndecComponent implements OnInit {
   {
     this.userService.all(0, 100000).subscribe((response) => {
         this.proprietaires = response.filter(user =>
-            user.userDto.role.includes("PROPRIETAIRE") && user.userDto.role.includes("SYNDEC")
+            user.userDto.role.includes("PROPRIETAIRE") || user.userDto.role.includes("SYNDEC")
         );
         console.log('Propriétaires avec le rôle PROPREITAIRE et SYNDEC :', this.proprietaires);
     });
@@ -95,16 +102,16 @@ export class PaymentSyndecComponent implements OnInit {
   {
     this.markFormGroupTouched(this.paymentSyndecRequest);
 
-    console.log('this.paymentSyndecRequest.value : ',this.paymentSyndecRequest.value);
+    console.log('this.paymentSyndecRequest.value : ',this.paymentSyndecRequest);
     if (this.paymentSyndecRequest.valid)
     {
       this.paymentSyndecService.savePaymentSyndec(this.paymentSyndecRequest.value).subscribe(
         (response) => {
           console.log('Payment syndec saved successfully.',response);
 
+          this.toastr.success('Payment syndec saved successfully.');
           this.all();
           this.paymentSyndecRequest.reset();
-          this.toastr.success('Payment syndec saved successfully.');
         },
         (error) => {
           console.log('error ', error);
@@ -164,15 +171,42 @@ export class PaymentSyndecComponent implements OnInit {
     }
   }
 
+
+  userPermision()
+  {
+    this.userSub = this.authService.user.subscribe(loggerUser => {
+
+      this.setRole(loggerUser);
+      if(loggerUser)
+      {
+        this.roles = loggerUser.roles;
+      }
+      console.log('role user permission :', this.roles);
+    });
+  }
+
+  setRole(loggedUser:LoggerUser | null)
+  {
+    console.log('role role :', loggedUser?.roles);
+
+    if(loggedUser?.roles.includes("AGENT")) this.isAgent = true;
+  }
+
+
   nextPage()
   {
     console.log(this.totalPages);
     console.log(this.pageNo);
 
-    if (this.pageNo + 1 < this.totalPages) {
+    if (this.pageNo  <= this.totalPages) {
       this.pageNo++;
       this.all();
     }
+  }
+
+  filterByStatus(status: string)
+  {
+    this.searchText = status;
   }
 
   markFormGroupTouched(formGroup: FormGroup)
@@ -188,9 +222,6 @@ export class PaymentSyndecComponent implements OnInit {
 
   editPaymentSyndec(paymentSyndec: PaymentSyndec)
   {
-    //const plainte = this.appartements.find(appartement => appartement.id === event.appartementId);
-
-    //console.log("immeuble", appartement);
 
     this.paymentSyndecRequest.setValue({
       id: paymentSyndec.id,

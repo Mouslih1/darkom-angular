@@ -22,6 +22,7 @@ export class UserComponent implements OnInit {
   pageNo = 0;
   pageSize = 10;
   totalPages = 0;
+searchText: any;
 
   constructor(
     private formBuilder: FormBuilder,

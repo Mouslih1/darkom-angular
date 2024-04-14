@@ -65,7 +65,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
     else if(loggedUser?.roles.includes("AGENT"))
     {
       this.isAgent = true;
-    }else if(loggedUser?.roles.includes("PROPREITAIRE"))
+    }else if(loggedUser?.roles.includes("PROPRIETAIRE"))
     {
       this.isPropreitaire = true;
     }else if(loggedUser?.roles.includes("SYNDEC"))

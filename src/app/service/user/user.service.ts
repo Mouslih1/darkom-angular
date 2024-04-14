@@ -114,14 +114,12 @@ export class UserService {
 
   setPassword(email: string, newPassword: string): Observable<any>
   {
-    let params = new HttpParams();
-    params = params.append('email', email.toString());
+    let params = new HttpParams().set('email', email);
 
     const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
       'newPassword': newPassword
     });
 
-    return this.httpClient.put<any>(this.baseURL + '/set-password',{ headers , params: params });
+    return this.httpClient.put<any>(`${this.baseURL}/set-password`, null, { headers, params });
   }
 }

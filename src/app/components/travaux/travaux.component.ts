@@ -19,6 +19,7 @@ export class TravauxComponent implements OnInit {
   pageNo = 0;
   pageSize = 10;
   totalPages = 0;
+searchText: any;
 
 
   constructor(
@@ -163,10 +164,16 @@ export class TravauxComponent implements OnInit {
     console.log(this.totalPages);
     console.log(this.pageNo);
 
-    if (this.pageNo + 1 < this.totalPages) {
+    if (this.pageNo <= this.totalPages) {
       this.pageNo++;
       this.all();
     }
+  }
+
+
+  filterByStatus(status: string)
+  {
+    this.searchText = status;
   }
 
   markFormGroupTouched(formGroup: FormGroup)

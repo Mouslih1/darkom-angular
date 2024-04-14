@@ -1,11 +1,22 @@
-
 <div class="content-body">
+  <div class="container-fluid">
+    <div class="d-flex align-items-center flex-wrap search-job bg-white mb-4">
+      <div class="col-xl-8 col-xxl-6 col-lg-6 col-12 d-md-flex job-title-search pe-0">
+        <div class="input-group search-area">
+          <input type="text" name="search" [(ngModel)]='searchText' class="form-control h-auto" placeholder="Search agence here...">
+          <span class="input-group-text">
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
   <!-- row -->
   <div class="container-fluid">
     <div class="d-flex align-items-center mb-4 flex-wrap">
       <h3 class="me-auto">Agence List</h3>
       <div>
-        <a class="btn btn-primary me-3 btn-sm" href="javascript:void(0);" (click)="initForm()" data-bs-toggle="modal" data-bs-target="#addAgence">
+        <a class="btn btn-primary me-3 btn-sm" href="javascript:void(0);" (click)="initForm()" data-bs-toggle="modal"
+          data-bs-target="#addAgence">
           <i class="fas fa-plus me-2"></i>Add New Agence
         </a>
       </div>
@@ -27,10 +38,11 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let agence of agenceList">
+              <tr *ngFor="let agence of agenceList | filter:searchText">
                 <td>{{ agence.agenceDto.id }}</td>
                 <td>
-                  <img *ngIf="agence.medias.length > 0" [src]="agence.medias[0].uri" alt="Media" style="max-width: 100px;">
+                  <img *ngIf="agence.medias.length > 0" [src]="agence.medias[0].uri" alt="Media"
+                    style="max-width: 100px;">
                   <span class="text-danger" *ngIf="agence.medias.length === 0">Aucun média</span>
                 </td>
                 <td class="wspace-no">{{ agence.agenceDto.name }}</td>
@@ -40,21 +52,8 @@
                 <td>{{ agence.agenceDto.createdAt }}</td>
                 <td>
                   <div class="action-buttons d-flex justify-content-end">
-                    <a href="javascript:void(0);" class="btn btn-success  light mr-2" (click)="editAgenceLogo(agence)" data-bs-toggle="modal" data-bs-target="#editAgenceLogo" title="Update logo of agency">
-                      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
-                      height="24px" viewBox="0 0 24 24" version="1.1" class="svg-main-icon">
-                      <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                        <rect x="0" y="0" width="24" height="24"></rect>
-                        <path
-                          d="M8,17.9148182 L8,5.96685884 C8,5.56391781 8.16211443,5.17792052 8.44982609,4.89581508 L10.965708,2.42895648 C11.5426798,1.86322723 12.4640974,1.85620921 13.0496196,2.41308426 L15.5337377,4.77566479 C15.8314604,5.0588212 16,5.45170806 16,5.86258077 L16,17.9148182 C16,18.7432453 15.3284271,19.4148182 14.5,19.4148182 L9.5,19.4148182 C8.67157288,19.4148182 8,18.7432453 8,17.9148182 Z"
-                          fill="#000000" fill-rule="nonzero"
-                          transform="translate(12.000000, 10.707409) rotate(-135.000000) translate(-12.000000, -10.707409) ">
-                        </path>
-                        <rect fill="#000000" opacity="0.3" x="5" y="20" width="15" height="2" rx="1"></rect>
-                      </g>
-                    </svg>
-                    </a>
-                    <a href="javascript:void(0);"  data-bs-toggle="modal" (click)="editAgence(agence)" data-bs-target="#editAgence" title="Update infomation of agency" class="btn btn-secondary light mr-2">
+                    <a href="javascript:void(0);" class="btn btn-success  light mr-2" (click)="editAgenceLogo(agence)"
+                      data-bs-toggle="modal" data-bs-target="#editAgenceLogo" title="Update logo of agency">
                       <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
                         height="24px" viewBox="0 0 24 24" version="1.1" class="svg-main-icon">
                         <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -68,7 +67,24 @@
                         </g>
                       </svg>
                     </a>
-                    <a href="javascript:void(0);" class="btn btn-danger light" (click)="deleteAgence(agence)" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" title="Delete of agency">
+                    <a href="javascript:void(0);" data-bs-toggle="modal" (click)="editAgence(agence)"
+                      data-bs-target="#editAgence" title="Update infomation of agency"
+                      class="btn btn-secondary light mr-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
+                        height="24px" viewBox="0 0 24 24" version="1.1" class="svg-main-icon">
+                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                          <rect x="0" y="0" width="24" height="24"></rect>
+                          <path
+                            d="M8,17.9148182 L8,5.96685884 C8,5.56391781 8.16211443,5.17792052 8.44982609,4.89581508 L10.965708,2.42895648 C11.5426798,1.86322723 12.4640974,1.85620921 13.0496196,2.41308426 L15.5337377,4.77566479 C15.8314604,5.0588212 16,5.45170806 16,5.86258077 L16,17.9148182 C16,18.7432453 15.3284271,19.4148182 14.5,19.4148182 L9.5,19.4148182 C8.67157288,19.4148182 8,18.7432453 8,17.9148182 Z"
+                            fill="#000000" fill-rule="nonzero"
+                            transform="translate(12.000000, 10.707409) rotate(-135.000000) translate(-12.000000, -10.707409) ">
+                          </path>
+                          <rect fill="#000000" opacity="0.3" x="5" y="20" width="15" height="2" rx="1"></rect>
+                        </g>
+                      </svg>
+                    </a>
+                    <a href="javascript:void(0);" class="btn btn-danger light" (click)="deleteAgence(agence)"
+                      data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" title="Delete of agency">
                       <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
                         height="24px" viewBox="0 0 24 24" version="1.1" class="svg-main-icon">
                         <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -117,15 +133,20 @@
           </div> -->
           <div class="mb-3 row">
             <div *ngFor="let file of agenceImages">
-              <img  #myInput width="100" class="rounded-circle img-thumbnail" [src]="getImageSrc(file)" alt="Selected Image">
+              <img #myInput width="100" class="rounded-circle img-thumbnail" [src]="getImageSrc(file)"
+                alt="Selected Image">
             </div>
           </div>
           <div class="mb-3 row">
-            <label for="formFile" class="col-xl-3 col-md-4 col-form-label">Logo<span class="text-danger scale5 ms-2">*</span></label>
+            <label for="formFile" class="col-xl-3 col-md-4 col-form-label">Logo<span
+                class="text-danger scale5 ms-2">*</span></label>
             <div class="col-xl-9 col-md-8">
-              <input [class.is-invalid]="agenceRequest.get('multipartFiles')?.invalid && agenceRequest.get('multipartFiles')?.touched"
-              type="file" formControlName="multipartFiles" (change)="onFileChange($event)" class="form-control" id="formFile">
-              <div *ngIf="agenceRequest.get('multipartFiles')?.invalid && agenceRequest.get('multipartFiles')?.touched" class="invalid-feedback">
+              <input
+                [class.is-invalid]="agenceRequest.get('multipartFiles')?.invalid && agenceRequest.get('multipartFiles')?.touched"
+                type="file" formControlName="multipartFiles" (change)="onFileChange($event)" class="form-control"
+                id="formFile">
+              <div *ngIf="agenceRequest.get('multipartFiles')?.invalid && agenceRequest.get('multipartFiles')?.touched"
+                class="invalid-feedback">
                 Logo is required.
               </div>
             </div>
@@ -134,38 +155,52 @@
             <label for="name" class="col-xl-3 col-md-4 col-form-label">
               Name<span class="text-danger scale5 ms-2">*</span></label>
             <div class="col-xl-9 col-md-8">
-              <input [class.is-invalid]="agenceRequest.get('name')?.invalid && agenceRequest.get('name')?.touched"  formControlName="name"  type="text" class="form-control" id="name" placeholder="Name" aria-label="name" />
-              <div *ngIf="agenceRequest.get('name')?.invalid && agenceRequest.get('name')?.touched" class="invalid-feedback">
+              <input [class.is-invalid]="agenceRequest.get('name')?.invalid && agenceRequest.get('name')?.touched"
+                formControlName="name" type="text" class="form-control" id="name" placeholder="Name"
+                aria-label="name" />
+              <div *ngIf="agenceRequest.get('name')?.invalid && agenceRequest.get('name')?.touched"
+                class="invalid-feedback">
                 Name is required.
               </div>
             </div>
           </div>
           <div class="mb-3 row">
-            <label for="address" class="col-xl-3 col-md-4 col-form-label">Address<span class="text-danger scale5 ms-2">*</span></label>
+            <label for="address" class="col-xl-3 col-md-4 col-form-label">Address<span
+                class="text-danger scale5 ms-2">*</span></label>
             <div class="col-xl-9 col-md-8">
-              <input [class.is-invalid]="agenceRequest.get('address')?.invalid && agenceRequest.get('address')?.touched"  formControlName="address" type="text" class="form-control" id="address" placeholder="Address" aria-label="address" />
-              <div *ngIf="agenceRequest.get('address')?.invalid && agenceRequest.get('address')?.touched" class="invalid-feedback">
+              <input [class.is-invalid]="agenceRequest.get('address')?.invalid && agenceRequest.get('address')?.touched"
+                formControlName="address" type="text" class="form-control" id="address" placeholder="Address"
+                aria-label="address" />
+              <div *ngIf="agenceRequest.get('address')?.invalid && agenceRequest.get('address')?.touched"
+                class="invalid-feedback">
                 Address is required.
               </div>
             </div>
           </div>
           <div class="mb-3 row">
-            <label for="email" class="col-xl-3 col-md-4 col-form-label">Email<span class="text-danger scale5 ms-2">*</span></label>
+            <label for="email" class="col-xl-3 col-md-4 col-form-label">Email<span
+                class="text-danger scale5 ms-2">*</span></label>
             <div class="col-xl-9 col-md-8">
               <input [class.is-invalid]="agenceRequest.get('email')?.invalid && agenceRequest.get('email')?.touched"
-              formControlName="email" type="email" class="form-control" id="email"
-              aria-label="email" placeholder="Email">
-              <div *ngIf="agenceRequest.get('email')?.invalid && agenceRequest.get('email')?.touched" class="invalid-feedback">
+                formControlName="email" type="email" class="form-control" id="email" aria-label="email"
+                placeholder="Email">
+              <div *ngIf="agenceRequest.get('email')?.invalid && agenceRequest.get('email')?.touched"
+                class="invalid-feedback">
                 <div *ngIf="agenceRequest.get('email')?.errors?.['required']">Email is required.</div>
                 <div *ngIf="agenceRequest.get('email')?.errors?.['email']">Please enter a valid email address.</div>
               </div>
             </div>
           </div>
           <div class="mb-3 row">
-            <label for="phone" class="col-xl-3 col-md-4 col-form-label">Phone number<span class="text-danger scale5 ms-2">*</span></label>
+            <label for="phone" class="col-xl-3 col-md-4 col-form-label">Phone number<span
+                class="text-danger scale5 ms-2">*</span></label>
             <div class="col-xl-9 col-md-8">
-              <input [class.is-invalid]="agenceRequest.get('telephone')?.invalid && agenceRequest.get('telephone')?.touched" formControlName="telephone" type="tel" class="form-control" id="phone" aria-label="phone" placeholder="Phone number">
-              <div *ngIf="agenceRequest.get('telephone')?.invalid && agenceRequest.get('telephone')?.touched" class="invalid-feedback">
+              <input
+                [class.is-invalid]="agenceRequest.get('telephone')?.invalid && agenceRequest.get('telephone')?.touched"
+                formControlName="telephone" type="tel" class="form-control" id="phone" aria-label="phone"
+                placeholder="Phone number">
+              <div *ngIf="agenceRequest.get('telephone')?.invalid && agenceRequest.get('telephone')?.touched"
+                class="invalid-feedback">
                 Phone is required.
               </div>
             </div>
@@ -203,38 +238,56 @@
             <label for="name" class="col-xl-3 col-md-4 col-form-label">
               Name<span class="text-danger scale5 ms-2">*</span></label>
             <div class="col-xl-9 col-md-8">
-              <input [class.is-invalid]="agenceRequestUpdate.get('name')?.invalid && agenceRequestUpdate.get('name')?.touched"  formControlName="name"  type="text" class="form-control" id="name" placeholder="Name" aria-label="name" />
-              <div *ngIf="agenceRequestUpdate.get('name')?.invalid && agenceRequestUpdate.get('name')?.touched" class="invalid-feedback">
+              <input
+                [class.is-invalid]="agenceRequestUpdate.get('name')?.invalid && agenceRequestUpdate.get('name')?.touched"
+                formControlName="name" type="text" class="form-control" id="name" placeholder="Name"
+                aria-label="name" />
+              <div *ngIf="agenceRequestUpdate.get('name')?.invalid && agenceRequestUpdate.get('name')?.touched"
+                class="invalid-feedback">
                 Name is required.
               </div>
             </div>
           </div>
           <div class="mb-3 row">
-            <label for="address" class="col-xl-3 col-md-4 col-form-label">Address<span class="text-danger scale5 ms-2">*</span></label>
+            <label for="address" class="col-xl-3 col-md-4 col-form-label">Address<span
+                class="text-danger scale5 ms-2">*</span></label>
             <div class="col-xl-9 col-md-8">
-              <input [class.is-invalid]="agenceRequestUpdate.get('address')?.invalid && agenceRequestUpdate.get('address')?.touched"  formControlName="address" type="text" class="form-control" placeholder="Address" aria-label="address" />
-              <div *ngIf="agenceRequestUpdate.get('address')?.invalid && agenceRequestUpdate.get('address')?.touched" class="invalid-feedback">
+              <input
+                [class.is-invalid]="agenceRequestUpdate.get('address')?.invalid && agenceRequestUpdate.get('address')?.touched"
+                formControlName="address" type="text" class="form-control" placeholder="Address" aria-label="address" />
+              <div *ngIf="agenceRequestUpdate.get('address')?.invalid && agenceRequestUpdate.get('address')?.touched"
+                class="invalid-feedback">
                 Address is required.
               </div>
             </div>
           </div>
           <div class="mb-3 row">
-            <label for="email" class="col-xl-3 col-md-4 col-form-label">Email<span class="text-danger scale5 ms-2">*</span></label>
+            <label for="email" class="col-xl-3 col-md-4 col-form-label">Email<span
+                class="text-danger scale5 ms-2">*</span></label>
             <div class="col-xl-9 col-md-8">
-              <input [class.is-invalid]="agenceRequestUpdate.get('email')?.invalid && agenceRequestUpdate.get('email')?.touched"
-              formControlName="email" type="email" class="form-control" id="email"
-              aria-label="email" placeholder="Email">
-              <div *ngIf="agenceRequestUpdate.get('email')?.invalid && agenceRequestUpdate.get('email')?.touched" class="invalid-feedback">
+              <input
+                [class.is-invalid]="agenceRequestUpdate.get('email')?.invalid && agenceRequestUpdate.get('email')?.touched"
+                formControlName="email" type="email" class="form-control" id="email" aria-label="email"
+                placeholder="Email">
+              <div *ngIf="agenceRequestUpdate.get('email')?.invalid && agenceRequestUpdate.get('email')?.touched"
+                class="invalid-feedback">
                 <div *ngIf="agenceRequestUpdate.get('email')?.errors?.['required']">Email is required.</div>
-                <div *ngIf="agenceRequestUpdate.get('email')?.errors?.['email']">Please enter a valid email address.</div>
+                <div *ngIf="agenceRequestUpdate.get('email')?.errors?.['email']">Please enter a valid email address.
+                </div>
               </div>
             </div>
           </div>
           <div class="mb-3 row">
-            <label for="phone" class="col-xl-3 col-md-4 col-form-label">Phone number<span class="text-danger scale5 ms-2">*</span></label>
+            <label for="phone" class="col-xl-3 col-md-4 col-form-label">Phone number<span
+                class="text-danger scale5 ms-2">*</span></label>
             <div class="col-xl-9 col-md-8">
-              <input [class.is-invalid]="agenceRequestUpdate.get('telephone')?.invalid && agenceRequestUpdate.get('telephone')?.touched" formControlName="telephone" type="tel" class="form-control" id="phone" aria-label="phone" placeholder="Phone number">
-              <div *ngIf="agenceRequestUpdate.get('telephone')?.invalid && agenceRequestUpdate.get('telephone')?.touched" class="invalid-feedback">
+              <input
+                [class.is-invalid]="agenceRequestUpdate.get('telephone')?.invalid && agenceRequestUpdate.get('telephone')?.touched"
+                formControlName="telephone" type="tel" class="form-control" id="phone" aria-label="phone"
+                placeholder="Phone number">
+              <div
+                *ngIf="agenceRequestUpdate.get('telephone')?.invalid && agenceRequestUpdate.get('telephone')?.touched"
+                class="invalid-feedback">
                 Phone is required.
               </div>
             </div>
@@ -243,7 +296,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" (click)="onUpdate()" >Save changes</button>
+        <button type="button" class="btn btn-primary" (click)="onUpdate()">Save changes</button>
       </div>
     </div>
   </div>
@@ -263,15 +316,21 @@
         <form [formGroup]="agenceRequestLogo">
           <div class="mb-3 row">
             <div *ngFor="let file of agenceImages">
-              <img  #myInput width="100" class="rounded-circle img-thumbnail" [src]="getImageSrc(file)" alt="Selected Image">
+              <img #myInput width="100" class="rounded-circle img-thumbnail" [src]="getImageSrc(file)"
+                alt="Selected Image">
             </div>
           </div>
           <div class="mb-3 row">
-            <label for="formFile" class="col-xl-3 col-md-4 col-form-label">Logo<span class="text-danger scale5 ms-2">*</span></label>
+            <label for="formFile" class="col-xl-3 col-md-4 col-form-label">Logo<span
+                class="text-danger scale5 ms-2">*</span></label>
             <div class="col-xl-9 col-md-8">
-              <input  #myInput [class.is-invalid]="agenceRequestLogo.get('multipartFiles')?.invalid && agenceRequestLogo.get('multipartFiles')?.touched"
-              type="file" formControlName="multipartFiles" (change)="onFileChange($event)" class="form-control" id="formFile">
-              <div *ngIf="agenceRequestLogo.get('multipartFiles')?.invalid && agenceRequestLogo.get('multipartFiles')?.touched" class="invalid-feedback">
+              <input #myInput
+                [class.is-invalid]="agenceRequestLogo.get('multipartFiles')?.invalid && agenceRequestLogo.get('multipartFiles')?.touched"
+                type="file" formControlName="multipartFiles" (change)="onFileChange($event)" class="form-control"
+                id="formFile">
+              <div
+                *ngIf="agenceRequestLogo.get('multipartFiles')?.invalid && agenceRequestLogo.get('multipartFiles')?.touched"
+                class="invalid-feedback">
                 Logo is required.
               </div>
             </div>
@@ -279,8 +338,9 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button"  class="btn btn-danger" data-bs-dismiss="modal" (click)="myInput.value = ''" >Close</button>
-        <button type="button" (click)="myInput.value = ''" class="btn btn-primary" (click)="onUpdateLogo()">Save changes</button>
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="myInput.value = ''">Close</button>
+        <button type="button" (click)="myInput.value = ''" class="btn btn-primary" (click)="onUpdateLogo()">Save
+          changes</button>
       </div>
     </div>
   </div>

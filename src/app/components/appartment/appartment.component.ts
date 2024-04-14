@@ -22,6 +22,7 @@ export class AppartmentComponent implements OnInit {
   pageNo = 0;
   pageSize = 10;
   totalPages = 0;
+  searchText: any;
 
 
   constructor(
@@ -51,6 +52,11 @@ export class AppartmentComponent implements OnInit {
       statusAppartement: ['', [Validators.required]],
       immeubleId: ['', [Validators.required]]
     });
+  }
+
+  filterByStatus(status: string)
+  {
+    this.searchText = status;
   }
 
   all() {
@@ -170,7 +176,7 @@ export class AppartmentComponent implements OnInit {
     console.log(this.totalPages);
     console.log(this.pageNo);
 
-    if (this.pageNo + 1 < this.totalPages) {
+    if (this.pageNo <= this.totalPages) {
       this.pageNo++;
       this.all();
     }

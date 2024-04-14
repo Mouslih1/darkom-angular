@@ -1,5 +1,55 @@
 <div class="content-body">
   <div class="container-fluid">
+    <div class="d-flex align-items-center flex-wrap search-job bg-white mb-4">
+      <div class="col-xl-8 col-xxl-6 col-lg-6 col-12 d-md-flex job-title-search pe-0">
+        <div class="input-group search-area">
+          <input type="text" name="search" [(ngModel)]='searchText' class="form-control h-auto" placeholder="Search agence here...">
+          <span class="input-group-text">
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="d-sm-flex d-block justify-content-between align-items-center mb-4">
+      <div class="card-action coin-tabs mt-3 mt-sm-0">
+        <ul class="nav nav-tabs" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" data-bs-toggle="tab" (click)="filterByStatus('')">All Status</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" (click)="filterByStatus('PAYE')">Paye</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" (click)="filterByStatus('NO_PAYE')">No Paye</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" (click)="filterByStatus('PAYE_EN_RETARD')">Paye en retard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" (click)="filterByStatus('AVANCE')">Avance</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" (click)="filterByStatus('PAYMENT_VENTE')">Payment vente</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" (click)="filterByStatus('PAYMENT_CHARGE')">Payment charge</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" (click)="filterByStatus('PAYMENT_FRAIS_DOSSIER')">Payment frais dossier</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" (click)="filterByStatus('ESPECES')">Especes</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" (click)="filterByStatus('VIREMENT_BANCAIRE')">Virement bancaire</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" (click)="filterByStatus('CHEQUE')">Cheque</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid">
     <div class="d-flex align-items-center mb-4 flex-wrap">
       <h3 class="me-auto">Payment contract vente</h3>
       <div>
@@ -24,7 +74,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let paymentVente of paymentVenteList">
+              <tr *ngFor="let paymentVente of paymentVenteList | filter:searchText">
                 <td>{{ paymentVente.id }}</td>
                 <td>
                   <span class="btn btn-sm btn-rounded"
@@ -85,7 +135,7 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">New Payment Contrat loyer</h5>
+        <h5 class="modal-title">New Payment Contrat vente</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
@@ -115,7 +165,7 @@
               <option value="PAYE">Paye</option>
               <option value="PAYE_EN_RETARD">Paye en retard</option>
               <option value="NO_PAYE">No paye</option>
-              <option value="AVANCE">No paye</option>
+              <option value="AVANCE">Avance</option>
             </select>
             <div *ngIf="paymentVenteRequest.get('statusPaymentContrat')?.invalid && paymentVenteRequest.get('statusPaymentContrat')?.touched"
             class="text-danger">
@@ -191,7 +241,7 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Update Payment Contrat loyer</h5>
+        <h5 class="modal-title">Update Payment Contrat vente</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
@@ -287,14 +337,14 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" (click)="onSavePaymentVente()">Save changes</button>
+        <button type="button" class="btn btn-primary" (click)="onUpdatePaymentVente()">Save changes</button>
       </div>
     </div>
   </div>
 </div>
 
 
-<div class="modal fade" id="deletePaymentLoyer" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="deletePaymentVente" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">

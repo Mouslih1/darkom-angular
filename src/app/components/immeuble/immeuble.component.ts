@@ -17,6 +17,7 @@ export class ImmeubleComponent implements OnInit {
   pageNo = 0;
   pageSize = 10;
   totalPages = 0;
+searchText: any;
 
 
   constructor(
@@ -39,6 +40,11 @@ export class ImmeubleComponent implements OnInit {
       numberApparetement: ['', [Validators.required]],
       anneeConstruction: ['', [Validators.required]]
     });
+  }
+
+  filterByStatus(status: string)
+  {
+    this.searchText = status;
   }
 
   all() {
@@ -104,7 +110,8 @@ export class ImmeubleComponent implements OnInit {
     }
   }
 
-  onDeleteImmeuble() {
+  onDeleteImmeuble()
+  {
     console.log('this.agenceRequest.value : ', this.immeubleRequest.value);
     this.immeubleService.deleteImmeuble(
       this.immeubleRequest.value.id
@@ -131,7 +138,7 @@ export class ImmeubleComponent implements OnInit {
     console.log(this.totalPages);
     console.log(this.pageNo);
 
-    if (this.pageNo < this.totalPages) {
+    if (this.pageNo <= this.totalPages) {
       this.pageNo++;
       this.all();
     }

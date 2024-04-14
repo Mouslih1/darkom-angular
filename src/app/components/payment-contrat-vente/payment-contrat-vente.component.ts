@@ -20,6 +20,7 @@ export class PaymentContratVenteComponent implements OnInit {
   pageNo = 0;
   pageSize = 10;
   totalPages = 0;
+searchText: any;
 
 
   constructor(
@@ -36,6 +37,11 @@ export class PaymentContratVenteComponent implements OnInit {
     this.allContrats();
   }
 
+  filterByStatus(status: string)
+  {
+    this.searchText = status;
+  }
+
   initForm()
   {
     this.paymentVenteRequest = this.formBuilder.group({
@@ -45,7 +51,6 @@ export class PaymentContratVenteComponent implements OnInit {
       montantPaye: ['', [Validators.required]],
       methodePaymentContratVente: ['', [Validators.required]],
       typePaymentContratVente: ['', [Validators.required]],
-      montantRester: ['', [Validators.required]]
     });
   }
 
@@ -81,7 +86,9 @@ export class PaymentContratVenteComponent implements OnInit {
   allContrats()
   {
     this.contratService.all(0, 100000).subscribe((response) => {
-      this.contrats = response;
+      this.contrats = response.filter(contrat =>
+        contrat.typeContrat.includes("CONTRAT_VENTE")
+    );
       console.log('Contrats :',this.contrats);
     });
   }
@@ -90,7 +97,7 @@ export class PaymentContratVenteComponent implements OnInit {
   {
     this.markFormGroupTouched(this.paymentVenteRequest);
 
-    console.log('this.paymentVenteRequest.value : ',this.paymentVenteRequest.value);
+    console.log('this.paymentVenteRequest.value : ',this.paymentVenteRequest);
     if (this.paymentVenteRequest.valid)
     {
       this.paymentContratVenteService.savePaymentVente(this.paymentVenteRequest.value).subscribe(
@@ -164,7 +171,7 @@ export class PaymentContratVenteComponent implements OnInit {
     console.log(this.totalPages);
     console.log(this.pageNo);
 
-    if (this.pageNo + 1 < this.totalPages) {
+    if (this.pageNo <= this.totalPages) {
       this.pageNo++;
       this.all();
     }

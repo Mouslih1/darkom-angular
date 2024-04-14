@@ -1,5 +1,31 @@
 <div class="content-body">
   <div class="container-fluid">
+    <div class="d-flex align-items-center flex-wrap search-job bg-white mb-4">
+      <div class="col-xl-8 col-xxl-6 col-lg-6 col-12 d-md-flex job-title-search pe-0">
+        <div class="input-group search-area">
+          <input type="text" name="search" [(ngModel)]='searchText' class="form-control h-auto" placeholder="Search agence here...">
+          <span class="input-group-text">
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="d-sm-flex d-block justify-content-between align-items-center mb-4">
+      <div class="card-action coin-tabs mt-3 mt-sm-0">
+        <ul class="nav nav-tabs" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" data-bs-toggle="tab" (click)="filterByStatus('')">All Status</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" (click)="filterByStatus('CONTRAT_VENTE')">Contract vente</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" (click)="filterByStatus('CONTRAT_LOUER')">Contract louer</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid">
     <div class="d-flex align-items-center mb-4 flex-wrap">
       <h3 class="me-auto">Contracts</h3>
       <div>
@@ -24,7 +50,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let contrat of contratList">
+              <tr *ngFor="let contrat of contratList | filter:searchText">
                 <td>{{ contrat.id }}</td>
                 <td>{{ contrat.refContrat }}</td>
                 <td>
@@ -35,17 +61,17 @@
                 </td>
                 <td>{{ contrat.dateSignature }}</td>
                 <td>{{ contrat.appartement.referenceAppartement }}</td>
-                <td>{{ contrat.propreitaire.userDto.lastname + ' , ' + contrat.propreitaire.userDto.lastname }}</td>
+                <td>{{ contrat.propreitaire.userDto.firstname + ' , ' + contrat.propreitaire.userDto.lastname }}</td>
                 <td>{{ contrat.montant }}</td>
 
                 <td class="action-btn wspace-no">
                   <span>
                     <a href="javascript:void(0);" (click)="editContrat(contrat)" data-bs-toggle="modal"
-                      data-bs-target="#editAppartment"><i class="fas fa-edit text-warning"></i></a>
+                      data-bs-target="#editContrat"><i class="fas fa-edit text-warning"></i></a>
                   </span>
                   <span>
                     <a href="javascript:void(0);" (click)="deleteContrat(contrat)" data-bs-toggle="modal"
-                      data-bs-target="#deleteAppartement"><i class="far fa-trash-alt text-danger"></i></a>
+                      data-bs-target="#deleteContrat"><i class="far fa-trash-alt text-danger"></i></a>
                   </span>
                 </td>
               </tr>
@@ -68,7 +94,7 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">New Appartement</h5>
+        <h5 class="modal-title">New contract</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
@@ -92,7 +118,7 @@
                 class="text-danger scale5 ms-2">*</span></label>
             <div class="col-xl-9 col-md-8">
               <select [class.is-invalid]="contratRequest.get('appartementId')?.invalid && contratRequest.get('appartementId')?.touched"
-                formControlName="appartementId" class="default-select form-control wide">
+                formControlName="appartementId" class="form-control wide">
                 <option *ngFor="let appartement of appartements" [value]="appartement.id">{{ appartement.referenceAppartement }}</option>
               </select>
               <div>
@@ -108,7 +134,7 @@
                 class="text-danger scale5 ms-2">*</span></label>
             <div class="col-xl-9 col-md-8">
               <select [class.is-invalid]="contratRequest.get('propreitaireId')?.invalid && contratRequest.get('propreitaireId')?.touched"
-                formControlName="propreitaireId" class="default-select form-control wide">
+                formControlName="propreitaireId" class="form-control wide">
                 <option value="">-----</option>
                 <option *ngFor="let propreitaire of propreitaires" [value]="propreitaire.userDto.id">{{ propreitaire.userDto.firstname + ' , ' + propreitaire.userDto.lastname }}</option>
               </select>
@@ -134,7 +160,7 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">New Appartement</h5>
+        <h5 class="modal-title">Update Contract</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
@@ -158,7 +184,7 @@
                 class="text-danger scale5 ms-2">*</span></label>
             <div class="col-xl-9 col-md-8">
               <select [class.is-invalid]="contratRequest.get('appartementId')?.invalid && contratRequest.get('appartementId')?.touched"
-                formControlName="appartementId" class="default-select form-control wide">
+                formControlName="appartementId" class="form-control wide">
                 <option *ngFor="let appartement of appartements" [value]="appartement.id" [selected]="appartement.id === contratRequest.value.appartementId">{{ appartement.referenceAppartement }}</option>
               </select>
               <div>
@@ -174,7 +200,7 @@
                 class="text-danger scale5 ms-2">*</span></label>
             <div class="col-xl-9 col-md-8">
               <select [class.is-invalid]="contratRequest.get('propreitaireId')?.invalid && contratRequest.get('propreitaireId')?.touched"
-                formControlName="propreitaireId" class="default-select form-control wide">
+                formControlName="propreitaireId" class="form-control wide">
                 <option value="">-----</option>
                 <option *ngFor="let propreitaire of propreitaires" [value]="propreitaire.userDto.id"
                 [selected]="propreitaire.userDto.id === contratRequest.value.propreitaireId">

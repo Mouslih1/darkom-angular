@@ -1,5 +1,43 @@
 <div class="content-body">
   <div class="container-fluid">
+    <div class="d-flex align-items-center flex-wrap search-job bg-white mb-4">
+      <div class="col-xl-8 col-xxl-6 col-lg-6 col-12 d-md-flex job-title-search pe-0">
+        <div class="input-group search-area">
+          <input type="text" name="search" [(ngModel)]='searchText' class="form-control h-auto" placeholder="Search agence here...">
+          <span class="input-group-text">
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="d-sm-flex d-block justify-content-between align-items-center mb-4">
+      <div class="card-action coin-tabs mt-3 mt-sm-0">
+        <ul class="nav nav-tabs" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" data-bs-toggle="tab" (click)="filterByStatus('')">All Status</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" (click)="filterByStatus('RESOLUE')">Resolue</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" (click)="filterByStatus('EN_COURS_TRAITEMENT')">En cours traitement</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" (click)="filterByStatus('NON_RESOLUE')">Non resolue</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" (click)="filterByStatus('FAIBLE')">Faible</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" (click)="filterByStatus('MOYENE')">Moyene</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" (click)="filterByStatus('ELEVE')">Eleve</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid">
     <div class="d-flex align-items-center mb-4 flex-wrap">
       <h3 class="me-auto">Plaintes</h3>
       <div>
@@ -23,7 +61,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let plainte of plainteList">
+              <tr *ngFor="let plainte of plainteList | filter:searchText">
                 <td>{{ plainte.id }}</td>
                 <td>{{ plainte.sujet }}</td>
                 <td>{{ plainte.description }}</td>

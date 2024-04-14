@@ -19,9 +19,11 @@ import { PaymentContratVenteComponent } from './components/payment-contrat-vente
 import { PaymentSyndecComponent } from './components/payment-syndec/payment-syndec.component';
 import { AuthentificationGuardService } from './service/authentification/authentification.guard.service';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
+import { SetPasswordComponent } from './components/set-password/set-password.component';
 
 const routes: Routes = [
-  { path: 'login/forgot-password', component: ForgotPasswordComponent},
+  { path: 'forgot-password', component: ForgotPasswordComponent},
+  { path: 'set-password', component: SetPasswordComponent},
   { path: 'login', component: AuthentificationComponent},
   { path: 'not-found', component: NotFoundComponent},
   { path: '', redirectTo: 'login', pathMatch: 'full'},
@@ -42,7 +44,7 @@ const routes: Routes = [
       { path: 'travaux', component: TravauxComponent, canActivate: [AuthentificationGuardService], data : { role:['SYNDEC']}},
       { path: 'payment-contracts-loyer', component: PaymentContratLoyerComponent, canActivate: [AuthentificationGuardService], data : { role:['AGENT']}},
       { path: 'payment-contracts-vente', component: PaymentContratVenteComponent, canActivate: [AuthentificationGuardService], data : { role:['AGENT']}},
-      { path: 'payment-syndec', component: PaymentSyndecComponent, canActivate: [AuthentificationGuardService], data : { role:['PROPRIETAIRE', 'SYNDEC']}},
+      { path: 'payment-syndec', component: PaymentSyndecComponent, canActivate: [AuthentificationGuardService], data : { role:['PROPRIETAIRE', 'SYNDEC', 'AGENT']}},
       { path: 'profile', component: ProfilComponent, canActivate: [AuthentificationGuardService], data : { role:['PROPRIETAIRE', 'SYNDEC', 'ADMIN', 'AGENT']}}
     ]
   },

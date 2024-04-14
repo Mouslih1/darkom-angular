@@ -24,6 +24,7 @@ export class ContratComponent implements OnInit {
   pageNo = 0;
   pageSize = 10;
   totalPages = 0;
+searchText: any;
 
 
   constructor(
@@ -40,6 +41,11 @@ export class ContratComponent implements OnInit {
     this.all();
     this.allAppartements();
     this.allPropreitaires();
+  }
+
+  filterByStatus(status: string)
+  {
+    this.searchText = status;
   }
 
   initForm()
@@ -97,7 +103,7 @@ export class ContratComponent implements OnInit {
   {
     this.userService.all(0, 100000).subscribe((response) => {
         this.propreitaires = response.filter(user =>
-            user.userDto.role.includes("PROPRIETAIRE") && user.userDto.role.includes("SYNDEC")
+            user.userDto.role.includes("PROPRIETAIRE") || user.userDto.role.includes("SYNDEC")
         );
         console.log('Propriétaires avec le rôle PROPREITAIRE et SYNDEC :', this.propreitaires);
     });
@@ -120,7 +126,12 @@ export class ContratComponent implements OnInit {
         },
         (error) => {
           console.log('error ', error);
+          if (error && error.error && error.error.message.includes("We has this appartement in other contrat.")) {
+            this.toastr.error('We has this appartement in other contrat.');
+          } else {
             this.toastr.error('Something went wrong, please try again.');
+          }
+
         }
       );
     }
@@ -142,7 +153,11 @@ export class ContratComponent implements OnInit {
         },
         (error) => {
           console.log('error ', error);
-          this.toastr.error('Something went wrong, please try again.');
+          if (error && error.error && error.error.message.includes("We has this appartement in other contrat.")) {
+            this.toastr.error('We has this appartement in other contrat.');
+          } else {
+            this.toastr.error('Something went wrong, please try again.');
+          }
         }
       );
     }
@@ -178,7 +193,7 @@ export class ContratComponent implements OnInit {
     console.log(this.totalPages);
     console.log(this.pageNo);
 
-    if (this.pageNo + 1 < this.totalPages) {
+    if (this.pageNo <= this.totalPages) {
       this.pageNo++;
       this.all();
     }

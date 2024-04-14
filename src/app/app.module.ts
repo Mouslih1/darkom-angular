@@ -7,7 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialogModule } from "@angular/material/dialog";
 import { AgenceListComponent } from './components/agence/agence-list.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http'
 import { ToastrModule } from 'ngx-toastr';
 import { AngularFireModule } from '@angular/fire/compat';
@@ -34,6 +34,7 @@ import { PaymentContratVenteComponent } from './components/payment-contrat-vente
 import { PaymentSyndecComponent } from './components/payment-syndec/payment-syndec.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { SetPasswordComponent } from './components/set-password/set-password.component';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 @NgModule({
   declarations: [
@@ -67,11 +68,12 @@ import { SetPasswordComponent } from './components/set-password/set-password.com
     BrowserAnimationsModule,
     MatDialogModule,
     ReactiveFormsModule,
+    FormsModule,
     ToastrModule.forRoot(),
     HttpClientModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireDatabaseModule,
-
+    Ng2SearchPipeModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

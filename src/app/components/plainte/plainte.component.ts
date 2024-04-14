@@ -20,6 +20,7 @@ export class PlainteComponent implements OnInit {
   pageNo = 0;
   pageSize = 10;
   totalPages = 0;
+searchText: any;
 
 
   constructor(
@@ -158,12 +159,17 @@ export class PlainteComponent implements OnInit {
     }
   }
 
+  filterByStatus(status: string)
+  {
+    this.searchText = status;
+  }
+
   nextPage()
   {
     console.log(this.totalPages);
     console.log(this.pageNo);
 
-    if (this.pageNo + 1 < this.totalPages) {
+    if (this.pageNo <= this.totalPages) {
       this.pageNo++;
       this.all();
     }

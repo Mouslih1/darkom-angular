@@ -17,11 +17,11 @@ export class AgenceListComponent implements OnInit {
   agenceRequest!: FormGroup;
   agenceRequestUpdate!:FormGroup;
   agenceRequestLogo !: FormGroup;
-
   agenceImages: any[] = [];
   pageNo = 0;
   pageSize = 10;
   totalPages = 0;
+  searchText: any;
 
   constructor(
     private formBuilder: FormBuilder,
