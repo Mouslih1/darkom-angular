@@ -20,7 +20,7 @@ export class AppartmentService {
     params = params.append('pageSize', pageSize.toString());
 
 
-    return this.httpClient.get<Appartment[]>(this.baseURL, { params: params });
+    return this.httpClient.get<Appartment[]>(this.baseURL + '/agence', { params: params });
   }
 
   saveAppartement(appartement: Appartment) : Observable<Appartment>

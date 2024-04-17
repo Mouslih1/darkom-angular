@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { Subscription } from 'rxjs';
+import { LoggerUser } from 'src/app/model/authentification/logged-user';
 import { Travaux } from 'src/app/model/travaux/travaux';
+import { AuthentificationService } from 'src/app/service/authentification/authentification.service';
 import { ImmeubleService } from 'src/app/service/immeuble/immeuble.service';
 import { TravauxService } from 'src/app/service/travaux/travaux.service';
 
@@ -19,7 +22,13 @@ export class TravauxComponent implements OnInit {
   pageNo = 0;
   pageSize = 10;
   totalPages = 0;
-searchText: any;
+  searchText: any;
+
+
+
+  userSub!:  Subscription;
+  isSyndec = false;
+  roles!: string[];
 
 
   constructor(
@@ -27,6 +36,7 @@ searchText: any;
     private immeubleService: ImmeubleService,
     private travauxService: TravauxService,
     private toastr: ToastrService,
+    private authService: AuthentificationService
   ) { }
 
   ngOnInit(): void
@@ -34,6 +44,7 @@ searchText: any;
     this.initForm();
     this.all();
     this.allImmeubles();
+    this.userPermision();
   }
 
   initForm()
@@ -48,6 +59,26 @@ searchText: any;
       montant: ['', [Validators.required]],
       immeubleId: ['', [Validators.required]]
     });
+  }
+
+  userPermision()
+  {
+    this.userSub = this.authService.user.subscribe(loggerUser => {
+
+      this.setRole(loggerUser);
+      if(loggerUser)
+      {
+        this.roles = loggerUser.roles;
+      }
+      console.log('role user permission :', this.roles);
+    });
+  }
+
+  setRole(loggedUser:LoggerUser | null)
+  {
+    console.log('role role :', loggedUser?.roles);
+
+    if(loggedUser?.roles.includes("SYNDEC")) this.isSyndec = true;
   }
 
   all()

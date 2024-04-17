@@ -41,7 +41,7 @@ const routes: Routes = [
       { path: 'contracts', component: ContratComponent, canActivate: [AuthentificationGuardService], data : { role:['AGENT']}},
       { path: 'evenements', component: EvenementComponent,canActivate: [AuthentificationGuardService], data : { role:['PROPRIETAIRE', 'SYNDEC']}},
       { path: 'plaintes', component: PlainteComponent , canActivate: [AuthentificationGuardService], data : { role:['PROPRIETAIRE', 'SYNDEC']}},
-      { path: 'travaux', component: TravauxComponent, canActivate: [AuthentificationGuardService], data : { role:['SYNDEC']}},
+      { path: 'travaux', component: TravauxComponent, canActivate: [AuthentificationGuardService], data : { role:['SYNDEC', 'PROPRIETAIRE']}},
       { path: 'payment-contracts-loyer', component: PaymentContratLoyerComponent, canActivate: [AuthentificationGuardService], data : { role:['AGENT']}},
       { path: 'payment-contracts-vente', component: PaymentContratVenteComponent, canActivate: [AuthentificationGuardService], data : { role:['AGENT']}},
       { path: 'payment-syndec', component: PaymentSyndecComponent, canActivate: [AuthentificationGuardService], data : { role:['PROPRIETAIRE', 'SYNDEC', 'AGENT']}},

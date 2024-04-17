@@ -90,7 +90,7 @@ export class PaymentSyndecComponent implements OnInit {
 
   allPropreitaires()
   {
-    this.userService.all(0, 100000).subscribe((response) => {
+    this.userService.allByAgence(0, 100000).subscribe((response) => {
         this.proprietaires = response.filter(user =>
             user.userDto.role.includes("PROPRIETAIRE") || user.userDto.role.includes("SYNDEC")
         );
@@ -222,7 +222,6 @@ export class PaymentSyndecComponent implements OnInit {
 
   editPaymentSyndec(paymentSyndec: PaymentSyndec)
   {
-
     this.paymentSyndecRequest.setValue({
       id: paymentSyndec.id,
       description:  paymentSyndec.description,

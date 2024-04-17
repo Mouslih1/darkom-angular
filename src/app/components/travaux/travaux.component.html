@@ -28,7 +28,7 @@
   <div class="container-fluid">
     <div class="d-flex align-items-center mb-4 flex-wrap">
       <h3 class="me-auto">Travaux</h3>
-      <div>
+      <div *ngIf="isSyndec">
         <a class="btn btn-primary me-3 btn-sm" (click)="initForm()" data-bs-toggle="modal" data-bs-target="#addTravaux"><i
             class="fas fa-plus me-2"></i>Add New Travaux</a>
       </div>
@@ -47,11 +47,11 @@
                 <th>Date End</th>
                 <th>Immeuble</th>
                 <th>Montant</th>
-                <th class="text-center">Actions</th>
+                <th *ngIf="isSyndec" class="text-center">Actions</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let travaux of travauxList">
+              <tr *ngFor="let travaux of travauxList | filter:searchText">
                 <td>{{ travaux.id }}</td>
                 <td>{{ travaux.sujet }}</td>
                 <td>{{ travaux.description }}</td>
@@ -67,7 +67,7 @@
                 <td>{{ travaux.immeuble.referenceImmeuble }}</td>
                 <td>{{ travaux.montant }}</td>
 
-                <td class="action-btn wspace-no">
+                <td *ngIf="isSyndec" class="action-btn wspace-no">
                   <span>
                     <a href="javascript:void(0);" (click)="editTravaux(travaux)" data-bs-toggle="modal"
                       data-bs-target="#editTravaux"><i class="fas fa-edit text-warning"></i></a>

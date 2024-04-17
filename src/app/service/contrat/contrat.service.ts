@@ -19,7 +19,7 @@ export class ContratService {
     params = params.append('pageSize', pageSize.toString());
 
 
-    return this.httpClient.get<Contrat[]>(this.baseURL, { params: params });
+    return this.httpClient.get<Contrat[]>(this.baseURL + '/agence', { params: params });
   }
 
   saveContrat(contrat: Contrat) : Observable<Contrat>

@@ -101,7 +101,7 @@ searchText: any;
 
   allPropreitaires()
   {
-    this.userService.all(0, 100000).subscribe((response) => {
+    this.userService.allByAgence(0, 100000).subscribe((response) => {
         this.propreitaires = response.filter(user =>
             user.userDto.role.includes("PROPRIETAIRE") || user.userDto.role.includes("SYNDEC")
         );
